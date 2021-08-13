@@ -73,7 +73,11 @@ return true ;
            nom:this.nom,
            prenom:this.prenom,
            password:this.password,
-       })
+       }).then(function(reponce){
+           console.log(reponce);
+        },function(error){
+            console.log(error);
+        })
        
     }
     }
