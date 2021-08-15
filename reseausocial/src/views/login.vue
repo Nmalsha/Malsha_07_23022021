@@ -16,11 +16,21 @@
         <input v-model="prenom" class="form_input" type="text" placeholder="Prénom">
   </div>
   <div class="form_row">
-      <input v-model="password" class="form_input" type="text" placeholder="Entrez votre mot de pass">
+      <input v-model="password" class="form_input" type="password" placeholder="Entrez votre mot de pass">
+  </div>
+  <div class="form_row" v-if="mode == 'login' && status == 'error_login'">
+       Address email et/ou mot de pass invalide
+  </div>
+  <div class="form_row" v-if="mode == 'create' && status == 'create'">
+       Address email deja utilisé
   </div>
   <div class="form_row">
-      <button class="button button--disabled" v-if="mode == 'login'"> Connect</button>
-       <button @click="CreateAccount()" class="button" :class="{'button--disabled':!validatedFields}" v-else> Créer mon compte</button>
+      <button @click="login()" class="button " :class="{'button--disabled':!validatedFields}" v-if="mode == 'login'">
+           <span v-if="status == 'loading'">Connection en cours ....</span>
+          <span v-else>Connection</span></button>
+       <button @click="signup()" class="button" :class="{'button--disabled':!validatedFields}" v-else> 
+           <span v-if ="status == 'loading'">céation en cours .....</span>
+           <span v-else>Céer mon compte</span></button>
   
   </div>
  <p class="card_subtitle" v-if="mode == 'login'"> Tu n'as pas encore de compte ? <span class="card_action" @click="switchToCreateAccount()">créé un compte</span></p>
@@ -30,6 +40,9 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex'
+
 export default{
     name:'login',
     data:function(){
@@ -56,33 +69,87 @@ return true ;
     return false;
 }
     }
-}
+    
+},
+...mapState(['status'])
 },
     methods:{
+
         switchToCreateAccount : function(){
         this.mode = 'create';
         },
         switchToLogin : function(){
         this.mode = 'login';
         },
-        CreateAccount : function(){
-            
-       this.$store.dispatch('CreateAccount',{
+        login(){
+
+ fetch ('http://localhost:3000/login',{
+    method:"POST",
+    headers:{
+        "content-Type":"application.json"
+            },
+            body:JSON.stringify({
+                email:this.email,
+           
+           password:this.password,
+            })
+});
+console.log('login');
+},
+        /*
+        login: function(){
+       const self = this;
+       this.$store.dispatch('login',{
+           
+           email:this.email,
+           password:this.password,
+
+       }).then(function(){
+           
+          self.$router.push('/post');
+        })
+},
+*/
+signup(){
+
+ fetch ('http://localhost:3000/signup',{
+    method:"POST",
+    headers:{
+        "content-Type":"application.json"
+            },
+            body:JSON.stringify({
+                email:this.email,
+           nom:this.nom,
+           prenom:this.prenom,
+           password:this.password,
+            })
+});
+console.log('signup');
+},
+
+/*
+
+        signup : function(){
+              const self = this;
+                
+       this.$store.dispatch('signup',{
            
            email:this.email,
            nom:this.nom,
            prenom:this.prenom,
            password:this.password,
-       }).then(function(reponce){
-           console.log(reponce);
-        },function(error){
-            console.log(error);
-        })
+          
+       })
+        .then(function(response){
+            console.log(response);
+            self.login();
+       })
        
     }
+    */
     }
-    
-}
+   
+  }
 </script>
 
 
