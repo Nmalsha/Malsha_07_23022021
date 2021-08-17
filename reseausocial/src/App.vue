@@ -1,20 +1,22 @@
 <template>
-  <nav>
+<div id = "app">
+ <form class="form-inline my-2 my-lg-0">
+ <router-link class="nav-link" to="/login"> login</router-link>
+    <router-link class="btn btn-outline-primary my-2 my-sm-0" to="/register"> signup</router-link>
+</form>
    
-     <router-link to="/"> Home</router-link>
-   <router-link to="/login"> login</router-link>
-    <router-link to="/signup"> signup</router-link>
-    <router-link to="/post"> post</router-link>
- 
-<router-view />
- </nav>
-
+   
+    <router-view />
+</div>
 
 
 </template>
 
-
+ 
 <script>
+
+
+
 export default {
   name: 'App',
   components: {
