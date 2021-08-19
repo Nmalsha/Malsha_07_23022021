@@ -1,5 +1,5 @@
 
-/*
+
 'use strict';
 
 const fs = require('fs');
@@ -38,5 +38,6 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+const user = (db.User = require("./user")(sequelize, Sequelize));
+
 module.exports = db;
-*/

@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 //import Home from "../views/Home.vue";
 import login from "../views/login.vue";
-import register from "../views/signup.vue";
+import signup from "../views/signup.vue";
 import post from "../views/post.vue";
 //import { VueElement } from 'vue';
 
@@ -19,9 +19,9 @@ const routes = [
 },
 
 {
-    name:'register',
-    path:'/register',
-    component: register,
+    name:'signup',
+    path:'/signup',
+    component: signup,
  },
 {
     name:'post',

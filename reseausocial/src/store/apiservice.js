@@ -1,4 +1,4 @@
-
+/*
 import axios from 'axios'; 
 
 export default () =>{
@@ -6,3 +6,4 @@ export default () =>{
         baseURL :`http://localhost:3000/`
     })
 }
+*/
