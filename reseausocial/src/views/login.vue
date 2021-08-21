@@ -1,4 +1,5 @@
 <template>
+<Nav></Nav>
     <div>
          <img class= "logo" src="../assets/icon-above-font.svg" alt="Girl in a jacket" width="400" height="300"> 
     </div>
@@ -6,7 +7,7 @@
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-        <form @submit.prevent="login">
+        <form @submit.prevent="login" class="form">
       <h3>Login Form</h3>
       
       
@@ -19,7 +20,7 @@
           <input v-model="password" type="password" class="form-control" required placeholder="password"/>
       <div v-if= "password.length >1 && password.length <6 " class="text-danger"> password legnth should be grater than 6</div>
       </div>
-      <button  class="btn btn-primary btn-block">Login</button>
+      <button  class="btn btn-primary btn-block w-25">Login</button>
   </form>
     </div>
     <div class="col-md-3"></div>
@@ -33,10 +34,14 @@
 <script>
 import axios from 'axios'
 //import apiservice from '../store/apiservice'
+import Nav from "./nav.vue"
 
 export default{
   
     name: 'login',
+    components: {
+Nav,
+    },
     data(){
       return{
 
@@ -50,12 +55,18 @@ password:''
   login(){
 axios.post ('http://localhost:3000/login',{
    email:this.email,
-           nom:this.nom,
-           prenom:this.prenom,
+          
            password:this.password,
 })
  .then((response) => {
   console.log(response.data);
+  console.log(response.data.token);
+  localStorage.setItem("userToken", response.data.token);
+            axios.defaults.headers.common["Authorization"] =
+              "Bearer " + response.data.token;
+
+         this.$router.push('/post');    
+
 }, (error) => {
   console.log(error);
 });
@@ -69,5 +80,8 @@ axios.post ('http://localhost:3000/login',{
 
 
 <style>
-
+.form{
+border: 2px solid #ffb3b3;
+padding:10px;
+}
 </style>

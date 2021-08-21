@@ -1,28 +1,41 @@
 <template>
-<div id = "app">
- <form class="form-inline my-2 my-lg-0">
+<body>
+ 
+
+ <!-- <nav class="form-inline my-2 my-lg-0">
+ 
  <router-link class="nav-link" to="/login"> login</router-link>
     <router-link class="btn btn-outline-primary my-2 my-sm-0" to="/signup"> signup</router-link>
-</form>
+</nav>
    
    
+   <Nav></Nav>
+
+ 
+ <Home></Home>
+  -->
+
     <router-view />
-</div>
+</body>
 
 
 </template>
 
  
 <script>
-
-
-
+/*
+//import Nav from "./views/nav.vue"
+//import Home from "./views/home.vue"
+//import Header from "./views/Header.vue"
 export default {
   name: 'App',
   components: {
-  
+  Nav,
+  Home,
+  //Header,
   }
 }
+*/
 </script>
 
 <style>

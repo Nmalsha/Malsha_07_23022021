@@ -9,6 +9,7 @@ const mysql = require ('mysql2');
 
 //const jwt = require('jsonwebtoken');
 const userRoute = require ('./routes/user');
+const profileRoute = require('./routes/profile');
 const path = require("path");
 //const models = require('./models');
 //const User = models.User;

@@ -1,7 +1,7 @@
 //import Vue from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router';
 
-//import Home from "../views/Home.vue";
+import Home from "../views/home.vue";
 import login from "../views/login.vue";
 import signup from "../views/signup.vue";
 import post from "../views/post.vue";
@@ -27,7 +27,13 @@ const routes = [
     name:'post',
     path:'/post',
     component: post,
-}
+},
+{
+    name:'home',
+    path:'/',
+    component: Home,
+},
+
 
 ];
 

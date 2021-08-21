@@ -1,4 +1,5 @@
 <template>
+<Nav></Nav>
     <div>
          <img class= "logo" src="../assets/icon-above-font.svg" alt="Girl in a jacket" width="400" height="300"> 
     </div>
@@ -7,7 +8,7 @@
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-      <form @submit.prevent="signup">
+      <form @submit.prevent="signup" class="form">
       <h3>Signup Form</h3>
       <div class="form-group">
           <label>Nom</label>
@@ -26,7 +27,7 @@
           <input v-model ="password"  type="password" class="form-control" required placeholder="password"/>
       <div v-if= "password.length >1 && password.length <6 " class="text-danger"> password legnth should be grater than 6</div>
       </div>
-      <button  class="btn btn-primary btn-block">Sign Up</button>
+      <button  class="btn btn-primary btn-block w-25">Sign Up</button>
   </form></div>
     <div class="col-md-3"></div>
   </div>
@@ -40,10 +41,13 @@
 <script>
 import axios from 'axios'
 //import apiservice from '../store/apiservice'
-
+import Nav from './nav.vue'
 export default{
   
     name: 'signup',
+     components: {
+Nav,
+    },
     data(){
       return{
 nom:'',
@@ -64,11 +68,15 @@ axios.post ('http://localhost:3000/signup',{
 })
  .then((response) => {
   console.log(response.data);
+  this.$router.push('/login');
 }, (error) => {
   console.log(error);
 });
 },
-}
+},
+
+
+
 
     }
 
@@ -77,6 +85,10 @@ axios.post ('http://localhost:3000/signup',{
 
 
 <style>
+.form{
+border: 2px solid #ffb3b3;
+padding:10px;
+}
 /*
 form{
   width: 100%;
