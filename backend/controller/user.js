@@ -24,10 +24,12 @@ const userRes = await User.findOne({
   })
 
 if(userRes){
+
+    //TODO has to redirect to the signup page
     console.log("User found !!!");
 }else{
-    console.log("User NOT found !!!");
-}
+    
+
 
 //password hash
 const salt = await bcrypt.genSalt(10);
@@ -54,7 +56,7 @@ user.save()
 
  })
  .catch(error => res.status(500).send({  message: error.message + 'create user unsuccessfyl' }));
-
+}
 }; 
 exports.login = async (req, res) => {
     var email = JSON.stringify (req.body.email);
@@ -78,21 +80,27 @@ if(!findUser){
 }
  if(await bcrypt.compare(password,findUser.password)){
 //console.log(findUser.id)
+const user = {
+    userId:findUser.id,
+    nom:findUser.nom,
+    prenom:findUser.prenom,
+   
+};
 const token = jwt.sign({
     userId:findUser.id,
-    email:findUser.email,
+   isAdmin:findUser.isAdmin
 },
 'RANDOM_TOKEN_SECRET',
 {expiresIn:'24h'}
 )
 //this.$router.replace('/post');
-console.log('user login success')
-console.log(findUser.id)
-console.log(token)
+//console.log('user login success')
+//console.log(user)
+//console.log(token)
 return res
     .status(200)
     //.headers('Location: http://www.example.com/nouvelle-page.htm')
-    .json({ status:'ok',token:token,userId:findUser.id });
+    .json({ status:'ok',token:token,userId:findUser.id});
 
  }
 
@@ -100,14 +108,4 @@ return res
       
     }
 
-    //----------------getUserProfile---------------------
-   
-    exports.getUserProfile = async(req, res) => {
-      
-         var headerAuth = req.headers['authorization']
-          console.log(headerAuth)
-      
-      
-    }
-      
-      
+    

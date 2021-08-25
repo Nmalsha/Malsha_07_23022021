@@ -28,6 +28,7 @@
       <div v-if= "password.length >1 && password.length <6 " class="text-danger"> password legnth should be grater than 6</div>
       </div>
       <button  class="btn btn-primary btn-block w-25">Sign Up</button>
+      
   </form></div>
     <div class="col-md-3"></div>
   </div>

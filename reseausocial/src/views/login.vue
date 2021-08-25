@@ -35,6 +35,7 @@
 import axios from 'axios'
 //import apiservice from '../store/apiservice'
 import Nav from "./nav.vue"
+//import {mapMutations} from 'vuex'
 
 export default{
   
@@ -52,6 +53,8 @@ password:''
 
   },
     methods:{
+
+   
   login(){
 axios.post ('http://localhost:3000/login',{
    email:this.email,
@@ -59,12 +62,13 @@ axios.post ('http://localhost:3000/login',{
            password:this.password,
 })
  .then((response) => {
-  console.log(response.data);
-  console.log(response.data.token);
-  localStorage.setItem("userToken", response.data.token);
-            axios.defaults.headers.common["Authorization"] =
-              "Bearer " + response.data.token;
-
+  //console.log(response.data);
+  //console.log(  response.data.token);
+  localStorage.setItem("userToken", (response.data.token));
+  axios.defaults.headers.common["Authorization"] =
+  "Bearer " + response.data.token;
+// this.setUser (user);
+// this.setToken (token);
          this.$router.push('/post');    
 
 }, (error) => {

@@ -7,12 +7,15 @@ const bodyParser = require('body-parser');
 const morgan = require ('morgan')
 const mysql = require ('mysql2');
 
-//const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const userRoute = require ('./routes/user');
-const profileRoute = require('./routes/profile');
+//const profileRoute = require('./routes/profile');
 const path = require("path");
-//const models = require('./models');
-//const User = models.User;
+//const { JsonWebTokenError } = require('jsonwebtoken');
+//const { User } = require('./models');
+const models = require('./models');
+const decode = require('jsonwebtoken/decode');
+const User = models.User;
 //const bcrypt = require('bcryptjs');
 
 
@@ -37,17 +40,77 @@ app.use((req, res, next) => {
 
 
  app.use ('/',userRoute);
-// app.use ('/login',userRoute);
+ //app.use ('/user',profileRoute);
 
 
- // return res.json({
-   
-  //})
+app.get('/user', async (req,res,next)=>{
+const token = req.headers.token;
+//console.log(token)
+jwt.verify(token,'RANDOM_TOKEN_SECRET',(err,decoded)=>{
+    console.log(decoded.userId)
+    //if token is invalide
+    if(err) return res.status(401).json({
+  title : 'unauthorized'
+  })
+  //console.log(decoded.userId)
+  const findUser =  User.findOne({
+      where: {
+           id: decoded.userId
+         }
+     
+})
+
+.then(function(findUser){
+    console.log(findUser);
+    return res.status(201).json({
+        findUser
+    })
+    
+})
+
+// return res.status(200).json({
+//   finduser
+//   })
+// 
+// console.log(findUser.email)
+// return res.status(200).json({
+//     finduser
+// })
+//console.log(findUser)
+
 /*
- app.get('/status',(req,res)=>{
-     res.send({ message:"dxzsdxzd"
-     })
- })
+if(!user){
+    return res
+    .status(400)
+    .json({ error: "can not find user ! " });
+
+}else{
+user:{
+    userId:findUser.id;
+    nom:findUser.nom;
+    prenom:findUser.prenom;
+    email:findUser.email;
+    }
+}
+*/
+
+
+/*
+  User.findOne({where: { id: decoded.userId }},(err,user)=>{
+    if(err) console.log(err);
+    console.log(user);
+
+  })
+  */
+})
+      
+          
+})
+
+
+
+/*
+
 
   app.post('/signup',async(req, res) => {
     var email = JSON.stringify (req.body.email);

@@ -3,17 +3,17 @@
     <div class="container">
       <div class="logo-wrappe col-md-3">
       <span class="p2 title title__style h6 align-self-center">
-        <img src="../assets/icon-left-font-monochrome-black.png" width="400" height="300"/>
+        <a href="/"> <img src="../assets/icon-left-font-monochrome-black.png" width="400" height="300"/></a>
          </span></div><div class="collapse navbar-collapse  col-md-9">
         <ul class="navbar-nav ml-auto mb-2 mb-lg-0 col-md-9">
-        <li class="nav-item col-md-12"><a href ="#">Profile</a></li>
-        <li class="nav-item"><a href ="#">Deconnection</a></li>
+        <li class="nav-item col-md-12"><a href ="#" @click= "getUserProfile" >Profile</a></li>
+        <li class="nav-item" @click=  'logout' ><a href ="#">Deconnection</a></li>
 		</ul>
       </div>
 	</div>
 </nav>
 <div class="post-wrapp col-md-6">
-	<h6>HI {{}}WHAT IS IN YOUR MOND TODAY ? LET OTHERS KNOW</h6>
+	<h6>HI {{prenom}}  {{nom}} {{email}} WHAT IS IN YOUR MOND TODAY ? LET OTHERS KNOW</h6>
 </div>
 
 	<div class="addpost_wrappe">
@@ -41,22 +41,39 @@ import axios from 'axios'
 
 export default {
     name:'Post',
-methods:{
-		async getCurrentUser(data) {
-			console.log(data)
-		const response = await axios.get('user',{
-			headers : {
-				Authorization : 'Bearer'+ localStorage.getItem('userToken')
-			}
-		})
-  console.log(response);
-           
-
+    data(){
+   return {
+     email:'',
+     nom:'',
+     prenom:'',
+   }
+    },
+  
+  created() {
+     let token = localStorage.getItem('userToken');
+if(token === null){
+  this.$router.push('/login');
+}
+console.log(token) 
+  
+   },
+    mounted() {
+axios.get ('http://localhost:3000/user',{headers:{token:localStorage.getItem('userToken')}})
+.then (res =>{
+ this.nom = res.data.findUser.nom;
+ this.prenom = res.data.findUser.prenom;
+ this.email = res.data.findUser.email;
+})
+   },
+   methods :{
+logout (){
+  localStorage.clear();
+  this.$router.push('/');
+}
+   }
 
 }
-}
 
-}
 </script>
 
 <style>
