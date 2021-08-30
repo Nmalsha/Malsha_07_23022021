@@ -1,91 +1,105 @@
 <template>
-<Nav></Nav>
+  <div>
+    <Nav></Nav>
     <div>
-         <img class= "logo" src="../assets/icon-above-font.svg" alt="Girl in a jacket" width="400" height="300"> 
+      <img
+        class="logo"
+        src="../assets/icon-above-font.svg"
+        alt="Girl in a jacket"
+        width="400"
+        height="300"
+      />
     </div>
-  <div class="container">
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-        <form @submit.prevent="login" class="form">
-      <h3>Login Form</h3>
-      
-      
-      <div class="form-group">
-          <label>Email</label>
-          <input v-model="email" type="email" class="form-control" required placeholder="email"/>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <form @submit.prevent="login" class="form">
+            <h3>Login Form</h3>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input
+                v-model="email"
+                type="email"
+                class="form-control"
+                required
+                placeholder="email"
+              />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input
+                v-model="password"
+                type="password"
+                class="form-control"
+                required
+                placeholder="password"
+              />
+              <div
+                v-if="password.length > 1 && password.length < 6"
+                class="text-danger"
+              >
+                password legnth should be grater than 6
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block w-25">Login</button>
+          </form>
+        </div>
+        <div class="col-md-3"></div>
       </div>
-      <div class="form-group">
-          <label>Password</label>
-          <input v-model="password" type="password" class="form-control" required placeholder="password"/>
-      <div v-if= "password.length >1 && password.length <6 " class="text-danger"> password legnth should be grater than 6</div>
-      </div>
-      <button  class="btn btn-primary btn-block w-25">Login</button>
-  </form>
     </div>
-    <div class="col-md-3"></div>
   </div>
-
-</div>
-
-  
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 //import apiservice from '../store/apiservice'
-import Nav from "./nav.vue"
+import Nav from "./nav.vue";
 //import {mapMutations} from 'vuex'
 
-export default{
-  
-    name: 'login',
-    components: {
-Nav,
-    },
-    data(){
-      return{
-
-email:'',
-password:''
-    }
-    
-
+export default {
+  name: "login",
+  components: {
+    Nav,
   },
-    methods:{
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    login() {
+      axios
+        .post("http://localhost:3000/login", {
+          email: this.email,
 
-   
-  login(){
-axios.post ('http://localhost:3000/login',{
-   email:this.email,
-          
-           password:this.password,
-})
- .then((response) => {
-  //console.log(response.data);
-  //console.log(  response.data.token);
-  localStorage.setItem("userToken", (response.data.token));
-  axios.defaults.headers.common["Authorization"] =
-  "Bearer " + response.data.token;
-// this.setUser (user);
-// this.setToken (token);
-         this.$router.push('/post');    
-
-}, (error) => {
-  console.log(error);
-});
-},
-},
-
-    }
-
- 
+          password: this.password,
+        })
+        .then(
+          (response) => {
+            //console.log(response.data);
+            //console.log(  response.data.token);
+            localStorage.setItem("userToken", response.data.token);
+            axios.defaults.headers.common["Authorization"] =
+              "Bearer " + response.data.token;
+            // this.setUser (user);
+            // this.setToken (token);
+            this.$router.push("/post");
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    },
+  },
+};
 </script>
 
-
 <style>
-.form{
-border: 2px solid #ffb3b3;
-padding:10px;
+.form {
+  border: 2px solid #ffb3b3;
+  padding: 10px;
 }
 </style>

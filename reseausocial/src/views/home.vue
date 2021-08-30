@@ -1,27 +1,29 @@
 <template>
- <Nav></Nav>
-<div class= "home">
-  
-<h3>Bienvenue dans votre réseau groupomania. Veuillez vous connecter si vous avez déjà un compte </h3>
+  <div>
+    <Nav></Nav>
+    <div class="home">
+      <h3>
+        Bienvenue dans votre réseau groupomania. Veuillez vous connecter si vous
+        avez déjà un compte
+      </h3>
     </div>
+  </div>
 </template>
 
 <script>
- import Nav from "./nav.vue"
+import Nav from "./nav.vue";
 
 export default {
-
-  name: 'Home',
+  name: "Home",
   components: {
-  Nav,
+    Nav,
 
-  //Header,
-  }
-}
-
+    //Header,
+  },
+};
 </script>
 <style scoped>
-h3{
-margin-top: 50px;
+h3 {
+  margin-top: 50px;
 }
 </style>

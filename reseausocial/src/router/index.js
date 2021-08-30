@@ -5,6 +5,7 @@ import Home from "../views/home.vue";
 import login from "../views/login.vue";
 import signup from "../views/signup.vue";
 import post from "../views/post.vue";
+import myprofile from "../views/myprofile.vue";
 //import { VueElement } from 'vue';
 
 //Vue.routes(VueRouter)
@@ -33,7 +34,11 @@ const routes = [
     path:'/',
     component: Home,
 },
-
+{
+    name:'myprofile',
+    path:'/myprofile',
+    component: myprofile,
+},
 
 ];
 
