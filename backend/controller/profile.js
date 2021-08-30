@@ -53,7 +53,9 @@ exports.updateUserProfile = async (req, res, next) => {
         },
         { where: { id: userId } }
       )
-        .then(() => res.status(201).json({ message: "user updated" }))
+        .then(() =>
+          res.status(201).json({ message: "user updated", editProfileObject })
+        )
         .catch((error) => res.status(400).json({ error: error }));
     } else {
       throw new Error("403: unauthorized request");

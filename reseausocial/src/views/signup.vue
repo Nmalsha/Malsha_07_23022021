@@ -114,6 +114,9 @@ export default {
 .form {
   border: 2px solid #ffb3b3;
   padding: 10px;
+  background-color: #ffb3b3;
+  display: grid;
+  justify-content: center;
 }
 /*
 form{

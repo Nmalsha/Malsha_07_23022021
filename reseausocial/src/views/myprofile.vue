@@ -29,8 +29,8 @@
       </div>
     </nav>
     <!----adding profile infos-------->
-    <div>
-      <div class="card" style="width: 25rem;">
+    <div class="profile_wrapp">
+      <div class="card">
         <form class="image_form" enctype="multipart/form-data">
           <div class="roundContainer">
             <img
@@ -130,6 +130,7 @@ export default {
       const imageUrl = this.bio.name;
       // fd.append("image", file);
       console.log(imageUrl);
+      console.log(this.bio);
 
       axios
         .put("http://localhost:3000/user", {
@@ -151,6 +152,16 @@ export default {
 };
 </script>
 <style scoped>
+.profile_wrapp {
+  display: grid;
+  justify-content: center;
+}
+.card {
+  margin-top: 100px;
+  background-color: #ffb3b3;
+  padding: 30px;
+  width: 30rem;
+}
 .form {
   margin-top: 100px;
 }
