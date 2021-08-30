@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const models = require("../models");
 //const { col } = require("sequelize/types");
 const User = models.User;
+// const multer = require("multer");
+// const upload = multer("../");
 
 exports.getUserProfile = async (req, res, next) => {
   const token = req.headers.token;
@@ -37,7 +39,7 @@ exports.updateUserProfile = async (req, res, next) => {
     : {
         ...req.body,
       };
-  console.log(editProfileObject.id);
+  console.log(editProfileObject);
 
   const token = req.body.headers.token;
 

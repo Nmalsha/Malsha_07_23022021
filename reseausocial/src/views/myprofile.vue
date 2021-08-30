@@ -29,44 +29,55 @@
       </div>
     </nav>
     <!----adding profile infos-------->
-    <div class="col-md-3"></div>
-    <div class="card" style="width: 25rem;">
-      <label for="file">select a photo</label>
-      <input type="file" @change="UpdatePhoto" ref="file" name="bio" />
-      <label for="nom">Nom</label>
-      <input
-        v-model="nom"
-        type="text"
-        class="form-control"
-        required
-        placeholder=""
-      />
-      <label for="prenom">Prenom</label>
-      <input
-        v-model="prenom"
-        type="text"
-        class="form-control"
-        required
-        placeholder=""
-      />
-      <label for="email">email</label>
-      <input
-        v-model="email"
-        type="email"
-        class="form-control"
-        required
-        placeholder=""
-      />
-      <div class="card-body">
-        <button
-          class="btn btn-primary btn-block "
-          @click.prevent="updateUserProfile"
-        >
-          Edit Profile
-        </button>
+    <div>
+      <div class="card" style="width: 25rem;">
+        <form class="image_form" enctype="multipart/form-data">
+          <div class="roundContainer">
+            <img
+              src="../assets/icon.png"
+              alt="profile photo"
+              width="50px"
+              height="50px"
+            />
+          </div>
+          <label for="file">select a photo</label>
+          <input type="file" @change="UpdatePhoto" />
+        </form>
+        <label for="nom">Nom</label>
+        <input
+          v-model="nom"
+          type="text"
+          class="form-control"
+          required
+          placeholder=""
+        />
+        <label for="prenom">Prenom</label>
+        <input
+          v-model="prenom"
+          type="text"
+          class="form-control"
+          required
+          placeholder=""
+        />
+        <label for="email">email</label>
+        <input
+          v-model="email"
+          type="email"
+          class="form-control"
+          required
+          placeholder=""
+        />
+        <div class="card-body">
+          <button
+            @click="updateUserProfile"
+            class="btn btn-primary btn-block "
+            type="submit"
+          >
+            Update Profile
+          </button>
+        </div>
       </div>
     </div>
-    <div class="col-md-3"></div>
   </div>
 </template>
 <script>
@@ -74,17 +85,18 @@ import axios from "axios";
 
 export default {
   name: "myprofile",
+  image: "toto",
   data() {
     return {
       id: "",
       email: "",
       nom: "",
       prenom: "",
-      bio: "",
+      bio: this.bio,
       password: "",
+      //image: this.image,
     };
   },
-
   created() {
     let token = localStorage.getItem("userToken");
     if (token === null) {
@@ -109,23 +121,16 @@ export default {
       localStorage.clear();
       this.$router.push("/");
     },
-    /*
-    updateUserProfile() {
-      axios
-        .put("http://localhost:3000/user", {
-          headers: { token: localStorage.getItem("userToken") },
-        })
-        .then((res) => {
-          console.log(res);
-          //    console.log(this.nom);
-          //   this.prenom = res.data.findUser.prenom;
-          //   this.email = res.data.findUser.email;
-          //    this.bio = res.data.findUser.bio;
-        })
-        .catch(() => {});
+    UpdatePhoto(e) {
+      const file = e.target.files[0];
+
+      this.bio = file;
     },
-    */
     updateUserProfile() {
+      const imageUrl = this.bio.name;
+      // fd.append("image", file);
+      console.log(imageUrl);
+
       axios
         .put("http://localhost:3000/user", {
           headers: { token: localStorage.getItem("userToken") },
@@ -133,7 +138,7 @@ export default {
           id: this.id,
           nom: this.nom,
           prenom: this.prenom,
-          bio: this.bio,
+          bio: imageUrl,
           password: this.password,
         })
         .then((res) => {
@@ -142,16 +147,17 @@ export default {
         })
         .catch(() => {});
     },
-    UpdatePhoto(e) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = function() {
-        //console.log("RESULT", reader.result);
-        this.bio = reader.result;
-        console.log(this.bio);
-      };
-      reader.readAsDataURL(file);
-    },
   },
 };
 </script>
+<style scoped>
+.form {
+  margin-top: 100px;
+}
+.roundContainer {
+  border-radius: 80%;
+  height: 70px;
+  border: 1px solid black;
+  width: 70px;
+}
+</style>
