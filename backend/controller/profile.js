@@ -31,21 +31,34 @@ exports.getUserProfile = async (req, res, next) => {
 };
 
 exports.updateUserProfile = async (req, res, next) => {
+  /**
+   * On test les entrées
+   */
+  console.table(req.file);
+  console.table(req.body.user);
+  /** Fin test */
   const editProfileObject = req.file
     ? {
-        ...JSON.parse(req.body.User),
+        ...JSON.parse(req.body.user),
         bio: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
       }
     : {
-        ...req.body,
+        ...req.body.user,
       };
-  console.log(editProfileObject);
 
-  const token = req.body.headers.token;
+  const token = req.headers.token;
+  /** Ici le token est en dur */
+
+  console.log("Token en dur" + token);
 
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
-    console.log(userId);
+    /** !TODO
+     * On arrive pas a get le token.
+     * Vérifier pourquoiça ne fonctionne pas.
+     */
+    console.log("userId: " + userId);
+
     if (userId === editProfileObject.id) {
       User.update(
         {
@@ -61,6 +74,4 @@ exports.updateUserProfile = async (req, res, next) => {
       throw new Error("403: unauthorized request");
     }
   });
-
-  //console.log(userId);
 };

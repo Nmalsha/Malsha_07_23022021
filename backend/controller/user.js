@@ -22,7 +22,7 @@ exports.signup = async (req, res) => {
 
   if (userRes) {
     //TODO has to redirect to the signup page
-    console.log("User found !!!");
+    console.log("This email is already exist !!! please user different email");
   } else {
     //password hash
     const salt = await bcrypt.genSalt(10);
@@ -48,11 +48,9 @@ exports.signup = async (req, res) => {
             //console.log(user.id)
           })
           .catch((error) =>
-            res
-              .status(500)
-              .send({
-                message: error.message + "Impossible de créer le compte!",
-              })
+            res.status(500).send({
+              message: error.message + "Impossible de créer le compte!",
+            })
           );
       })
       .catch((error) =>
@@ -80,7 +78,7 @@ exports.login = async (req, res) => {
   if (!findUser) {
     return res
       .status(400)
-      .json({ error: "Email ou mot de passe incorrect ! " });
+      .json({ error: "Email or mot de passe incorrect ! " });
   }
   if (await bcrypt.compare(password, findUser.password)) {
     //console.log(findUser.id)

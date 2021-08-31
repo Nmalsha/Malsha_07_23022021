@@ -21,6 +21,7 @@
               <label>Nom</label>
               <input
                 v-model="nom"
+                required
                 type="text"
                 class="form-control"
                 placeholder="Nom"
@@ -40,6 +41,7 @@
               <label>Email</label>
               <input
                 v-model="email"
+                required
                 type="email"
                 class="form-control"
                 placeholder="email"
@@ -50,6 +52,7 @@
               <input
                 v-model="password"
                 type="password"
+                autocomplete="new-password"
                 class="form-control"
                 required
                 placeholder="password"
@@ -60,6 +63,8 @@
               >
                 password legnth should be grater than 6
               </div>
+              <div v-html="error" />
+              <br />
             </div>
             <button class="btn btn-primary btn-block w-25">Sign Up</button>
           </form>
@@ -85,6 +90,7 @@ export default {
       prenom: "",
       email: "",
       password: "",
+      error: "",
     };
   },
   methods: {
@@ -102,7 +108,7 @@ export default {
             this.$router.push("/login");
           },
           (error) => {
-            console.log(error);
+            this.error = error.response.data.error;
           }
         );
     },

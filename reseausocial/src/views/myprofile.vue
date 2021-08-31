@@ -33,14 +33,9 @@
       <div class="card">
         <form class="image_form" enctype="multipart/form-data">
           <div class="roundContainer">
-            <img
-              src="../assets/icon.png"
-              alt="profile photo"
-              width="50px"
-              height="50px"
-            />
+            <img src="image" alt="profile photo" width="50px" height="50px" />
           </div>
-          <label for="file">select a photo</label>
+
           <input type="file" @change="UpdatePhoto" />
         </form>
         <label for="nom">Nom</label>
@@ -85,16 +80,16 @@ import axios from "axios";
 
 export default {
   name: "myprofile",
-  image: "toto",
+
   data() {
     return {
       id: "",
       email: "",
       nom: "",
       prenom: "",
-      bio: this.bio,
+      bio: "",
       password: "",
-      //image: this.image,
+      // imageUrl: [],
     };
   },
   created() {
@@ -123,26 +118,43 @@ export default {
     },
     UpdatePhoto(e) {
       const file = e.target.files[0];
-
       this.bio = file;
+
+      //display image
+
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        this.image = fileReader.result;
+      };
+      //fileReader.readAsDataURL(file[0]);
+      //this.image = file[0];
     },
     updateUserProfile() {
-      const imageUrl = this.bio.name;
+      //const imageUrl = this.bio;
       // fd.append("image", file);
-      console.log(imageUrl);
+      //console.log(imageUrl);
       console.log(this.bio);
 
+      const dataUser = {
+        headers: { token: localStorage.getItem("userToken") },
+        email: this.email,
+        id: this.id,
+        nom: this.nom,
+        prenom: this.prenom,
+        bio: this.bio,
+        password: this.password,
+      };
+
+      const formData = new FormData();
+      formData.append("image", this.bio);
+      formData.append("user", JSON.stringify(dataUser));
       axios
-        .put("http://localhost:3000/user", {
+        .put("http://localhost:3000/user", formData, {
           headers: { token: localStorage.getItem("userToken") },
-          email: this.email,
-          id: this.id,
-          nom: this.nom,
-          prenom: this.prenom,
-          bio: imageUrl,
-          password: this.password,
         })
         .then((res) => {
+          this.$router.push("/post");
           console.log(res.email);
           console.log(res.data);
         })

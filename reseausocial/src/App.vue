@@ -1,27 +1,9 @@
 <template>
-<body>
- 
-
- <!-- <nav class="form-inline my-2 my-lg-0">
- 
- <router-link class="nav-link" to="/login"> login</router-link>
-    <router-link class="btn btn-outline-primary my-2 my-sm-0" to="/signup"> signup</router-link>
-</nav>
-   
-   
-   <Nav></Nav>
-
- 
- <Home></Home>
-  -->
-
+  <body>
     <router-view />
-</body>
-
-
+  </body>
 </template>
 
- 
 <script>
 /*
 //import Nav from "./views/nav.vue"
@@ -47,7 +29,7 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-#logo{
+#logo {
   width: 300px;
 }
 </style>
