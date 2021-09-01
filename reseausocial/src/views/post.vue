@@ -34,11 +34,17 @@
     </div>
     <div class="post_wrapp">
       <div class="addpost_wrappe col-md-4">
-        <div class="add_img com-md-1">Insérer une image</div>
+        <form class="image_form" enctype="multipart/form-data">
+          <div class="roundContainer">
+            <img src="image" alt="" width="50px" height="50px" />
+          </div>
+
+          <input type="file" @change="UploadPhoto" />
+        </form>
         <div class="write_post com-md-9">
           <input
             class="form-control mr-sm-2 bg-light"
-            v-model="postContent"
+            v-model="content"
             maxlength="max"
             type="text"
             placeholder="Publier ici..."
@@ -48,9 +54,13 @@
         </div>
         <div class="write_post com-md-2">
           <div>
-            <v-btn class="btn_color" elevation="2"> Envoyer</v-btn>
+            <button @click="createPost" class="btn_color">
+              Envoyer
+            </button>
           </div>
-          <div class="btn_annule btn_color"><v-btn rounded>Annuler</v-btn></div>
+          <div class="btn_annule btn_color">
+            <v-btn @click="createPost">Annuler</v-btn>
+          </div>
         </div>
       </div>
     </div>
@@ -67,6 +77,10 @@ export default {
       email: "",
       nom: "",
       prenom: "",
+      profileimage: "",
+      userId: "",
+      content: "",
+      attachement: "",
     };
   },
 
@@ -75,7 +89,7 @@ export default {
     if (token === null) {
       this.$router.push("/login");
     }
-    console.log(token);
+    //console.log(token);
   },
   mounted() {
     axios
@@ -86,6 +100,7 @@ export default {
         this.nom = res.data.findUser.nom;
         this.prenom = res.data.findUser.prenom;
         this.email = res.data.findUser.email;
+        this.userId = res.data.findUser.id;
       });
   },
   methods: {
@@ -93,8 +108,59 @@ export default {
       localStorage.clear();
       this.$router.push("/");
     },
+    UploadPhoto(e) {
+      const file = e.target.files[0];
+      this.attachement = file;
+      //console.log(file);
+
+      //display image
+
+      // const fileReader = new FileReader();
+      // fileReader.readAsDataURL(file);
+      // fileReader.onload = () => {
+      //   this.image = fileReader.result;
+      // };
+      //fileReader.readAsDataURL(file[0]);
+      //this.image = file[0];
+    },
+
+    createPost() {
+      console.log(this.attachement);
+      const dataUser = {
+        headers: { token: localStorage.getItem("userToken") },
+        email: this.email,
+        nom: this.nom,
+        prenom: this.prenom,
+        profileimage: this.profileimage,
+      };
+      //console.log(dataUser);
+      const dataPost = {
+        headers: { token: localStorage.getItem("userToken") },
+
+        content: this.content,
+        userId: this.userId,
+      };
+
+      console.log(dataPost);
+
+      const formData = new FormData();
+      formData.append("image", this.attachement);
+      // formData.append("user", JSON.stringify(dataUser));
+      formData.append("post", JSON.stringify(dataPost));
+      console.log(formData);
+      axios
+        .post("http://localhost:3000/post", formData, {
+          headers: { token: localStorage.getItem("userToken") },
+        })
+        .then((res) => {
+          console.log(res);
+          //console.log(dataUser);
+          console.log(dataPost);
+          dataUser, dataPost;
+        })
+        .catch(() => {});
+    },
   },
-  // getUserProfile() {},
 };
 </script>
 

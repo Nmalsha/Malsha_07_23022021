@@ -8,6 +8,7 @@ const mysql = require("mysql2");
 const jwt = require("jsonwebtoken");
 const userRoute = require("./routes/user");
 const profileRoute = require("./routes/profile");
+const postRoute = require("./routes/post");
 const path = require("path");
 //const { JsonWebTokenError } = require('jsonwebtoken');
 //const { User } = require('./models');
@@ -43,6 +44,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/", userRoute);
 app.use("/", profileRoute);
+app.use("/", postRoute);
 
 /*
 app.get('/user', async (req,res,next)=>{

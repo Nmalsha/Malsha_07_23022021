@@ -34,13 +34,15 @@ exports.updateUserProfile = async (req, res, next) => {
   /**
    * On test les entrées
    */
-  console.table(req.file);
-  console.table(req.body.user);
+  //console.table(req.file);
+  //console.table(req.body.user);
   /** Fin test */
   const editProfileObject = req.file
     ? {
         ...JSON.parse(req.body.user),
-        bio: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+        profileimage: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
       }
     : {
         ...req.body.user,
@@ -49,7 +51,7 @@ exports.updateUserProfile = async (req, res, next) => {
   const token = req.headers.token;
   /** Ici le token est en dur */
 
-  console.log("Token en dur" + token);
+  //console.log("Token en dur" + token);
 
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
@@ -57,7 +59,7 @@ exports.updateUserProfile = async (req, res, next) => {
      * On arrive pas a get le token.
      * Vérifier pourquoiça ne fonctionne pas.
      */
-    console.log("userId: " + userId);
+    //console.log("userId: " + userId);
 
     if (userId === editProfileObject.id) {
       User.update(

@@ -87,7 +87,7 @@ export default {
       email: "",
       nom: "",
       prenom: "",
-      bio: "",
+      profileimage: "",
       password: "",
       // imageUrl: [],
     };
@@ -118,7 +118,7 @@ export default {
     },
     UpdatePhoto(e) {
       const file = e.target.files[0];
-      this.bio = file;
+      this.profileimage = file;
 
       //display image
 
@@ -131,10 +131,10 @@ export default {
       //this.image = file[0];
     },
     updateUserProfile() {
-      //const imageUrl = this.bio;
+      //const imageUrl = this.profileimage;
       // fd.append("image", file);
       //console.log(imageUrl);
-      console.log(this.bio);
+      console.log(this.profileimage);
 
       const dataUser = {
         headers: { token: localStorage.getItem("userToken") },
@@ -142,12 +142,12 @@ export default {
         id: this.id,
         nom: this.nom,
         prenom: this.prenom,
-        bio: this.bio,
+        profileimage: this.profileimage,
         password: this.password,
       };
 
       const formData = new FormData();
-      formData.append("image", this.bio);
+      formData.append("image", this.profileimage);
       formData.append("user", JSON.stringify(dataUser));
       axios
         .put("http://localhost:3000/user", formData, {
