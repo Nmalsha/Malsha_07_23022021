@@ -127,7 +127,7 @@ export default {
     createPost() {
       console.log(this.attachement);
       const dataUser = {
-        headers: { token: localStorage.getItem("userToken") },
+        // headers: { token: localStorage.getItem("userToken") },
         email: this.email,
         nom: this.nom,
         prenom: this.prenom,
@@ -135,7 +135,7 @@ export default {
       };
       //console.log(dataUser);
       const dataPost = {
-        headers: { token: localStorage.getItem("userToken") },
+        //headers: { token: localStorage.getItem("userToken") },
 
         content: this.content,
         userId: this.userId,
@@ -145,7 +145,7 @@ export default {
 
       const formData = new FormData();
       formData.append("image", this.attachement);
-      // formData.append("user", JSON.stringify(dataUser));
+      formData.append("user", JSON.stringify(dataUser));
       formData.append("post", JSON.stringify(dataPost));
       console.log(formData);
       axios
@@ -156,6 +156,7 @@ export default {
           console.log(res);
           //console.log(dataUser);
           console.log(dataPost);
+          console.log(dataUser);
           dataUser, dataPost;
         })
         .catch(() => {});

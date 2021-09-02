@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const models = require("../models");
 //const { col } = require("sequelize/types");
 const User = models.User;
+const Post = models.Post;
 // const multer = require("multer");
 // const upload = multer("../");
 

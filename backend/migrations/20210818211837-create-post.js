@@ -17,7 +17,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      attachment: {
+      attachement: {
         allowNull: true,
         type: Sequelize.STRING,
       },

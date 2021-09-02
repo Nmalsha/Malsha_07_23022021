@@ -17,7 +17,7 @@ exports.createPost = async (req, res) => {
 
   const token = req.headers.token;
   //console.log(token);
-  //console.log(postObject);
+  console.log(postObject);
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
     console.log(userId);
@@ -39,11 +39,12 @@ exports.createPost = async (req, res) => {
       //console.log(getUserFromDb.data)
 
       const post = new Post({
-        attachement: postObject,
-        content: content,
-        userId: userId,
+        attachement: postObject.attachement,
+        content: postObject.content,
+        userId: postObject.userId,
       });
-      post.save().then(function (user) {
+      post.save().then(function (post) {
+        console.log(post);
         return res
           .status(201)
           .json({ message: "your post successfully created" });
@@ -60,4 +61,27 @@ exports.createPost = async (req, res) => {
   });
 };
 
-exports.getAllPost = (req, res) => {};
+exports.getAllPost = (req, res) => {
+  //   const token = req.headers.token;
+
+  //   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
+  //     const userId = decoded.userId;
+  //     console.log(token);
+  // },
+
+  Post.findAll().then((Post) =>
+    res.status(201).json({
+      Post,
+
+      message: "got all post",
+    })
+  );
+};
+/*
+exports.getOnePost = (req, res) => {
+  Post.findAll({
+    where: { id: res.params.id },
+    include: [User],
+  }).then((Post) => res.status(201).json({ Post, message: "got one post" }));
+};
+*/

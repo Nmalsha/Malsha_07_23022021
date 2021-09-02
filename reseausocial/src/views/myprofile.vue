@@ -134,7 +134,7 @@ export default {
       //const imageUrl = this.profileimage;
       // fd.append("image", file);
       //console.log(imageUrl);
-      console.log(this.profileimage);
+      // console.log(this.profileimage);
 
       const dataUser = {
         headers: { token: localStorage.getItem("userToken") },
