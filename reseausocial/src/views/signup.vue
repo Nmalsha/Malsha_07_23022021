@@ -108,7 +108,7 @@ export default {
             this.$router.push("/login");
           },
           (error) => {
-            this.error = error.response.data.error;
+            console.log(error);
           }
         );
     },

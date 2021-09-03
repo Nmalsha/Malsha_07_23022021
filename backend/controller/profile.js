@@ -78,3 +78,5 @@ exports.updateUserProfile = async (req, res, next) => {
     }
   });
 };
+
+exports.getpostBelognsToUser = async (req, res, next) => {};

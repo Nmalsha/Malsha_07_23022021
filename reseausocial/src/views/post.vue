@@ -145,7 +145,7 @@ export default {
 
       const formData = new FormData();
       formData.append("image", this.attachement);
-      formData.append("user", JSON.stringify(dataUser));
+      //formData.append("user", JSON.stringify(dataUser));
       formData.append("post", JSON.stringify(dataPost));
       console.log(formData);
       axios
@@ -156,7 +156,7 @@ export default {
           console.log(res);
           //console.log(dataUser);
           console.log(dataPost);
-          console.log(dataUser);
+          //console.log(dataUser);
           dataUser, dataPost;
         })
         .catch(() => {});

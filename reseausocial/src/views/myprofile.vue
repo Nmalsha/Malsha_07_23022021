@@ -89,7 +89,7 @@ export default {
       prenom: "",
       profileimage: "",
       password: "",
-      // imageUrl: [],
+      post: [],
     };
   },
   created() {
@@ -109,6 +109,15 @@ export default {
         this.prenom = res.data.findUser.prenom;
         this.email = res.data.findUser.email;
         this.password = res.data.findUser.password;
+      });
+
+    axios
+      .get("http://localhost:3000/post/:id", {
+        headers: { token: localStorage.getItem("userToken") },
+      })
+      .then((Post) => {
+        console.log(Post);
+        //this.post = Post.data;
       });
   },
   methods: {

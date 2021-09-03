@@ -2,6 +2,7 @@ const models = require("../models");
 const jwt = require("jsonwebtoken");
 const Post = models.Post;
 const User = models.User;
+const Comment = models.Comment;
 
 exports.createPost = async (req, res) => {
   const postObject = req.file
@@ -62,13 +63,36 @@ exports.createPost = async (req, res) => {
 };
 
 exports.getAllPost = (req, res) => {
-  //   const token = req.headers.token;
+  Post.findAll({
+    order: [["createdAt", "DESC"]],
+    attributes: {
+      exclude: ["updatedAt"],
+    },
+    include: [
+      {
+        model: User,
+        attributes: ["nom", "prenom", "profileimage"],
+      },
+      {
+        model: Comment,
+        attributes: ["comment", "userId", "id"],
+        include: [
+          {
+            model: User,
+            attributes: ["nom", "prenom", "profileimage"],
+          },
+        ],
+      },
+    ],
+  }).then((Post) =>
+    res.status(201).json(console.log(Post), {
+      Post,
 
-  //   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
-  //     const userId = decoded.userId;
-  //     console.log(token);
-  // },
+      message: "got all post",
+    })
+  );
 
+  /*
   Post.findAll().then((Post) =>
     res.status(201).json({
       Post,
@@ -76,12 +100,19 @@ exports.getAllPost = (req, res) => {
       message: "got all post",
     })
   );
+  */
 };
-/*
+
 exports.getOnePost = (req, res) => {
+  console.log(req.params.id);
   Post.findAll({
-    where: { id: res.params.id },
-    include: [User],
-  }).then((Post) => res.status(201).json({ Post, message: "got one post" }));
+    where: { userId: req.params.id },
+  }).then(
+    (Post) => console.log(Post),
+    res.status(201).json({
+      Post,
+
+      message: "got all post created by One user",
+    })
+  );
 };
-*/

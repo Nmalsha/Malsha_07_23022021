@@ -42,12 +42,9 @@ export default {
   name: "Posts",
   data() {
     return {
-      nom: "",
-      prenom: "",
-      profileimage: "",
-      postCreatedDate: "",
-      content: "",
-      attachement: "",
+      users: [],
+      posts: [],
+
       likes: [],
     };
   },
