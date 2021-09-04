@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 const userRoute = require("./routes/user");
 const profileRoute = require("./routes/profile");
 const postRoute = require("./routes/post");
+const commentRoute = require("./routes/comment");
 const path = require("path");
 //const { JsonWebTokenError } = require('jsonwebtoken');
 //const { User } = require('./models');
@@ -45,6 +46,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/", userRoute);
 app.use("/", profileRoute);
 app.use("/", postRoute);
+app.use("/", commentRoute);
 
 /*
 app.get('/user', async (req,res,next)=>{

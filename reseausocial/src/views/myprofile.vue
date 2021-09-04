@@ -16,7 +16,7 @@
             <li class="nav-item col-md-12">
               <router-link
                 class="btn btn-outline-primary my-2 my-sm-0 color"
-                to="/post"
+                to="/posts"
               >
                 forum</router-link
               >
@@ -32,11 +32,27 @@
     <div class="profile_wrapp">
       <div class="card">
         <form class="image_form" enctype="multipart/form-data">
-          <div class="roundContainer">
-            <img src="image" alt="profile photo" width="50px" height="50px" />
-          </div>
+          <a href="#">
+            <div class="roundContainer">
+              <img
+                class="profile_image"
+                alt="profile photo"
+                :src="profileimage"
+                width="50px"
+                height="50px"
+              />
+            </div>
+          </a>
 
-          <input type="file" @change="UpdatePhoto" />
+          <input
+            type="file"
+            ref="image"
+            accept=".jpg,.jpeg,.png"
+            @change="UpdatePhoto"
+          />
+          <div class="text-center align-baseline my-2">
+            <span v-if="selectedFile">{{ selectedFile.name }}</span>
+          </div>
         </form>
         <label for="nom">Nom</label>
         <input
@@ -70,13 +86,31 @@
           >
             Update Profile
           </button>
+          <router-link
+            class="btn btn-outline-primary my-2 my-sm-0 color"
+            to="/posts"
+          >
+            update later</router-link
+          >
         </div>
       </div>
     </div>
+    <!----Display Posts---->
+    <ul>
+      <li
+        v-for="(postsforOneUser, index) in postsforOneUsers"
+        :key="'post' + index"
+      >
+        <div>{{ postsforOneUsers.createdAt }}</div>
+        <div>{{ postsforOneUsers.content }}</div>
+        <div>{{ postsforOneUsers.attachement }}</div>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
 import axios from "axios";
+//import { defineComponent } from "vue";
 
 export default {
   name: "myprofile",
@@ -87,9 +121,10 @@ export default {
       email: "",
       nom: "",
       prenom: "",
-      profileimage: "",
+      profileimage: null,
       password: "",
-      post: [],
+      image: "",
+      postsforOneUser: [],
     };
   },
   created() {
@@ -112,11 +147,12 @@ export default {
       });
 
     axios
-      .get("http://localhost:3000/post/:id", {
+      .get("http://localhost:3000/postsuser", {
         headers: { token: localStorage.getItem("userToken") },
       })
-      .then((Post) => {
-        console.log(Post);
+      .then((postsforOneUser) => {
+        console.log("this colsole");
+        console.log(postsforOneUser.data);
         //this.post = Post.data;
       });
   },
@@ -125,16 +161,17 @@ export default {
       localStorage.clear();
       this.$router.push("/");
     },
+
     UpdatePhoto(e) {
       const file = e.target.files[0];
       this.profileimage = file;
-
-      //display image
-
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
         this.image = fileReader.result;
+        // this.avatar = e.target.result;
+        console.log(this.image);
+        //console.log(this.profileimage);
       };
       //fileReader.readAsDataURL(file[0]);
       //this.image = file[0];
@@ -163,8 +200,9 @@ export default {
           headers: { token: localStorage.getItem("userToken") },
         })
         .then((res) => {
-          this.$router.push("/post");
-          console.log(res.email);
+          alert("profile is been updated");
+          this.$router.push("/posts");
+          //console.log(res.email);
           console.log(res.data);
         })
         .catch(() => {});
@@ -188,8 +226,14 @@ export default {
 }
 .roundContainer {
   border-radius: 80%;
-  height: 70px;
+  height: 100px;
   border: 1px solid black;
-  width: 70px;
+  width: 100px;
+}
+.profile_image {
+  border-radius: 80%;
+  height: 100px;
+  border: 1px solid black;
+  width: 100px;
 }
 </style>

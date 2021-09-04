@@ -2,7 +2,7 @@ const models = require("../models");
 const jwt = require("jsonwebtoken");
 const Post = models.Post;
 const User = models.User;
-const Comment = models.Comment;
+//const Comment = models.Comment;
 
 exports.createPost = async (req, res) => {
   const postObject = req.file
@@ -21,10 +21,10 @@ exports.createPost = async (req, res) => {
   console.log(postObject);
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
-    console.log(userId);
-    const content = req.body.post;
+    //console.log(userId);
+    //const content = req.body.post;
     //console.log(content);
-    if (content == null) {
+    if (postObject.content == null) {
       return res.status(400).json({ error: "your post is empty" });
     }
 
@@ -64,6 +64,28 @@ exports.createPost = async (req, res) => {
 
 exports.getAllPost = (req, res) => {
   Post.findAll({
+    include: User,
+    /*
+    [
+      {
+        //model: models.User,
+
+        through: {
+          attributes: ["nom", "prenom", "profileImage"],
+        },
+      },
+    ]
+    
+    */
+  }).then((Post) =>
+    res.status(201).json({
+      Post,
+      message: "got all post",
+    })
+  );
+  //Post.findAll({
+
+  /*
     order: [["createdAt", "DESC"]],
     attributes: {
       exclude: ["updatedAt"],
@@ -84,35 +106,34 @@ exports.getAllPost = (req, res) => {
         ],
       },
     ],
-  }).then((Post) =>
-    res.status(201).json(console.log(Post), {
-      Post,
-
-      message: "got all post",
-    })
+   
+  //})
+  then((Post) =>
+    res.status(201).json(
+      {
+        Post,
+      }
+      //console.log("toto")
+    )
   );
-
-  /*
-  Post.findAll().then((Post) =>
-    res.status(201).json({
-      Post,
-
-      message: "got all post",
-    })
-  );
-  */
+   */
 };
 
-exports.getOnePost = (req, res) => {
-  console.log(req.params.id);
-  Post.findAll({
-    where: { userId: req.params.id },
-  }).then(
-    (Post) => console.log(Post),
-    res.status(201).json({
-      Post,
+exports.getAllPostsForOneUser = async (req, res, next) => {
+  const token = req.headers.token;
 
-      message: "got all post created by One user",
-    })
-  );
+  //console.log(req.params.id);
+  jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
+    const userId = decoded.userId;
+    console.log(userId);
+    const postsforOneUser = Post.findAll({
+      where: { userId: userId },
+    }).then((postsforOneUser) =>
+      res.status(201).json({
+        postsforOneUser,
+
+        message: "got all post created by One user",
+      })
+    );
+  });
 };

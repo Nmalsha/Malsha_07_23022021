@@ -47,4 +47,7 @@ db.Sequelize = Sequelize;
 const user = (db.User = require("./user")(sequelize, Sequelize));
 const post = (db.Post = require("./post")(sequelize, Sequelize));
 const comment = (db.Comment = require("./comment")(sequelize, Sequelize));
+
+post.belongsTo(user);
+
 module.exports = db;

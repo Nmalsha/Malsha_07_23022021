@@ -52,7 +52,7 @@ exports.updateUserProfile = async (req, res, next) => {
   const token = req.headers.token;
   /** Ici le token est en dur */
 
-  //console.log("Token en dur" + token);
+  //console.log(editProfileObject);
 
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
@@ -78,5 +78,3 @@ exports.updateUserProfile = async (req, res, next) => {
     }
   });
 };
-
-exports.getpostBelognsToUser = async (req, res, next) => {};

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <nav class="navbar navbar-expand-md navbar_dark">
       <div class="container">
         <div class="logo-wrappe col-md-3">
@@ -166,6 +166,9 @@ export default {
 </script>
 
 <style>
+.main {
+  width: 100%;
+}
 .post-wrapp {
   margin-top: 100px;
   height: 100px;
@@ -188,7 +191,7 @@ export default {
   align-items: center;
   justify-content: space-evenly;
   background-color: #ffb3b3;
-  margin-left: 50px;
+  width: 40%;
   display: flex;
   justify-content: space-around;
   padding: 30px;

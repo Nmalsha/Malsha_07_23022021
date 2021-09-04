@@ -8,9 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      postId: {
+      userId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        reference: {
+          model: "Users",
+          key: "id",
+        },
       },
       comment: {
         allowNull: false,

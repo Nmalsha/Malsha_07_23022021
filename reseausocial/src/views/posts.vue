@@ -1,14 +1,15 @@
 <template>
   <div class="wrappe">
+    <Post></Post>
     <div class="postowner_details">
       <div class="userPicContainer">
-        <img src="{{profileimage}}" />
+        <img src="" />
       </div>
 
       <div class="authorAndDate">
-        <p>{{ nom }}</p>
-        <p>{{ prenom }}</p>
-        <p>{{ postCreatedDate }}</p>
+        <p>nom</p>
+        <p>prenom</p>
+        <p>createdate</p>
       </div>
     </div>
 
@@ -21,30 +22,28 @@
       </div>
     </div>
 
-    <div class="postactions">
-      <div class="comments">
-        <p class="">
-          <fas class="icon" icon="thumbs-up"></fas>
-        </p>
-        <p>comments</p>
-      </div>
-      <div class="likes">
-        <p>Like</p>
-      </div>
+    <div class="postactions comment_div">
+      <button @click="toggle = !toggle">click to comment</button>
+      <textarea v-show="toggle" placeholder="add multiple lines"></textarea>
+      <button>send comment</button>
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
+import Post from "./post.vue";
 //import { defineComponent } from '@vue/composition-api'
 
 export default {
   name: "Posts",
+  components: {
+    Post,
+  },
   data() {
     return {
-      users: [],
-      posts: [],
-
+      user: [],
+      post: [],
+      toggle: true,
       likes: [],
     };
   },
@@ -57,7 +56,7 @@ export default {
         console.log("toto");
         console.log(Post.data.Post);
         console.log(Post.data.Post[0]);
-        console.log(Post.data.Post[0].userId);
+        console.log(Post.data.Post[0].attachement);
         // this.nom = res.dataValues.Post.nom;
         // this.prenom = res.dataValues.Post.prenom;
         // this.profileimage = res.dataValues.Post.profileimage;
@@ -83,7 +82,8 @@ export default {
   align-items: center;
   background-color: #ffb3b3;
   height: 50px;
-  border-radius: 0 40px 0 40px;
+  border-radius: 40px 40px 40px 40px;
+  margin-top: 25px;
 }
 .authorAndDate {
   display: flex;
@@ -100,7 +100,7 @@ export default {
   display: flex;
   justify-content: space-between;
   background-color: blanchedalmond;
-  margin-top: 10px;
+  border-radius: 40px 40px 40px 40px;
 }
 .postContent__image {
   width: 10%;
@@ -110,5 +110,22 @@ export default {
 }
 .postContent {
   width: 90%;
+}
+.postactions {
+  display: flex;
+  width: 40%;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #ffb3b3;
+  height: 50px;
+  border-radius: 40px 40px 40px 40px;
+}
+.comment_div {
+  display: flex;
+  justify-content: space-evenly;
+}
+textarea {
+  height: 40px;
+  width: 50%;
 }
 </style>
