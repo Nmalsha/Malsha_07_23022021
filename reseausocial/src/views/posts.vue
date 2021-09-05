@@ -1,31 +1,49 @@
 <template>
   <div class="wrappe">
     <Post></Post>
-    <div class="postowner_details">
-      <div class="userPicContainer">
-        <img src="" />
-      </div>
 
-      <div class="authorAndDate">
-        <p>nom</p>
-        <p>prenom</p>
-        <p>createdate</p>
-      </div>
-    </div>
+    <div class="form_wrappe">
+      <form
+        class="DetailsOfPostOwnerForm "
+        enctype="multipart/form-data"
+        v-for="userAndPostDetail in userAndPostDetails"
+        v-bind:key="userAndPostDetail.id"
+      >
+        <div id="userinfo" class="postowner_details">
+          <div class="userPicContainer">
+            <img
+              class="userprofileimage"
+              :src="userAndPostDetail.User.profileimage"
+            />
+          </div>
 
-    <div class="post_details">
-      <div class="postContent__image">
-        <img src="{{attachement}}" />
-      </div>
-      <div class="postContent">
-        <p class="postContent__text">{{ content }}</p>
-      </div>
-    </div>
+          <div class="authorAndDate">
+            <p>{{ userAndPostDetail.User.nom }}</p>
+            <p>{{ userAndPostDetail.User.prenom }}</p>
+          </div>
+        </div>
 
-    <div class="postactions comment_div">
-      <button @click="toggle = !toggle">click to comment</button>
-      <textarea v-show="toggle" placeholder="add multiple lines"></textarea>
-      <button>send comment</button>
+        <div id="postinfo" class="post_details">
+          <div class="postContent__image">
+            <img src="{{attachement}}" />
+          </div>
+          <div class="postContent">
+            <p class="postContent__text">{{ userAndPostDetail.content }}</p>
+            <p class="postContent__text">{{ userAndPostDetail.createdAt }}</p>
+            <p class="postContent__text">postid:{{ userAndPostDetail.id }}</p>
+          </div>
+        </div>
+
+        <div class="postactions comment_div">
+          <button @click="toggle = !toggle">click to comment</button>
+          <input
+            v-show="toggle"
+            v-model="comment"
+            placeholder="add multiple lines"
+          />
+          <button @click="sendcomment">send comment</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -39,12 +57,14 @@ export default {
   components: {
     Post,
   },
+
   data() {
     return {
-      user: [],
-      post: [],
+      userAndPostDetails: [],
       toggle: true,
-      likes: [],
+
+      comment: "",
+      userId: "",
     };
   },
   mounted() {
@@ -53,10 +73,13 @@ export default {
         headers: { token: localStorage.getItem("userToken") },
       })
       .then((Post) => {
-        console.log("toto");
-        console.log(Post.data.Post);
-        console.log(Post.data.Post[0]);
-        console.log(Post.data.Post[0].attachement);
+        console.log(Post);
+        const dataarrays = Post.data.Post;
+        this.userAndPostDetails = dataarrays;
+        console.log(dataarrays);
+        //const datafirstarrayObject = dataarrays[0];
+        console.log(dataarrays[0].User);
+        ///console.log(Post.data.Post[0].attachement);
         // this.nom = res.dataValues.Post.nom;
         // this.prenom = res.dataValues.Post.prenom;
         // this.profileimage = res.dataValues.Post.profileimage;
@@ -65,6 +88,24 @@ export default {
         // this.attachement = res.dataValues.Post.attachement;
       })
       .catch(() => {});
+  },
+  methods: {
+    sendcomment() {
+      axios
+        .post("http://localhost:3000/comment", {
+          headers: { token: localStorage.getItem("userToken") },
+          comment: this.comment,
+        })
+        .then(
+          (reponse) => {
+            console.log("comenthere");
+            console.log(reponse.data);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    },
   },
 };
 </script>
@@ -75,9 +116,13 @@ export default {
   align-content: center;
   justify-items: center;
 }
+.form_wrappe {
+  display: grid;
+  width: 40%;
+}
 .postowner_details {
   display: flex;
-  width: 40%;
+
   justify-content: space-around;
   align-items: center;
   background-color: #ffb3b3;
@@ -87,15 +132,16 @@ export default {
 }
 .authorAndDate {
   display: flex;
+  justify-content: space-around;
+  width: 40%;
 }
-.userPicContainer {
-  width: 10%;
+
+.userprofileimage {
+  width: 78px;
   height: 40px;
-  border: 0.5px solid;
-  border-radius: 40%;
+  cursor: pointer;
 }
 .post_details {
-  width: 40%;
   height: 80px;
   display: flex;
   justify-content: space-between;
@@ -103,7 +149,6 @@ export default {
   border-radius: 40px 40px 40px 40px;
 }
 .postContent__image {
-  width: 10%;
   height: 40px;
   border: 0.5px solid;
   margin-top: 20px;
@@ -111,6 +156,7 @@ export default {
 .postContent {
   width: 90%;
 }
+
 .postactions {
   display: flex;
   width: 40%;
@@ -120,6 +166,7 @@ export default {
   height: 50px;
   border-radius: 40px 40px 40px 40px;
 }
+
 .comment_div {
   display: flex;
   justify-content: space-evenly;
@@ -127,5 +174,11 @@ export default {
 textarea {
   height: 40px;
   width: 50%;
+}
+.DetailsOfPostOwnerForm {
+  width: 100%;
+
+  justify-content: space-around;
+  align-items: center;
 }
 </style>

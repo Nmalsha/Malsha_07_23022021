@@ -59,7 +59,7 @@
             </button>
           </div>
           <div class="btn_annule btn_color">
-            <v-btn @click="createPost">Annuler</v-btn>
+            <v-btn>Annuler</v-btn>
           </div>
         </div>
       </div>
@@ -153,6 +153,7 @@ export default {
           headers: { token: localStorage.getItem("userToken") },
         })
         .then((res) => {
+          alert("your post is successfully sent ");
           console.log(res);
           //console.log(dataUser);
           console.log(dataPost);
@@ -219,5 +220,8 @@ export default {
   border: 1px solid;
   height: 67px;
   cursor: pointer;
+}
+button:hover {
+  background-color: #ffb3b3;
 }
 </style>

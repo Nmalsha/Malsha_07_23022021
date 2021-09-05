@@ -37,7 +37,7 @@
               <img
                 class="profile_image"
                 alt="profile photo"
-                :src="profileimage"
+                :src="image"
                 width="50px"
                 height="50px"
               />
@@ -81,7 +81,7 @@
         <div class="card-body">
           <button
             @click="updateUserProfile"
-            class="btn btn-primary btn-block "
+            class="btn btn-outline-primary my-2 my-sm-0 color "
             type="submit"
           >
             Update Profile
@@ -96,20 +96,29 @@
       </div>
     </div>
     <!----Display Posts---->
-    <ul>
-      <li
-        v-for="(postsforOneUser, index) in postsforOneUsers"
-        :key="'post' + index"
-      >
-        <div>{{ postsforOneUsers.createdAt }}</div>
-        <div>{{ postsforOneUsers.content }}</div>
-        <div>{{ postsforOneUsers.attachement }}</div>
-      </li>
-    </ul>
+    <form enctype="multipart/form-data">
+      <div class="post_wrappe">
+        <div
+          id="postinfo"
+          class="post_details"
+          v-for="postsforOneUser in postsforOneUsers"
+          v-bind:key="postsforOneUser.id"
+        >
+          <div class="postContent__image">
+            <img class="postimage" :src="postsforOneUser.attachement" />
+          </div>
+          <div class="postContent">
+            <p class="postContent__text">{{ postsforOneUser.content }}</p>
+            <p class="postContent__text">{{ postsforOneUser.createdAt }}</p>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 <script>
 import axios from "axios";
+//import imagefile from "...";
 //import { defineComponent } from "vue";
 
 export default {
@@ -124,7 +133,7 @@ export default {
       profileimage: null,
       password: "",
       image: "",
-      postsforOneUser: [],
+      postsforOneUsers: [],
     };
   },
   created() {
@@ -152,7 +161,9 @@ export default {
       })
       .then((postsforOneUser) => {
         console.log("this colsole");
-        console.log(postsforOneUser.data);
+        this.postsforOneUsers = postsforOneUser.data.postsforOneUser;
+        console.log(postsforOneUser.data.postsforOneUser);
+        console.log(postsforOneUser.data.postsforOneUser.attachement);
         //this.post = Post.data;
       });
   },
@@ -193,7 +204,7 @@ export default {
       };
 
       const formData = new FormData();
-      formData.append("image", this.profileimage);
+      formData.append("image", this.profileimage, this.profileimage.name);
       formData.append("user", JSON.stringify(dataUser));
       axios
         .put("http://localhost:3000/user", formData, {
@@ -221,6 +232,10 @@ export default {
   padding: 30px;
   width: 30rem;
 }
+.card-body {
+  display: flex;
+  justify-content: space-around;
+}
 .form {
   margin-top: 100px;
 }
@@ -235,5 +250,29 @@ export default {
   height: 100px;
   border: 1px solid black;
   width: 100px;
+}
+
+.post_details {
+  width: 30%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  background-color: blanchedalmond;
+  border-radius: 40px 0px 40px 0px;
+  margin-top: 25px;
+}
+.postContent {
+  width: 75%;
+}
+.postContent__image {
+  width: 25%;
+}
+.post_wrappe {
+  display: grid;
+  justify-items: center;
+}
+.postimage {
+  width: 70px;
+  height: 75px;
 }
 </style>
