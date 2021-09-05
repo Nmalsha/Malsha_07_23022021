@@ -26,16 +26,42 @@
 
         <div id="postinfo" class="post_details">
           <div class="postContent__image">
+            <input
+              type="file"
+              ref="image"
+              accept=".jpg,.jpeg,.png"
+              @change="editPostImage"
+              style="display:'none'"
+              v-if="userId === userAndPostDetail.User.id"
+            />
             <img class="postimage" :src="userAndPostDetail.attachement" />
           </div>
           <div class="postContent">
-            <p class="postContent__text">{{ userAndPostDetail.content }}</p>
+            <input class="postContent__text" />{{ userAndPostDetail.content }}/>
             <p class="postContent__text">{{ userAndPostDetail.createdAt }}</p>
             <p class="postContent__text">postid:{{ userAndPostDetail.id }}</p>
-            <button v-if="userId === userAndPostDetail.User.id">
-              edit post
-            </button>
-            <button v-if="userId === userAndPostDetail.User.id">
+
+            <!--------popup----------->
+            <div>
+              <button
+                v-if="userId === userAndPostDetail.User.id"
+                @click="() => TogglePopup('buttonTrigger')"
+              >
+                Edit post
+              </button>
+              <Popup
+                v-if="popupTriggers.buttonTrigger"
+                :TogglePopup="() => TogglePopup('buttonTrigger')"
+              >
+                <h3>my popup</h3>
+              </Popup>
+            </div>
+
+            <!---------end popup---------->
+            <button
+              v-if="userId === userAndPostDetail.User.id"
+              @click="editPost"
+            >
               Delete post
             </button>
           </div>
@@ -57,19 +83,37 @@
 <script>
 import axios from "axios";
 import Post from "./post.vue";
+import { ref } from "vue";
+import Popup from "./popup.vue";
 //import { defineComponent } from '@vue/composition-api'
 
 export default {
+  setup() {
+    const popupTriggers = ref({
+      buttonTrigger: false,
+    });
+    const TogglePopup = (trigger) => {
+      popupTriggers.value[trigger] = !popupTriggers.value[trigger];
+    };
+    return {
+      Popup,
+      popupTriggers,
+      TogglePopup,
+    };
+  },
+
   name: "Posts",
   components: {
     Post,
+    Popup,
   },
 
   data() {
     return {
       userAndPostDetails: [],
       toggle: true,
-
+      postImage: "",
+      content: "",
       comment: "",
       userId: "",
     };
@@ -117,7 +161,39 @@ export default {
           }
         );
     },
-    relatedProfilePage() {},
+    editPostImage(e) {
+      const file = e.target.files[0];
+      this.postImage = file;
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        this.postImage = fileReader.result;
+        // this.avatar = e.target.result;
+        console.log(this.image);
+        //console.log(this.profileimage);
+      };
+    },
+    editPost() {
+      const dataPost = {
+        headers: { token: localStorage.getItem("userToken") },
+
+        content: this.content,
+      };
+      const formData = new FormData();
+      formData.append("postImage", this.postImage);
+      formData.append("user", JSON.stringify(dataPost));
+      axios
+        .put("http://localhost:3000/post", formData, {
+          headers: { token: localStorage.getItem("userToken") },
+        })
+        .then((res) => {
+          alert("your post is been updated");
+          this.$router.push("/posts");
+          //console.log(res.email);
+          console.log(res.data);
+        })
+        .catch(() => {});
+    },
   },
 };
 </script>
@@ -154,7 +230,7 @@ export default {
   cursor: pointer;
 }
 .post_details {
-  height: 150px;
+  height: 200px;
   display: flex;
   justify-content: space-between;
   background-color: blanchedalmond;
@@ -172,6 +248,7 @@ export default {
 .postimage {
   width: 200px;
   height: 120px;
+  cursor: pointer;
 }
 .postactions {
   display: flex;
@@ -196,5 +273,12 @@ textarea {
 
   justify-content: space-around;
   align-items: center;
+}
+.DetailsOfPostForm {
+  height: 150px;
+  display: flex;
+  justify-content: space-between;
+  background-color: blanchedalmond;
+  border-radius: 40px 40px 40px 40px;
 }
 </style>

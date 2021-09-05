@@ -37,7 +37,7 @@
               <img
                 class="profile_image"
                 alt="profile photo"
-                :src="image"
+                :src="profileimage"
                 width="50px"
                 height="50px"
               />
@@ -153,6 +153,7 @@ export default {
         this.prenom = res.data.findUser.prenom;
         this.email = res.data.findUser.email;
         this.password = res.data.findUser.password;
+        this.profileimage = res.data.findUser.profileimage;
       });
 
     axios
@@ -204,7 +205,7 @@ export default {
       };
 
       const formData = new FormData();
-      formData.append("image", this.profileimage, this.profileimage.name);
+      formData.append("image", this.profileimage);
       formData.append("user", JSON.stringify(dataUser));
       axios
         .put("http://localhost:3000/user", formData, {

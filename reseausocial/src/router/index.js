@@ -7,6 +7,7 @@ import signup from "../views/signup.vue";
 import post from "../views/post.vue";
 import posts from "../views/posts.vue";
 import myprofile from "../views/myprofile.vue";
+import popupe from "../views/popup.vue";
 //import { VueElement } from 'vue';
 
 //Vue.routes(VueRouter)
@@ -42,6 +43,11 @@ const routes = [
     name: "myprofile",
     path: "/myprofile",
     component: myprofile,
+  },
+  {
+    name: "popupe",
+    path: "/popupe",
+    component: popupe,
   },
 ];
 

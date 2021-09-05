@@ -223,7 +223,14 @@ export default {
   height: 67px;
   cursor: pointer;
 }
+button {
+  background: none;
+  outline: none;
+  appearance: none;
+  border: none;
+}
 button:hover {
-  background-color: #ffb3b3;
+  background-color: #d8afaf;
+  box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
 }
 </style>
