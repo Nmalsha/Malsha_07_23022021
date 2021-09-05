@@ -14,6 +14,7 @@
             <img
               class="userprofileimage"
               :src="userAndPostDetail.User.profileimage"
+              @click="relatedProfilePage"
             />
           </div>
 
@@ -31,6 +32,12 @@
             <p class="postContent__text">{{ userAndPostDetail.content }}</p>
             <p class="postContent__text">{{ userAndPostDetail.createdAt }}</p>
             <p class="postContent__text">postid:{{ userAndPostDetail.id }}</p>
+            <button v-if="userId === userAndPostDetail.User.id">
+              edit post
+            </button>
+            <button v-if="userId === userAndPostDetail.User.id">
+              Delete post
+            </button>
           </div>
         </div>
 
@@ -68,6 +75,7 @@ export default {
     };
   },
   mounted() {
+    //get all post
     axios
       .get("http://localhost:3000/post", {
         headers: { token: localStorage.getItem("userToken") },
@@ -79,16 +87,19 @@ export default {
         console.log(dataarrays);
         //const datafirstarrayObject = dataarrays[0];
         console.log(dataarrays[0].User);
-        ///console.log(Post.data.Post[0].attachement);
-        // this.nom = res.dataValues.Post.nom;
-        // this.prenom = res.dataValues.Post.prenom;
-        // this.profileimage = res.dataValues.Post.profileimage;
-        // this.postCreatedDate = res.dataValues.Post.createdAt;
-        // this.content = res.dataValues.Post.content;
-        // this.attachement = res.dataValues.Post.attachement;
       })
       .catch(() => {});
+    //get current user id
+    axios
+      .get("http://localhost:3000/user", {
+        headers: { token: localStorage.getItem("userToken") },
+      })
+      .then((res) => {
+        this.userId = res.data.findUser.id;
+        console.log(res.data.findUser.id);
+      });
   },
+  created() {},
   methods: {
     sendcomment() {
       axios
@@ -106,6 +117,7 @@ export default {
           }
         );
     },
+    relatedProfilePage() {},
   },
 };
 </script>
@@ -163,7 +175,7 @@ export default {
 }
 .postactions {
   display: flex;
-  width: 40%;
+
   justify-content: space-around;
   align-items: center;
   background-color: #ffb3b3;

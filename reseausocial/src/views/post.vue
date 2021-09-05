@@ -101,6 +101,7 @@ export default {
         this.prenom = res.data.findUser.prenom;
         this.email = res.data.findUser.email;
         this.userId = res.data.findUser.id;
+        console.log(res.data.findUser);
       });
   },
   methods: {
@@ -154,6 +155,7 @@ export default {
         })
         .then((res) => {
           alert("your post is successfully sent ");
+
           console.log(res);
           //console.log(dataUser);
           console.log(dataPost);
