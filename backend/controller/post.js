@@ -64,6 +64,7 @@ exports.createPost = async (req, res) => {
 
 exports.getAllPost = (req, res) => {
   Post.findAll({
+    order: [["createdAt", "DESC"]],
     include: User,
     /*
     [

@@ -25,7 +25,7 @@
 
         <div id="postinfo" class="post_details">
           <div class="postContent__image">
-            <img src="{{attachement}}" />
+            <img class="postimage" :src="userAndPostDetail.attachement" />
           </div>
           <div class="postContent">
             <p class="postContent__text">{{ userAndPostDetail.content }}</p>
@@ -142,7 +142,7 @@ export default {
   cursor: pointer;
 }
 .post_details {
-  height: 80px;
+  height: 150px;
   display: flex;
   justify-content: space-between;
   background-color: blanchedalmond;
@@ -150,13 +150,17 @@ export default {
 }
 .postContent__image {
   height: 40px;
-  border: 0.5px solid;
+
   margin-top: 20px;
+  width: 40%;
 }
 .postContent {
-  width: 90%;
+  width: 50%;
 }
-
+.postimage {
+  width: 200px;
+  height: 120px;
+}
 .postactions {
   display: flex;
   width: 40%;
