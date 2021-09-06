@@ -6,7 +6,12 @@
         <div class="addpost_wrappe col-md-4">
           <form class="image_form" enctype="multipart/form-data">
             <div class="roundContainer">
-              <img src="image" alt="" width="50px" height="50px" />
+              <img
+                :src="postDetails.attachement"
+                alt=""
+                width="50px"
+                height="50px"
+              />
             </div>
 
             <input type="file" @change="UploadPhoto" />
@@ -17,21 +22,21 @@
               v-model="content"
               maxlength="max"
               type="text"
-              placeholder="Publier ici..."
+              :placeholder="postDetails.content"
               aria-label="publication"
               id="publication"
             />
+            <p>this content:{{ postDetails.content }}</p>
           </div>
           <div class="write_post com-md-2">
             <div>
-              <button @click="editPost" class="btn_color">
-                Edit post
-              </button>
+              <button class="btn_color">Post {{ id }}</button>
             </div>
           </div>
         </div>
       </div>
-      <button class="popup-close" @click="TogglePopup()">close popup</button>
+      <router-link to="/posts"> back</router-link>
+      <button class="popup-close" @click="TogglePopup">close popup</button>
     </div>
   </div>
 </template>
@@ -42,29 +47,62 @@ import axios from "axios";
 
 export default {
   props: ["TogglePopup"],
+  watch: {
+    " $route"(to, from) {
+      alert(to.params.id);
+      alert(from.params.id);
+    },
+  },
   data() {
     return {
       postDetails: [],
       postImage: "",
       content: "",
       postId: "",
+      createdOn: "",
+      id: this.$route.params.id,
     };
   },
   mounted() {
-    //displaing apropiate data in the form
+    //displaing apropiate data in the post
     axios
       .get("http://localhost:3000/post", {
         headers: { token: localStorage.getItem("userToken") },
       })
       .then((Post) => {
         console.log(Post);
-        const dataarrays = Post.data.Post;
-        this.postDetails = dataarrays;
-        console.log(dataarrays);
+        // const dataarrays = Post.data.Post;
+        //this.postDetails = dataarrays;
+        // console.log(dataarrays);
         //const datafirstarrayObject = dataarrays[0];
-        console.log(dataarrays[0].User);
+        //console.log(dataarrays[0].User);
       })
       .catch(() => {});
+    //pasing selected post id to the back end
+    axios
+      .get("http://localhost:3000/postid/" + this.id, {
+        headers: { token: localStorage.getItem("userToken") },
+      })
+      .then((response) => {
+        const postData = response.data.findPost;
+        console.log(postData);
+        this.postDetails = postData;
+      })
+      .catch(() => {});
+  },
+  created() {
+    const getcontent = this.$route.params.content;
+    this.content = getcontent;
+    //console.log(this.$route.params.content);
+    // alert(this.$route.params.id);
+  },
+  methods: {
+    getParams() {
+      //   console.log(router.params);
+      //   var routerParams = router.params;
+      //   this.createdOn = routerParams.createdOn;
+      //   console.log(routerParams);
+    },
   },
 };
 </script>

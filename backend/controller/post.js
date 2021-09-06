@@ -51,14 +51,6 @@ exports.createPost = async (req, res) => {
           .json({ message: "your post successfully created" });
       });
     }
-
-    //get the parameters content and image
-    //const postImage = req.file;
-    //const content = req.body.post;
-    //console.log(postImage);
-    //console.log(content);
-    //     const attachment = req.file;
-    //     const likes = req.body.likes;
   });
 };
 
@@ -66,24 +58,22 @@ exports.getAllPost = (req, res) => {
   Post.findAll({
     order: [["createdAt", "DESC"]],
     include: User,
-    /*
-    [
-      {
-        //model: models.User,
-
-        through: {
-          attributes: ["nom", "prenom", "profileImage"],
-        },
-      },
-    ]
-    
-    */
   }).then((Post) =>
     res.status(201).json({
       Post,
       message: "got all post",
     })
   );
+
+  exports.getOnePost = async (req, res, next) => {
+    console.log("toto");
+    //console.log(req.params.id);
+    // const getOnPost = Post.findOne({
+    //   _id: req.params.id,
+    // })
+    //   .then((getOnPost) => res.status(200).json(getOnPost))
+    //   .catch((error) => res.status(400).json({ error }));
+  };
   //Post.findAll({
 
   /*

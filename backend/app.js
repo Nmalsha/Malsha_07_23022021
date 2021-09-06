@@ -16,6 +16,7 @@ const path = require("path");
 const models = require("./models");
 const decode = require("jsonwebtoken/decode");
 const User = models.User;
+const Post = models.Post;
 //const bcrypt = require('bcryptjs');
 
 const app = express();
@@ -46,7 +47,23 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/", userRoute);
 app.use("/", profileRoute);
 app.use("/", postRoute);
+//app.use("/onepost", postRoute);
 app.use("/", commentRoute);
+
+app.get("/postid/:id", async (req, res, next) => {
+  console.log(req.params.id);
+
+  const findPost = await Post.findOne({
+    where: { id: req.params.id },
+  })
+
+    // res.send({data:sauce});
+    .then(function (findPost) {
+      console.log(findPost);
+      return res.status(201).json({ message: "your post is found", findPost });
+    })
+    .catch((error) => res.status(401).json({ error }));
+});
 
 /*
 app.get('/user', async (req,res,next)=>{

@@ -45,23 +45,38 @@
             <div>
               <button
                 v-if="userId === userAndPostDetail.User.id"
-                @click="() => TogglePopup('buttonTrigger')"
+                @click="
+                  editPost(
+                    userAndPostDetail.id,
+                    userAndPostDetail.content,
+                    userAndPostDetail.attachement
+                  )
+                "
               >
                 Edit post
               </button>
-              <Popup
+            </div>
+
+            <!---------model---------->
+            <!--@click="() => TogglePopup('buttonTrigger')"
+             <button
+                v-if="userId === userAndPostDetail.User.id"
+                @click="editPost(userAndPostDetail.id)"
+              >
+                Edit post
+              </button>
+                 <Popup
                 v-if="popupTriggers.buttonTrigger"
                 :TogglePopup="() => TogglePopup('buttonTrigger')"
               >
                 <h3>my popup</h3>
               </Popup>
-            </div>
+            -->
+
+            <!---------end model---------->
 
             <!---------end popup---------->
-            <button
-              v-if="userId === userAndPostDetail.User.id"
-              @click="editPost"
-            >
+            <button v-if="userId === userAndPostDetail.User.id">
               Delete post
             </button>
           </div>
@@ -88,9 +103,11 @@ import Popup from "./popup.vue";
 //import { defineComponent } from '@vue/composition-api'
 
 export default {
+  // props: ["TogglePopup"],
+
   setup() {
     const popupTriggers = ref({
-      buttonTrigger: false,
+      buttonTrigger: true,
     });
     const TogglePopup = (trigger) => {
       popupTriggers.value[trigger] = !popupTriggers.value[trigger];
@@ -105,9 +122,15 @@ export default {
   name: "Posts",
   components: {
     Post,
-    Popup,
-  },
 
+    // Popup,
+  },
+  // new Vue({
+  //   el: '#editpost',
+  //   data: {
+  //     show: true
+  //   }
+  // }),
   data() {
     return {
       userAndPostDetails: [],
@@ -116,6 +139,8 @@ export default {
       content: "",
       comment: "",
       userId: "",
+      show: true,
+      postId: "",
     };
   },
   mounted() {
@@ -140,7 +165,7 @@ export default {
       })
       .then((res) => {
         this.userId = res.data.findUser.id;
-        console.log(res.data.findUser.id);
+        //console.log(res.data.findUser.id);
       });
   },
   created() {},
@@ -173,6 +198,17 @@ export default {
         //console.log(this.profileimage);
       };
     },
+
+    editPost(id, content, attachement) {
+      this.$router.push({
+        path: `/popupe/${id}`,
+        params: { id, content, attachement },
+      });
+      console.log(id);
+      console.log(content);
+      console.log(attachement);
+    },
+    /*
     editPost() {
       const dataPost = {
         headers: { token: localStorage.getItem("userToken") },
@@ -194,6 +230,7 @@ export default {
         })
         .catch(() => {});
     },
+    */
   },
 };
 </script>

@@ -46,7 +46,7 @@ const routes = [
   },
   {
     name: "popupe",
-    path: "/popupe",
+    path: "/popupe/:id",
     component: popupe,
   },
 ];
