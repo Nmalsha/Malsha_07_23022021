@@ -134,7 +134,7 @@ export default {
       })
       .then((Post) => {
         const dataarrays = Post.data.Post;
-        console.log(dataarrays);
+        // console.log(dataarrays);
         this.userAndPostDetails = dataarrays;
       })
       .catch(() => {});

@@ -152,7 +152,7 @@ export default {
         })
         .then((res) => {
           alert("your post is successfully sent ");
-
+          this.$router.push("/posts");
           console.log(res);
           //console.log(dataUser);
           console.log(dataPost);

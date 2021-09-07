@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
         reference: {
-          model: "Post",
+          model: "Posts",
           key: "id",
         },
       },
