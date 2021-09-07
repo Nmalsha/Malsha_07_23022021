@@ -19,8 +19,8 @@
           </div>
 
           <div class="authorAndDate">
-            <p>{{ userAndPostDetail.User.nom }}</p>
-            <p>{{ userAndPostDetail.User.prenom }}</p>
+            <h6>{{ userAndPostDetail.User.nom }}</h6>
+            <h6>{{ userAndPostDetail.User.prenom }}</h6>
           </div>
         </div>
 
@@ -36,47 +36,31 @@
             />
             <img class="postimage" :src="userAndPostDetail.attachement" />
           </div>
-          <div class="postContent">
-            <input class="postContent__text" />{{ userAndPostDetail.content }}/>
+          <div class="postContent_wrappe">
             <p class="postContent__text">{{ userAndPostDetail.createdAt }}</p>
+            <h5 class="postContent__text">{{ userAndPostDetail.content }}</h5>
             <p class="postContent__text">postid:{{ userAndPostDetail.id }}</p>
+          </div>
+          <!--------popup----------->
+          <div class="button_wrappe">
+            <button
+              class="btn btn-outline-primary my-2 my-sm-0 color "
+              v-if="userId === userAndPostDetail.User.id"
+              @click="
+                editPost(
+                  userAndPostDetail.id,
+                  userAndPostDetail.content,
+                  userAndPostDetail.attachement
+                )
+              "
+            >
+              Edit post
+            </button>
 
-            <!--------popup----------->
-            <div>
-              <button
-                v-if="userId === userAndPostDetail.User.id"
-                @click="
-                  editPost(
-                    userAndPostDetail.id,
-                    userAndPostDetail.content,
-                    userAndPostDetail.attachement
-                  )
-                "
-              >
-                Edit post
-              </button>
-            </div>
-
-            <!---------model---------->
-            <!--@click="() => TogglePopup('buttonTrigger')"
-             <button
-                v-if="userId === userAndPostDetail.User.id"
-                @click="editPost(userAndPostDetail.id)"
-              >
-                Edit post
-              </button>
-                 <Popup
-                v-if="popupTriggers.buttonTrigger"
-                :TogglePopup="() => TogglePopup('buttonTrigger')"
-              >
-                <h3>my popup</h3>
-              </Popup>
-            -->
-
-            <!---------end model---------->
-
-            <!---------end popup---------->
-            <button v-if="userId === userAndPostDetail.User.id">
+            <button
+              class="btn btn-outline-primary my-2 my-sm-0 color "
+              v-if="userId === userAndPostDetail.User.id"
+            >
               Delete post
             </button>
           </div>
@@ -85,7 +69,7 @@
         <div class="postactions comment_div">
           <button @click="toggle = !toggle">click to comment</button>
           <input
-            v-show="toggle"
+            v-show="!toggle"
             v-model="comment"
             placeholder="add multiple lines"
           />
@@ -153,6 +137,7 @@ export default {
         console.log(Post);
         const dataarrays = Post.data.Post;
         this.userAndPostDetails = dataarrays;
+        //this.postId = userAndPostDetail.id ;
         console.log(dataarrays);
         //const datafirstarrayObject = dataarrays[0];
         console.log(dataarrays[0].User);
@@ -171,10 +156,16 @@ export default {
   created() {},
   methods: {
     sendcomment() {
+      //get clicked post Id
+      const clickedPostId = this.postId;
+      console.log(clickedPostId);
+      //get user Id
+
       axios
-        .post("http://localhost:3000/comment", {
+        .post("http://localhost:3000/comment", +this.postId, {
           headers: { token: localStorage.getItem("userToken") },
           comment: this.comment,
+          postId: +this.postId,
         })
         .then(
           (reponse) => {
@@ -279,8 +270,10 @@ export default {
   margin-top: 20px;
   width: 40%;
 }
-.postContent {
+
+.postContent_wrappe {
   width: 50%;
+  display: grid;
 }
 .postimage {
   width: 200px;
@@ -317,5 +310,18 @@ textarea {
   justify-content: space-between;
   background-color: blanchedalmond;
   border-radius: 40px 40px 40px 40px;
+}
+.button_wrappe {
+  display: grid;
+  justify-content: center;
+  margin: 20px;
+}
+.button_wrappe button {
+  height: 51px;
+  font-size: 15px;
+}
+
+p {
+  font-size: 12px;
 }
 </style>

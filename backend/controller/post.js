@@ -64,50 +64,16 @@ exports.getAllPost = (req, res) => {
       message: "got all post",
     })
   );
+};
 
-  exports.getOnePost = async (req, res, next) => {
-    console.log("toto");
-    //console.log(req.params.id);
-    // const getOnPost = Post.findOne({
-    //   _id: req.params.id,
-    // })
-    //   .then((getOnPost) => res.status(200).json(getOnPost))
-    //   .catch((error) => res.status(400).json({ error }));
-  };
-  //Post.findAll({
-
-  /*
-    order: [["createdAt", "DESC"]],
-    attributes: {
-      exclude: ["updatedAt"],
-    },
-    include: [
-      {
-        model: User,
-        attributes: ["nom", "prenom", "profileimage"],
-      },
-      {
-        model: Comment,
-        attributes: ["comment", "userId", "id"],
-        include: [
-          {
-            model: User,
-            attributes: ["nom", "prenom", "profileimage"],
-          },
-        ],
-      },
-    ],
-   
-  //})
-  then((Post) =>
-    res.status(201).json(
-      {
-        Post,
-      }
-      //console.log("toto")
-    )
-  );
-   */
+exports.getOnePost = async (req, res, next) => {
+  console.log("toto");
+  //console.log(req.params.id);
+  // const getOnPost = Post.findOne({
+  //   _id: req.params.id,
+  // })
+  //   .then((getOnPost) => res.status(200).json(getOnPost))
+  //   .catch((error) => res.status(400).json({ error }));
 };
 
 exports.getAllPostsForOneUser = async (req, res, next) => {
@@ -126,5 +92,43 @@ exports.getAllPostsForOneUser = async (req, res, next) => {
         message: "got all post created by One user",
       })
     );
+  });
+};
+
+exports.editPost = async (req, res) => {
+  console.table(req.file);
+  console.log(req.body.post);
+  /** Fin test */
+  const editPost = req.file
+    ? {
+        ...JSON.parse(req.body.post),
+        attachement: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : {
+        ...req.body.post,
+      };
+
+  const token = req.headers.token;
+
+  console.log(editPost.id);
+
+  jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
+    const userId = decoded.userId;
+    console.log(userId);
+    console.log({ ...editPost });
+    Post.update(
+      {
+        ...editPost,
+      },
+      { where: { id: editPost.id } }
+    )
+      .then((editPost) =>
+        res
+          .status(201)
+          .json(console.log(editPost), { message: "post updated", editPost })
+      )
+      .catch((error) => res.status(400).json({ error: error }));
   });
 };

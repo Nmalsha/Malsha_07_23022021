@@ -3,7 +3,7 @@
     <div class="popup-inner">
       <slot />
       <div class="post_wrapp">
-        <div class="addpost_wrappe col-md-4">
+        <div class="eddit_post col-md-4">
           <form class="image_form" enctype="multipart/form-data">
             <div class="roundContainer">
               <img
@@ -14,7 +14,7 @@
               />
             </div>
 
-            <input type="file" @change="UploadPhoto" />
+            <input type="file" @change="updateImage" />
           </form>
           <div class="write_post com-md-9">
             <input
@@ -26,7 +26,7 @@
               aria-label="publication"
               id="publication"
             />
-            <p>this content:{{ postDetails.content }}</p>
+            <p>this content:{{ postDetails.id }}</p>
           </div>
           <div class="write_post com-md-2">
             <div>
@@ -35,8 +35,15 @@
           </div>
         </div>
       </div>
+      <button
+        @click="updatePost"
+        class="btn btn-outline-primary my-2 my-sm-0 color "
+        type="submit"
+      >
+        Update Post
+      </button>
       <router-link to="/posts"> back</router-link>
-      <button class="popup-close" @click="TogglePopup">close popup</button>
+      <!-- <button class="popup-close" @click="TogglePopup">close popup</button>-->
     </div>
   </div>
 </template>
@@ -57,6 +64,7 @@ export default {
     return {
       postDetails: [],
       postImage: "",
+      attachement: "",
       content: "",
       postId: "",
       createdOn: "",
@@ -64,6 +72,7 @@ export default {
     };
   },
   mounted() {
+    /*
     //displaing apropiate data in the post
     axios
       .get("http://localhost:3000/post", {
@@ -71,13 +80,10 @@ export default {
       })
       .then((Post) => {
         console.log(Post);
-        // const dataarrays = Post.data.Post;
-        //this.postDetails = dataarrays;
-        // console.log(dataarrays);
-        //const datafirstarrayObject = dataarrays[0];
-        //console.log(dataarrays[0].User);
+
       })
       .catch(() => {});
+      */
     //pasing selected post id to the back end
     axios
       .get("http://localhost:3000/postid/" + this.id, {
@@ -97,11 +103,46 @@ export default {
     // alert(this.$route.params.id);
   },
   methods: {
-    getParams() {
-      //   console.log(router.params);
-      //   var routerParams = router.params;
-      //   this.createdOn = routerParams.createdOn;
-      //   console.log(routerParams);
+    updateImage(e) {
+      const file = e.target.files[0];
+      this.attachement = file;
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        this.image = fileReader.result;
+
+        console.log(this.attachement);
+      };
+      //fileReader.readAsDataURL(file[0]);
+      //this.image = file[0];
+    },
+    updatePost() {
+      const dataPost = {
+        headers: { token: localStorage.getItem("userToken") },
+        content: this.content,
+        attachement: this.attachement,
+        id: this.id,
+      };
+      console.log(dataPost);
+      console.log(this.attachement);
+      const formData = new FormData();
+      formData.append("image", this.attachement);
+      formData.append("post", JSON.stringify(dataPost));
+      axios
+        .put("http://localhost:3000/post", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            token: localStorage.getItem("userToken"),
+          },
+        })
+
+        .then((editPost) => {
+          alert("post is been updated");
+          this.$router.push("/posts");
+          //console.log(res.email);
+          console.log(editPost);
+        })
+        .catch(() => {});
     },
   },
 };
@@ -123,5 +164,31 @@ export default {
 .popup-inner {
   background: white;
   padding: 32px;
+  height: 400px;
+}
+.eddit_post {
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #ffb3b3;
+  width: 98%;
+  display: flex;
+  justify-content: space-around;
+  padding: 30px;
+  height: 300px;
+}
+.image_form {
+  width: 30%;
+  height: 250px;
+}
+.write_post {
+  width: 50%;
+  height: 250px;
+}
+.write_post input {
+  height: 200px;
+}
+.roundContainer img {
+  height: 120px;
+  width: 150px;
 }
 </style>
