@@ -8,6 +8,7 @@ import post from "../views/post.vue";
 import posts from "../views/posts.vue";
 import myprofile from "../views/myprofile.vue";
 import popupe from "../views/popup.vue";
+import comment from "../views/comment";
 //import { VueElement } from 'vue';
 
 //Vue.routes(VueRouter)
@@ -48,6 +49,11 @@ const routes = [
     name: "popupe",
     path: "/popupe/:id",
     component: popupe,
+  },
+  {
+    name: "comment",
+    path: "/comment/:id",
+    component: comment,
   },
 ];
 

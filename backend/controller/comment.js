@@ -5,13 +5,37 @@ const User = models.User;
 const Comment = models.Comment;
 
 exports.createComment = async (req, res) => {
-  const token = req.body.headers.token;
+  console.log("i am here");
+  const token = req.headers.token;
+  console.log(token);
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
 
-    var comment = JSON.stringify(req.body.comment);
-
-    console.log(userId);
-    console.log(comment);
+    const comment = new Comment({
+      comment: req.body.comment,
+      postId: req.body.postId,
+      userId: userId,
+    });
+    comment.save().then(function (comment) {
+      console.log(comment);
+      return res
+        .status(201)
+        .json({ message: "your comment successfully created" });
+    });
   });
+};
+exports.getAllComment = async (req, res) => {
+  Comment.findAll(
+    {
+      order: [["createdAt", "DESC"]],
+      include: User,
+      include: Post,
+    },
+    console.log(Comment)
+  ).then((Comment) =>
+    res.status(201).json({
+      Comment,
+      message: "got all post",
+    })
+  );
 };

@@ -2,7 +2,7 @@ const models = require("../models");
 const jwt = require("jsonwebtoken");
 const Post = models.Post;
 const User = models.User;
-//const Comment = models.Comment;
+const Comment = models.Comment;
 
 exports.createPost = async (req, res) => {
   const postObject = req.file
@@ -58,6 +58,7 @@ exports.getAllPost = (req, res) => {
   Post.findAll({
     order: [["createdAt", "DESC"]],
     include: User,
+    include: Comment,
   }).then((Post) =>
     res.status(201).json({
       Post,
@@ -98,10 +99,11 @@ exports.getAllPostsForOneUser = async (req, res, next) => {
 exports.editPost = async (req, res) => {
   console.table(req.file);
   console.log(req.body.post);
-  /** Fin test */
+
   const editPost = req.file
     ? {
-        ...JSON.parse(req.body.post),
+        content: JSON.parse(req.body.post).content,
+        id: JSON.parse(req.body.post).id,
         attachement: `${req.protocol}://${req.get("host")}/images/${
           req.file.filename
         }`,
@@ -125,10 +127,47 @@ exports.editPost = async (req, res) => {
       { where: { id: editPost.id } }
     )
       .then((editPost) =>
-        res
-          .status(201)
-          .json(console.log(editPost), { message: "post updated", editPost })
+        res.status(201).json({ message: "post updated", editPost })
       )
       .catch((error) => res.status(400).json({ error: error }));
   });
 };
+
+/*
+exports.editPost = async (req, res) => {
+  console.table(req.file);
+  console.log(req.body.post.content);
+
+  const editPost = req.file
+    ? {
+        content: JSON.parse(req.body.post).content,
+        id: JSON.parse(req.body.post).id,
+        attachement: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : {
+        ...req.body.post,
+      };
+
+  const token = req.headers.token;
+
+  // console.log({ editPost });
+
+  jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
+    const userId = decoded.userId;
+    console.log(userId);
+    console.log({ ...editPost });
+    Post.update(
+      {
+        ...editPost,
+      },
+      { where: { id: editPost.id } }
+    )
+      .then((editPost) =>
+        res.status(201).json({ message: "post updated", editPost })
+      )
+      .catch((error) => res.status(400).json({ error: error }));
+  });
+};
+*/

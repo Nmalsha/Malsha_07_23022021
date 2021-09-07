@@ -26,14 +26,6 @@
 
         <div id="postinfo" class="post_details">
           <div class="postContent__image">
-            <input
-              type="file"
-              ref="image"
-              accept=".jpg,.jpeg,.png"
-              @change="editPostImage"
-              style="display:'none'"
-              v-if="userId === userAndPostDetail.User.id"
-            />
             <img class="postimage" :src="userAndPostDetail.attachement" />
           </div>
           <div class="postContent_wrappe">
@@ -60,6 +52,7 @@
             <button
               class="btn btn-outline-primary my-2 my-sm-0 color "
               v-if="userId === userAndPostDetail.User.id"
+              @click="deletePost"
             >
               Delete post
             </button>
@@ -67,14 +60,20 @@
         </div>
 
         <div class="postactions comment_div">
-          <button @click="toggle = !toggle">click to comment</button>
-          <input
-            v-show="!toggle"
-            v-model="comment"
-            placeholder="add multiple lines"
-          />
-          <button @click="sendcomment">send comment</button>
+          <button @click="sendcomment(userAndPostDetail.id)">
+            add comment
+          </button>
         </div>
+        <!-------------------dicplay comment --------->
+        <div v-if="userAndPostDetail.id" class="postactions comment_div">
+          <p>
+            User
+          </p>
+          <p @click="sendcomment(userAndPostDetail.id)">
+            comment here
+          </p>
+        </div>
+        <!-------------------dicplay comment --------->
       </form>
     </div>
   </div>
@@ -121,7 +120,7 @@ export default {
       toggle: true,
       postImage: "",
       content: "",
-      comment: "",
+      commentDetails: [],
       userId: "",
       show: true,
       postId: "",
@@ -134,13 +133,9 @@ export default {
         headers: { token: localStorage.getItem("userToken") },
       })
       .then((Post) => {
-        console.log(Post);
         const dataarrays = Post.data.Post;
-        this.userAndPostDetails = dataarrays;
-        //this.postId = userAndPostDetail.id ;
         console.log(dataarrays);
-        //const datafirstarrayObject = dataarrays[0];
-        console.log(dataarrays[0].User);
+        this.userAndPostDetails = dataarrays;
       })
       .catch(() => {});
     //get current user id
@@ -152,42 +147,32 @@ export default {
         this.userId = res.data.findUser.id;
         //console.log(res.data.findUser.id);
       });
+
+    //get all comments
+
+    axios
+      .get("http://localhost:3000/comment", {
+        headers: { token: localStorage.getItem("userToken") },
+      })
+      .then((Comment) => {
+        console.log(Comment.data.Comment);
+        const commentArrays = Comment.data.Comment;
+        this.commentDetails = commentArrays;
+        //this.postId = userAndPostDetail.id ;
+        //console.log(dataarrays);
+        //const datafirstarrayObject = dataarrays[0];
+        //console.log(dataarrays[0].User);
+      })
+      .catch(() => {});
   },
   created() {},
-  methods: {
-    sendcomment() {
-      //get clicked post Id
-      const clickedPostId = this.postId;
-      console.log(clickedPostId);
-      //get user Id
 
-      axios
-        .post("http://localhost:3000/comment", +this.postId, {
-          headers: { token: localStorage.getItem("userToken") },
-          comment: this.comment,
-          postId: +this.postId,
-        })
-        .then(
-          (reponse) => {
-            console.log("comenthere");
-            console.log(reponse.data);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    },
-    editPostImage(e) {
-      const file = e.target.files[0];
-      this.postImage = file;
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        this.postImage = fileReader.result;
-        // this.avatar = e.target.result;
-        console.log(this.image);
-        //console.log(this.profileimage);
-      };
+  methods: {
+    //send post id to comment.vue
+    sendcomment(id) {
+      this.$router.push({
+        path: `/comment/${id}`,
+      });
     },
 
     editPost(id, content, attachement) {
@@ -199,29 +184,18 @@ export default {
       console.log(content);
       console.log(attachement);
     },
-    /*
-    editPost() {
-      const dataPost = {
-        headers: { token: localStorage.getItem("userToken") },
-
-        content: this.content,
-      };
-      const formData = new FormData();
-      formData.append("postImage", this.postImage);
-      formData.append("user", JSON.stringify(dataPost));
+    deletePost() {
       axios
-        .put("http://localhost:3000/post", formData, {
+        .delete("http://localhost:3000/post", {
           headers: { token: localStorage.getItem("userToken") },
         })
         .then((res) => {
-          alert("your post is been updated");
+          alert("post is been deleted");
           this.$router.push("/posts");
-          //console.log(res.email);
-          console.log(res.data);
+          console.log(res);
         })
         .catch(() => {});
     },
-    */
   },
 };
 </script>

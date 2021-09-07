@@ -58,9 +58,6 @@
               Envoyer
             </button>
           </div>
-          <div class="btn_annule btn_color">
-            <v-btn>Annuler</v-btn>
-          </div>
         </div>
       </div>
     </div>
