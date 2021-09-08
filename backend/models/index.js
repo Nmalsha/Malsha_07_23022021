@@ -50,4 +50,9 @@ const comment = (db.Comment = require("./comment")(sequelize, Sequelize));
 
 post.belongsTo(user);
 comment.belongsTo(post);
+comment.belongsTo(user);
+
+//post.hasMany(comment, { foreignKey: "postId" });
+//comment.hasOne(user, { foreignKey: "userId" });
+
 module.exports = db;

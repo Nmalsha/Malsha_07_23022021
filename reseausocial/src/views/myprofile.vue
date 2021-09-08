@@ -46,7 +46,7 @@
 
           <input
             type="file"
-            ref="image"
+            ref="profileimage"
             accept=".jpg,.jpeg,.png"
             @change="UpdatePhoto"
           />
@@ -92,6 +92,13 @@
           >
             update later</router-link
           >
+          <button
+            @click="deleteProfile(id)"
+            class="btn btn-outline-primary my-2 my-sm-0 color "
+            type="submit"
+          >
+            delete Profile
+          </button>
         </div>
       </div>
     </div>
@@ -183,7 +190,7 @@ export default {
         this.image = fileReader.result;
         // this.avatar = e.target.result;
         console.log(this.image);
-        //console.log(this.profileimage);
+        console.log(this.profileimage);
       };
       //fileReader.readAsDataURL(file[0]);
       //this.image = file[0];
@@ -213,6 +220,20 @@ export default {
         })
         .then((res) => {
           alert("profile is been updated");
+          this.$router.push("/posts");
+          //console.log(res.email);
+          console.log(res.data);
+        })
+        .catch(() => {});
+    },
+
+    deleteProfile(id) {
+      axios
+        .delete(`http://localhost:3000/user/${id}`, {
+          headers: { token: localStorage.getItem("userToken") },
+        })
+        .then((res) => {
+          alert("profile is been deleted");
           this.$router.push("/posts");
           //console.log(res.email);
           console.log(res.data);

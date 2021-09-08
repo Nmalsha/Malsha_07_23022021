@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       //console.log("Yes ......");
       //models.User.hasMany(models.Post, { foreignKey: "userId" });
       models.Post.belongsTo(models.User, { foreignKey: "userId" });
-      models.Post.hasMany(models.Comment, {
-        onDelete: "cascade",
-        foreignKey: "userId",
-      });
+      // models.Post.hasMany(models.Comment, {
+      //   onDelete: "cascade",
+      //   foreignKey: "userId",
+      // });
     }
   }
   Post.init(

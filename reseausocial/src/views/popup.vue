@@ -42,7 +42,12 @@
       >
         Update Post
       </button>
-      <router-link to="/posts"> back</router-link>
+      <router-link
+        class="btn btn-outline-primary my-2 my-sm-0 color "
+        to="/posts"
+      >
+        update later</router-link
+      >
       <!-- <button class="popup-close" @click="TogglePopup">close popup</button>-->
     </div>
   </div>

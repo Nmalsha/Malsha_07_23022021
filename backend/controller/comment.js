@@ -24,18 +24,24 @@ exports.createComment = async (req, res) => {
     });
   });
 };
-exports.getAllComment = async (req, res) => {
+exports.getAllComment = (req, res) => {
   Comment.findAll(
     {
       order: [["createdAt", "DESC"]],
-      include: User,
-      include: Post,
-    },
-    console.log(Comment)
+      include: [Post, User],
+    }
+
+    /*
+    {
+      order: [["createdAt", "DESC"]],
+      include: [User, Post],
+    }
+    */
+    //console.log("toto")
   ).then((Comment) =>
-    res.status(201).json({
+    res.status(200).json({
       Comment,
-      message: "got all post",
+      message: "got all comments",
     })
   );
 };

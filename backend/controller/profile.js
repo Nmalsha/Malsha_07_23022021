@@ -56,10 +56,7 @@ exports.updateUserProfile = async (req, res, next) => {
 
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
-    /** !TODO
-     * On arrive pas a get le token.
-     * Vérifier pourquoiça ne fonctionne pas.
-     */
+
     //console.log("userId: " + userId);
 
     if (userId === editProfileObject.id) {
@@ -75,6 +72,23 @@ exports.updateUserProfile = async (req, res, next) => {
         .catch((error) => res.status(400).json({ error: error }));
     } else {
       throw new Error("403: unauthorized request");
+    }
+  });
+};
+exports.deleteProfile = async (req, res, next) => {
+  const token = req.headers.token;
+  console.log(token);
+  console.log(req.params.id);
+  jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
+    const userId = decoded.userId;
+    if (userId === req.params.id) {
+      User.destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
+        .then(() => res.status(201).json({ message: "user deleted" }))
+        .catch((error) => res.status(400).json({ error: error }));
     }
   });
 };

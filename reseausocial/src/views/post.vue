@@ -36,10 +36,21 @@
       <div class="addpost_wrappe col-md-4">
         <form class="image_form" enctype="multipart/form-data">
           <div class="roundContainer">
-            <img src="image" alt="" width="50px" height="50px" />
+            <img
+              class="post_image"
+              alt="post photo"
+              :src="attachement"
+              width="50px"
+              height="50px"
+            />
           </div>
 
-          <input type="file" @change="UploadPhoto" />
+          <input
+            type="file"
+            ref="postimage"
+            accept=".jpg,.jpeg,.png"
+            @change="UploadPhoto"
+          />
         </form>
         <div class="write_post com-md-9">
           <input
@@ -74,7 +85,7 @@ export default {
       email: "",
       nom: "",
       prenom: "",
-      profileimage: "",
+      postImage: "",
       userId: "",
       content: "",
       attachement: "",
@@ -98,7 +109,7 @@ export default {
         this.prenom = res.data.findUser.prenom;
         this.email = res.data.findUser.email;
         this.userId = res.data.findUser.id;
-        console.log(res.data.findUser);
+        //console.log(res.data.findUser);
       });
   },
   methods: {
@@ -113,11 +124,11 @@ export default {
 
       //display image
 
-      // const fileReader = new FileReader();
-      // fileReader.readAsDataURL(file);
-      // fileReader.onload = () => {
-      //   this.image = fileReader.result;
-      // };
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        this.image = fileReader.result;
+      };
       //fileReader.readAsDataURL(file[0]);
       //this.image = file[0];
     },
@@ -129,7 +140,7 @@ export default {
         email: this.email,
         nom: this.nom,
         prenom: this.prenom,
-        profileimage: this.profileimage,
+        postImage: this.postImage,
       };
       //console.log(dataUser);
       const dataPost = {
@@ -229,5 +240,10 @@ button {
 button:hover {
   background-color: #d8afaf;
   box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
+}
+.roundContainer {
+  height: 100px;
+  border: 1px solid black;
+  width: 100px;
 }
 </style>

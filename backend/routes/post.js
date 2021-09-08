@@ -8,4 +8,5 @@ router.get("/post", multer, postCtrl.getAllPost);
 //router.get("/onepos", multer, postCtrl.getOnePost);
 router.get("/postsuser", multer, postCtrl.getAllPostsForOneUser);
 router.put("/post", multer, postCtrl.editPost);
+router.delete("/post/:id", postCtrl.deletePost);
 module.exports = router;

@@ -1,26 +1,27 @@
 <template>
-  <div>
-    <p>
-      <button class="btn_color">Postid: {{ postId }}</button>
-    </p>
+  <main>
+    <div class="comment_wrappe">
+      <p class="p1">
+        <button class="btn_color">Postid: {{ postId }}</button>
+      </p>
 
-    <p>
-      <label for="text">Comment</label
-      ><textarea
-        name="text"
-        id="text"
-        v-model="comment"
-        placeholder="Enter comment"
-      ></textarea>
-    </p>
+      <p class="p2">
+        <textarea
+          name="text"
+          id="text"
+          v-model="comment"
+          placeholder="Enter comment"
+        ></textarea>
+      </p>
 
-    <p>
-      <label for="submit"></label
-      ><button @click="postComment" id="submit" class="btn btn-primary">
-        Submit
-      </button>
-    </p>
-  </div>
+      <p class="p3">
+        <label for="submit"></label
+        ><button @click="postComment" id="submit" class="btn btn-primary">
+          Submit
+        </button>
+      </p>
+    </div>
+  </main>
 </template>
 <script>
 import axios from "axios";
@@ -76,3 +77,29 @@ export default {
   },
 };
 </script>
+<style scoped>
+.comment_wrappe {
+  background-color: #ffb3b3;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+main {
+  display: flex;
+  justify-content: center;
+}
+.p1 {
+  width: 10%;
+}
+.p2 {
+  width: 50%;
+}
+.p3 {
+  width: 30%;
+}
+textarea {
+  width: 100%;
+}
+</style>

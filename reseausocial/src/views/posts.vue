@@ -14,13 +14,14 @@
             <img
               class="userprofileimage"
               :src="userAndPostDetail.User.profileimage"
-              @click="relatedProfilePage"
+              @click="relatedProfilePage(userAndPostDetail.User.id)"
             />
           </div>
 
           <div class="authorAndDate">
             <h6>{{ userAndPostDetail.User.nom }}</h6>
             <h6>{{ userAndPostDetail.User.prenom }}</h6>
+            <h6>{{ userAndPostDetail.User.id }}</h6>
           </div>
         </div>
 
@@ -48,29 +49,25 @@
             >
               Edit post
             </button>
-
             <button
               class="btn btn-outline-primary my-2 my-sm-0 color "
               v-if="userId === userAndPostDetail.User.id"
-              @click="deletePost"
+              @click="deletePost(userAndPostDetail.id)"
             >
               Delete post
             </button>
           </div>
         </div>
-
         <div class="postactions comment_div">
           <button @click="sendcomment(userAndPostDetail.id)">
             add comment
           </button>
         </div>
         <!-------------------dicplay comment --------->
-        <div v-if="userAndPostDetail.id" class="postactions comment_div">
-          <p>
-            User
-          </p>
+        <div class="postactions comment_div">
+          <p>postidcomment:{{}}</p>
           <p @click="sendcomment(userAndPostDetail.id)">
-            comment here
+            {{ tuiyt }}
           </p>
         </div>
         <!-------------------dicplay comment --------->
@@ -117,10 +114,11 @@ export default {
   data() {
     return {
       userAndPostDetails: [],
+      userPostAndCommentDetails: [],
       toggle: true,
       postImage: "",
       content: "",
-      commentDetails: [],
+      commentAndPostDetails: [],
       userId: "",
       show: true,
       postId: "",
@@ -134,7 +132,9 @@ export default {
       })
       .then((Post) => {
         const dataarrays = Post.data.Post;
-        // console.log(dataarrays);
+        console.log(dataarrays);
+        //console.log(this.userAndPostDetails.id);
+        //console.log(dataarrays.User);
         this.userAndPostDetails = dataarrays;
       })
       .catch(() => {});
@@ -154,10 +154,12 @@ export default {
       .get("http://localhost:3000/comment", {
         headers: { token: localStorage.getItem("userToken") },
       })
-      .then((Comment) => {
-        console.log(Comment.data.Comment);
-        const commentArrays = Comment.data.Comment;
-        this.commentDetails = commentArrays;
+      .then((res) => {
+        //console.log(res.data);
+        console.log(res.data.Comment);
+        const userPostCommentArray = res.data.Comment;
+        //console.log(userPostAndCommentDetails.Post);
+        this.commentAndPostDetails = userPostCommentArray;
         //this.postId = userAndPostDetail.id ;
         //console.log(dataarrays);
         //const datafirstarrayObject = dataarrays[0];
@@ -168,6 +170,11 @@ export default {
   created() {},
 
   methods: {
+    //redirecting to the appropiate user profiles
+
+    // relatedProfilePage(id){
+
+    // },
     //send post id to comment.vue
     sendcomment(id) {
       this.$router.push({
@@ -184,15 +191,16 @@ export default {
       console.log(content);
       console.log(attachement);
     },
-    deletePost() {
+
+    deletePost(id) {
       axios
-        .delete("http://localhost:3000/post", {
+        .delete(`http://localhost:3000/post/${id}`, {
           headers: { token: localStorage.getItem("userToken") },
         })
         .then((res) => {
           alert("post is been deleted");
           this.$router.push("/posts");
-          console.log(res);
+          res;
         })
         .catch(() => {});
     },
