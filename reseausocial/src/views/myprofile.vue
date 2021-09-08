@@ -229,8 +229,8 @@ export default {
 
     deleteProfile(id) {
       axios
-        .delete(`http://localhost:3000/user/${id}`, {
-          headers: { token: localStorage.getItem("userToken") },
+        .delete("http://localhost:3000/user/:id", {
+          headers: { token: localStorage.getItem("userToken"), id },
         })
         .then((res) => {
           alert("profile is been deleted");

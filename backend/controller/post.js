@@ -133,24 +133,29 @@ exports.editPost = async (req, res) => {
   });
 };
 
-exports.deletePost = (req, res, next) => {
+exports.deletePost = async (req, res, next) => {
   console.log(req.params.id);
+  console.log(req.headers.id);
   Post.findOne({
     where: {
-      id: req.params.id,
+      id: req.headers.id,
     },
   })
     .then((post) => {
       const filename = post.imageUrl.split("/images")[1];
+      console.log(post);
       console.log(filename);
 
       fs.unlink(`images/${filename}`, () => {
         Post.destroy({
           where: {
-            id: req.params.id,
+            id: req.headers.id,
           },
         })
-          .then(() => res.status(201).json({ message: "objet supprimé!" }))
+          .then((deleted) => {
+            console.log(deleted);
+          })
+          // .then(() => res.status(201).json({ message: "objet supprimé!" }))
           .catch((error) => res.status(400).json({ error: error }));
       });
     })

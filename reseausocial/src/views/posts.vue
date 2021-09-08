@@ -4,7 +4,7 @@
 
     <div class="form_wrappe">
       <form
-        class="DetailsOfPostOwnerForm "
+        class="DetailsOfPostOwnerForm"
         enctype="multipart/form-data"
         v-for="userAndPostDetail in userAndPostDetails"
         v-bind:key="userAndPostDetail.id"
@@ -37,7 +37,7 @@
           <!--------popup----------->
           <div class="button_wrappe">
             <button
-              class="btn btn-outline-primary my-2 my-sm-0 color "
+              class="btn btn-outline-primary my-2 my-sm-0 color"
               v-if="userId === userAndPostDetail.User.id"
               @click="
                 editPost(
@@ -50,7 +50,7 @@
               Edit post
             </button>
             <button
-              class="btn btn-outline-primary my-2 my-sm-0 color "
+              class="btn btn-outline-primary my-2 my-sm-0 color"
               v-if="userId === userAndPostDetail.User.id"
               @click="deletePost(userAndPostDetail.id)"
             >
@@ -65,7 +65,13 @@
         </div>
         <!-------------------dicplay comment --------->
         <div class="postactions comment_div">
-          <p>postidcomment:{{}}</p>
+          <div v-for="item in commentAndPostDetails" v-bind:key="item.id">
+            <div v-if="item.postId == userAndPostDetail.id">
+              <p>postidcomment:{{ item.id }}</p>
+              <p>nom:{{ item.User.nom }}</p>
+              <p>comment:{{ item.comment }}</p>
+            </div>
+          </div>
           <p @click="sendcomment(userAndPostDetail.id)">
             {{ tuiyt }}
           </p>
@@ -194,8 +200,8 @@ export default {
 
     deletePost(id) {
       axios
-        .delete(`http://localhost:3000/post/${id}`, {
-          headers: { token: localStorage.getItem("userToken") },
+        .delete("http://localhost:3000/post/:id", {
+          headers: { token: localStorage.getItem("userToken"), id },
         })
         .then((res) => {
           alert("post is been deleted");

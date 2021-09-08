@@ -75,20 +75,19 @@ exports.updateUserProfile = async (req, res, next) => {
     }
   });
 };
-exports.deleteProfile = async (req, res, next) => {
+exports.deleteProfile = async (req, res) => {
   const token = req.headers.token;
   console.log(token);
-  console.log(req.params.id);
+  console.log(req.headers.id);
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
-    if (userId === req.params.id) {
-      User.destroy({
+    console.log(userId);
+    if (userId === req.headers.id) {
+      User.deleteOne({
         where: {
-          id: req.params.id,
+          id: req.headers.id,
         },
-      })
-        .then(() => res.status(201).json({ message: "user deleted" }))
-        .catch((error) => res.status(400).json({ error: error }));
+      }).then(() => res.status(201).json({ message: "objet supprimé!" }));
     }
   });
 };
