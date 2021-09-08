@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const models = require("../models");
-//const { col } = require("sequelize/types");
+//const fs = require("fs");
 const User = models.User;
 const Post = models.Post;
 // const multer = require("multer");
@@ -75,19 +75,35 @@ exports.updateUserProfile = async (req, res, next) => {
     }
   });
 };
+
 exports.deleteProfile = async (req, res) => {
   const token = req.headers.token;
-  console.log(token);
-  console.log(req.headers.id);
+
+  console.log(req.params.id);
+
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
     console.log(userId);
-    if (userId === req.headers.id) {
-      User.deleteOne({
-        where: {
-          id: req.headers.id,
-        },
-      }).then(() => res.status(201).json({ message: "objet supprimé!" }));
-    }
+
+    User.findOne({
+      where: {
+        id: req.params.id,
+      },
+    }).then((user) => {
+      const filename = user.profileimage.split("/images")[1];
+      console.log(user);
+      console.log(filename);
+
+      fs.unlink(`images/${filename}`, () => {
+        User.destroy({
+          where: {
+            id: req.params.id,
+          },
+        })
+
+          .then(() => res.status(201).json({ message: "objet supprimé!" }))
+          .catch((error) => res.status(500).json({ message: error.message }));
+      });
+    });
   });
 };

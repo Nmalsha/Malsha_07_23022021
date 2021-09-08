@@ -86,7 +86,7 @@ export default {
               "Bearer " + response.data.token;
             // this.setUser (user);
             // this.setToken (token);
-            this.$router.push("/posts");
+            this.$router.push("/myprofile");
           },
           (error) => {
             console.log(error);

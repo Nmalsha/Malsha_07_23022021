@@ -1,5 +1,6 @@
 const models = require("../models");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 const Post = models.Post;
 const User = models.User;
 const Comment = models.Comment;
@@ -135,69 +136,29 @@ exports.editPost = async (req, res) => {
 
 exports.deletePost = async (req, res, next) => {
   console.log(req.params.id);
+
   console.log(req.headers.id);
   Post.findOne({
     where: {
-      id: req.headers.id,
+      id: req.params.id,
     },
   })
     .then((post) => {
-      const filename = post.imageUrl.split("/images")[1];
+      const filename = post.attachement.split("/images")[1];
       console.log(post);
       console.log(filename);
 
       fs.unlink(`images/${filename}`, () => {
         Post.destroy({
           where: {
-            id: req.headers.id,
+            id: req.params.id,
           },
         })
-          .then((deleted) => {
-            console.log(deleted);
-          })
-          // .then(() => res.status(201).json({ message: "objet supprimé!" }))
-          .catch((error) => res.status(400).json({ error: error }));
+
+          .then(() => res.status(201).json({ message: "objet supprimé!" }))
+          .catch((error) => res.status(500).json({ message: error.message }));
       });
     })
 
-    .catch((error) => res.status(400).json({ error: error }));
+    .catch((error) => res.status(500).json({ message: error.message }));
 };
-
-/*
-exports.editPost = async (req, res) => {
-  console.table(req.file);
-  console.log(req.body.post.content);
-
-  const editPost = req.file
-    ? {
-        content: JSON.parse(req.body.post).content,
-        id: JSON.parse(req.body.post).id,
-        attachement: `${req.protocol}://${req.get("host")}/images/${
-          req.file.filename
-        }`,
-      }
-    : {
-        ...req.body.post,
-      };
-
-  const token = req.headers.token;
-
-  // console.log({ editPost });
-
-  jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
-    const userId = decoded.userId;
-    console.log(userId);
-    console.log({ ...editPost });
-    Post.update(
-      {
-        ...editPost,
-      },
-      { where: { id: editPost.id } }
-    )
-      .then((editPost) =>
-        res.status(201).json({ message: "post updated", editPost })
-      )
-      .catch((error) => res.status(400).json({ error: error }));
-  });
-};
-*/

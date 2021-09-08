@@ -226,11 +226,11 @@ export default {
         })
         .catch(() => {});
     },
-
+    /*
     deleteProfile(id) {
       axios
-        .delete("http://localhost:3000/user/:id", {
-          headers: { token: localStorage.getItem("userToken"), id },
+        .delete(`http://localhost:3000/user/${id}`, {
+          headers: { token: localStorage.getItem("userToken") },
         })
         .then((res) => {
           alert("profile is been deleted");
@@ -240,6 +240,7 @@ export default {
         })
         .catch(() => {});
     },
+    */
   },
 };
 </script>

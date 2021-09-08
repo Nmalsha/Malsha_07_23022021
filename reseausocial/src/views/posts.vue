@@ -4,6 +4,7 @@
 
     <div class="form_wrappe">
       <form
+        method="post"
         class="DetailsOfPostOwnerForm"
         enctype="multipart/form-data"
         v-for="userAndPostDetail in userAndPostDetails"
@@ -200,8 +201,8 @@ export default {
 
     deletePost(id) {
       axios
-        .delete("http://localhost:3000/post/:id", {
-          headers: { token: localStorage.getItem("userToken"), id },
+        .delete(`http://localhost:3000/post/${id}`, {
+          headers: { token: localStorage.getItem("userToken") },
         })
         .then((res) => {
           alert("post is been deleted");
