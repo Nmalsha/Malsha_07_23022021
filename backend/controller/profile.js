@@ -95,16 +95,14 @@ exports.deleteProfile = async (req, res) => {
       console.log(user);
       console.log(filename);
 
-      fs.unlink(`images/${filename}`, () => {
-        User.destroy({
-          where: {
-            id: req.params.id,
-          },
-        })
+      User.destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
 
-          .then(() => res.status(201).json({ message: "objet supprimé!" }))
-          .catch((error) => res.status(500).json({ message: error.message }));
-      });
+        .then(() => res.status(201).json({ message: "objet supprimé!" }))
+        .catch((error) => res.status(500).json({ message: error.message }));
     });
   });
 };

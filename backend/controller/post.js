@@ -133,11 +133,38 @@ exports.editPost = async (req, res) => {
       .catch((error) => res.status(400).json({ error: error }));
   });
 };
-
-exports.deletePost = async (req, res, next) => {
+exports.deletePost = (req, res, next) => {
   console.log(req.params.id);
 
   console.log(req.headers.id);
+  Post.findOne({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((post) => {
+      const filename = post.attachement.split("/images")[1];
+      console.log(post);
+      console.log(filename);
+
+      fs.unlink(`app/images/${filename}`, (err) => {
+        return err ? console.log(err) : console.log("image supprimée !");
+      });
+      return Post.destroy({ where: { id: req.params.id } })
+
+        .then(() => res.status(201).json({ message: "objet supprimé!" }))
+        .catch((error) => res.status(500).json({ message: error.message }));
+    })
+
+    .catch((error) => res.status(500).json({ message: error.message }));
+};
+
+/*
+exports.deletePost = (req, res) => {
+  console.log("here");
+
+  console.log(req.params.id);
+
   Post.findOne({
     where: {
       id: req.params.id,
@@ -162,3 +189,4 @@ exports.deletePost = async (req, res, next) => {
 
     .catch((error) => res.status(500).json({ message: error.message }));
 };
+*/

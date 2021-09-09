@@ -16,7 +16,11 @@
 
       <p class="p3">
         <label for="submit"></label
-        ><button @click="postComment" id="submit" class="btn btn-primary">
+        ><button
+          @click="postComment"
+          id="submit"
+          class="btn btn-outline-primary my-2 my-sm-0 color"
+        >
           Submit
         </button>
       </p>

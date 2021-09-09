@@ -37,7 +37,7 @@
               <img
                 class="profile_image"
                 alt="profile photo"
-                :src="image"
+                :src="profileimage"
                 width="50px"
                 height="50px"
               />
@@ -95,7 +95,7 @@
           >
         </div>
         <button
-          @click="deleteProfile"
+          @click="deleteProfile(id)"
           class="btn btn-outline-primary my-2 my-sm-0 color "
           type="submit"
         >

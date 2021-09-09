@@ -38,50 +38,40 @@
             </p>
           </div>
 
-          <!--------popup----------->
           <div class="button_wrappe">
             <div>
-              <!-- <button
-              class="btn btn-outline-primary my-2 my-sm-0 color"
-              v-if="userId === userAndPostDetail.User.id"
-              @click="editPost(userAndPostDetail.id)"
-            >
-              Edit post
-            </button> -->
+              <!--------edit and delete post----------->
               <i
                 class="fas fa-edit"
-                v-if="userId === userAndPostDetail.User.id"
+                v-if="userId === userAndPostDetail.User.id || isAdmin"
                 @click="editPost(userAndPostDetail.id)"
               ></i>
             </div>
-            <div>
-              <!-- <button
-              class="btn btn-outline-primary my-2 my-sm-0 color"
-              v-if="userId === userAndPostDetail.User.id"
-              @click="deletePost(userAndPostDetail.id)"
-            >
-              Delete post
-            </button> -->
+            <!-- <div>
               <i
                 class="fas fa-trash-alt"
-                v-if="userId === userAndPostDetail.User.id"
+                v-if="userId === userAndPostDetail.User.id || isAdmin"
                 @click="deletePost(userAndPostDetail.id)"
               ></i>
+            </div> -->
+            <div>
+              <button
+                class="btn btn-primary btn-block w-25"
+                v-if="userId === userAndPostDetail.User.id || isAdmin"
+                @click="deletePost(userAndPostDetail.id)"
+              ></button>
             </div>
           </div>
         </div>
         <div class="postactions_comment">
-          <!-- <button
-            @click="sendcomment(userAndPostDetail.id)"
-            class="postactions_comment"
-          ></button> -->
+          <!-------------------section comment --------->
+
           <i
             class="fa fa-comments postactions_comment"
             @click="sendcomment(userAndPostDetail.id)"
             aria-hidden="true"
           ></i>
         </div>
-        <!-------------------dicplay comment --------->
 
         <div
           class=" comment_div "
@@ -154,6 +144,7 @@ export default {
       postId: "",
       formattedTime: "",
       createdAt: moment(),
+      isAdmin: "",
     };
   },
   mounted() {
@@ -197,7 +188,7 @@ export default {
         //const datafirstarrayObject = dataarrays[0];
         //console.log(dataarrays[0].User);
       })
-      .catch(() => {});
+      .catch((error) => ({ message: error.message }));
   },
 
   // watch: {
@@ -273,11 +264,18 @@ export default {
           headers: { token: localStorage.getItem("userToken") },
         })
         .then((res) => {
+          console.log(res);
           alert("post is been deleted");
           this.$router.push("/posts");
           res;
         })
-        .catch(() => {});
+        .catch(function(error) {
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          }
+        });
     },
   },
 };
