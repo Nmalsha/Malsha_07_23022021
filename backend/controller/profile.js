@@ -99,6 +99,11 @@ exports.deleteProfile = async (req, res) => {
         where: {
           id: req.params.id,
         },
+      });
+      Post.destroy({
+        where: {
+          id: req.params.id,
+        },
       })
 
         .then(() => res.status(201).json({ message: "objet supprimé!" }))

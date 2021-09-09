@@ -243,7 +243,7 @@ export default {
         })
         .then((res) => {
           alert("profile is been deleted");
-          this.$router.push("/posts");
+          this.$router.push("/signup");
           //console.log(res.email);
           console.log(res.data);
         })
