@@ -80,11 +80,13 @@ export default {
 <style scoped>
 .comment_wrappe {
   background-color: #ffb3b3;
-  width: 50%;
+  width: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 30px;
+  box-shadow: 10px 5px 5px #3a1111;
+  border-radius: 10px;
 }
 main {
   display: flex;

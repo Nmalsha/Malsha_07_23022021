@@ -11,13 +11,11 @@ const profileRoute = require("./routes/profile");
 const postRoute = require("./routes/post");
 const commentRoute = require("./routes/comment");
 const path = require("path");
-//const { JsonWebTokenError } = require('jsonwebtoken');
-//const { User } = require('./models');
+
 const models = require("./models");
 const decode = require("jsonwebtoken/decode");
 const User = models.User;
 const Post = models.Post;
-//const bcrypt = require('bcryptjs');
 
 const app = express();
 
@@ -39,8 +37,21 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
+
   next();
 });
+
+// const { expressCspHeader, INLINE, NONE, SELF } = require("express-csp-header");
+
+// // other app.use() options ...
+// app.use(
+//   expressCspHeader({
+//     policies: {
+//       "default-src": [expressCspHeader.NONE],
+//       "img-src": [expressCspHeader.SELF],
+//     },
+//   })
+// );
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 

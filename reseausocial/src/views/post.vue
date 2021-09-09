@@ -25,7 +25,10 @@
       </div>
     </nav>
     <div class="post-wrapp col-md-6">
-      <h6>Bonjour {{ prenom }} bienvenue dans le réseau GROUPOMANIA</h6>
+      <p>
+        Bonjour {{ prenom }} bienvenue dans le réseau
+        <span class="span"> GROUPOMANIA</span>
+      </p>
       <br />
       <p>
         Ici, vous pouvez interagir avec vos collègues à tout moment et partager
@@ -39,17 +42,24 @@
             <img
               class="post_image"
               alt="post photo"
-              :src="attachement"
+              :src="image"
               width="50px"
               height="50px"
             />
           </div>
-
+          <button
+            class="btn btn-outline-primary my-2 my-sm-0 color"
+            @click="onPickFile"
+          >
+            Upload image
+          </button>
+          <p>{{ filename }}</p>
           <input
             type="file"
             ref="postimage"
             accept=".jpg,.jpeg,.png"
             @change="UploadPhoto"
+            style="display:none"
           />
         </form>
         <div class="write_post com-md-9">
@@ -65,7 +75,10 @@
         </div>
         <div class="write_post com-md-2">
           <div>
-            <button @click="createPost" class="btn_color">
+            <button
+              @click="createPost"
+              class="btn btn-outline-primary my-2 my-sm-0 color"
+            >
               Envoyer
             </button>
           </div>
@@ -89,6 +102,8 @@ export default {
       userId: "",
       content: "",
       attachement: "",
+      image: "",
+      filename: "",
     };
   },
 
@@ -117,10 +132,15 @@ export default {
       localStorage.clear();
       this.$router.push("/");
     },
+    onPickFile() {
+      this.$refs.postimage.click();
+    },
     UploadPhoto(e) {
       const file = e.target.files[0];
       this.attachement = file;
-      //console.log(file);
+      this.filename = file.name;
+
+      //console.log(filename);
 
       //display image
 
@@ -163,7 +183,10 @@ export default {
         })
         .then((res) => {
           alert("your post is successfully sent ");
+
           this.$router.push("/posts");
+          //this.$router.reload("/posts");
+
           console.log(res);
           //console.log(dataUser);
           console.log(dataPost);
@@ -185,8 +208,13 @@ export default {
   height: 100px;
   width: 40%;
   display: inline-block;
+  font-size: 26px;
 }
-
+.span {
+  box-sizing: border-box;
+  font-weight: bold;
+  color: #ffb3b3;
+}
 .card-header {
   padding: 0 0 0 0;
   margin-bottom: 0;
@@ -206,10 +234,12 @@ export default {
   display: flex;
   justify-content: space-around;
   padding: 30px;
+  box-shadow: 10px 5px 5px #3a1111;
+  border-radius: 10px;
 }
 .form-control {
-  width: 370px;
-  height: 70px;
+  width: 400px;
+  height: 100px;
   margin-right: 20px;
 }
 .btn_color {
@@ -243,7 +273,14 @@ button:hover {
 }
 .roundContainer {
   height: 100px;
-  border: 1px solid black;
+
   width: 100px;
+  background-image: url(../assets/icon.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.post_image {
+  width: 100px;
+  height: 100px;
 }
 </style>

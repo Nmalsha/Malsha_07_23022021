@@ -2,14 +2,12 @@
   <div class="wrappe">
     <Post></Post>
 
-    <div class="form_wrappe">
-      <form
-        method="post"
-        class="DetailsOfPostOwnerForm"
-        enctype="multipart/form-data"
-        v-for="userAndPostDetail in userAndPostDetails"
-        v-bind:key="userAndPostDetail.id"
-      >
+    <div
+      class="form_wrappe"
+      v-for="userAndPostDetail in userAndPostDetails"
+      v-bind:key="userAndPostDetail.id"
+    >
+      <form class="DetailsOfPostOwnerForm" enctype="multipart/form-data">
         <div id="userinfo" class="postowner_details">
           <div class="userPicContainer">
             <img
@@ -20,9 +18,9 @@
           </div>
 
           <div class="authorAndDate">
-            <h6>{{ userAndPostDetail.User.nom }}</h6>
-            <h6>{{ userAndPostDetail.User.prenom }}</h6>
-            <h6>{{ userAndPostDetail.User.id }}</h6>
+            <p>{{ userAndPostDetail.User.nom }}</p>
+            <p>{{ userAndPostDetail.User.prenom }}</p>
+            <p>{{ userAndPostDetail.User.id }}</p>
           </div>
         </div>
 
@@ -31,52 +29,76 @@
             <img class="postimage" :src="userAndPostDetail.attachement" />
           </div>
           <div class="postContent_wrappe">
-            <p class="postContent__text">{{ userAndPostDetail.createdAt }}</p>
-            <h5 class="postContent__text">{{ userAndPostDetail.content }}</h5>
-            <p class="postContent__text">postid:{{ userAndPostDetail.id }}</p>
+            <p class="postContent__text text">
+              {{ userAndPostDetail.createdAt }}
+            </p>
+            <p class="postContent__text">{{ userAndPostDetail.content }}</p>
+            <p class="postContent__text text">
+              postid:{{ userAndPostDetail.id }}
+            </p>
           </div>
+
           <!--------popup----------->
           <div class="button_wrappe">
-            <button
+            <div>
+              <!-- <button
               class="btn btn-outline-primary my-2 my-sm-0 color"
               v-if="userId === userAndPostDetail.User.id"
-              @click="
-                editPost(
-                  userAndPostDetail.id,
-                  userAndPostDetail.content,
-                  userAndPostDetail.attachement
-                )
-              "
+              @click="editPost(userAndPostDetail.id)"
             >
               Edit post
-            </button>
-            <button
+            </button> -->
+              <i
+                class="fas fa-edit"
+                v-if="userId === userAndPostDetail.User.id"
+                @click="editPost(userAndPostDetail.id)"
+              ></i>
+            </div>
+            <div>
+              <!-- <button
               class="btn btn-outline-primary my-2 my-sm-0 color"
               v-if="userId === userAndPostDetail.User.id"
               @click="deletePost(userAndPostDetail.id)"
             >
               Delete post
-            </button>
-          </div>
-        </div>
-        <div class="postactions comment_div">
-          <button @click="sendcomment(userAndPostDetail.id)">
-            add comment
-          </button>
-        </div>
-        <!-------------------dicplay comment --------->
-        <div class="postactions comment_div">
-          <div v-for="item in commentAndPostDetails" v-bind:key="item.id">
-            <div v-if="item.postId == userAndPostDetail.id">
-              <p>postidcomment:{{ item.id }}</p>
-              <p>nom:{{ item.User.nom }}</p>
-              <p>comment:{{ item.comment }}</p>
+            </button> -->
+              <i
+                class="fas fa-trash-alt"
+                v-if="userId === userAndPostDetail.User.id"
+                @click="deletePost(userAndPostDetail.id)"
+              ></i>
             </div>
           </div>
-          <p @click="sendcomment(userAndPostDetail.id)">
-            {{ tuiyt }}
-          </p>
         </div>
+        <div class="postactions_comment">
+          <!-- <button
+            @click="sendcomment(userAndPostDetail.id)"
+            class="postactions_comment"
+          ></button> -->
+          <i
+            class="fa fa-comments postactions_comment"
+            @click="sendcomment(userAndPostDetail.id)"
+            aria-hidden="true"
+          ></i>
+        </div>
+        <!-------------------dicplay comment --------->
+
+        <div
+          class=" comment_div "
+          v-for="item in commentAndPostDetails"
+          v-bind:key="item.id"
+          c
+        >
+          <div class="content_msg" v-if="item.postId == userAndPostDetail.id">
+            <p style="display:none">postidcomment:{{ item.id }}</p>
+            <p class="text">{{ item.User.nom }}à dit :</p>
+            <p class="text">{{ item.comment }}</p>
+          </div>
+        </div>
+        <!-- <p @click="sendcomment(userAndPostDetail.id)">
+            {{ tuiyt }}
+          </p> -->
+
         <!-------------------dicplay comment --------->
       </form>
     </div>
@@ -87,6 +109,7 @@ import axios from "axios";
 import Post from "./post.vue";
 import { ref } from "vue";
 import Popup from "./popup.vue";
+import moment from "moment";
 //import { defineComponent } from '@vue/composition-api'
 
 export default {
@@ -129,6 +152,8 @@ export default {
       userId: "",
       show: true,
       postId: "",
+      formattedTime: "",
+      createdAt: moment(),
     };
   },
   mounted() {
@@ -174,14 +199,57 @@ export default {
       })
       .catch(() => {});
   },
-  created() {},
+
+  // watch: {
+  //   now() {
+  //     this.formattedTime = this.getFormattedTime(this.createdAt);
+  //   },
+  // },
+  created() {
+    // this.formattedTime = moment();
+    // this.formattedTime = this.getFormattedTime(this.createdAt);
+    // setInterval(() => {
+    //   this.now = moment();
+    // }, 3000);
+  },
 
   methods: {
+    // getFormattedTime(date) {
+    //   let now = moment(); //todays date
+    //   let end = moment(date); // another date
+    //   let duration = moment.duration(now.diff(end));
+    //   let month = duration.asMonths();
+    //   let days = duration.asDays();
+    //   let hours = duration.asHours();
+    //   let minutes = duration.asMinutes();
+    //   let seconds = duration.asSeconds();
+    //   if (seconds > 0 && seconds < 60) {
+    //     return Math.round(seconds) + "s";
+    //   }
+    //   if (minutes > 0 && minutes < 60) {
+    //     return Math.round(minutes) + "m";
+    //   }
+    //   if (hours > 0 && hours < 24) {
+    //     return Math.round(hours) + "h";
+    //   }
+    //   if (days > 0) {
+    //     return end.format("D MMM");
+    //   }
+    //   if (month > 0 && month <= 12) {
+    //     return end.format("D MMM YYY");
+    //   }
+    // },
     //redirecting to the appropiate user profiles
 
     // relatedProfilePage(id){
 
     // },
+
+    relatedProfilePage(id) {
+      this.$router.push({
+        path: `/userprofile/${id}`,
+      });
+    },
     //send post id to comment.vue
     sendcomment(id) {
       this.$router.push({
@@ -227,13 +295,13 @@ export default {
 }
 .postowner_details {
   display: flex;
-
+  box-shadow: 10px 5px 5px #ffb3b3;
   justify-content: space-around;
   align-items: center;
   background-color: #ffb3b3;
   height: 50px;
-  border-radius: 40px 40px 40px 40px;
-  margin-top: 25px;
+  border-radius: 10px;
+  margin-top: 60px;
 }
 .authorAndDate {
   display: flex;
@@ -246,12 +314,17 @@ export default {
   height: 40px;
   cursor: pointer;
 }
+.postactions_comment {
+  width: 100px;
+
+  cursor: pointer;
+}
 .post_details {
   height: 200px;
   display: flex;
   justify-content: space-between;
   background-color: blanchedalmond;
-  border-radius: 40px 40px 40px 40px;
+  box-shadow: 10px 5px 5px #ffb3b3;
 }
 .postContent__image {
   height: 40px;
@@ -276,12 +349,22 @@ export default {
   align-items: center;
   background-color: #ffb3b3;
   height: 50px;
-  border-radius: 40px 40px 40px 40px;
+  border-radius: 10px;
 }
 
 .comment_div {
+  width: 60%;
+  line-height: 15px;
   display: flex;
   justify-content: space-evenly;
+  margin-top: 20px;
+  background-color: whitesmoke;
+  box-shadow: 10px 5px 5px #ffb3b3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.content_msg {
+  padding: 15px;
 }
 textarea {
   height: 40px;
@@ -301,16 +384,23 @@ textarea {
   border-radius: 40px 40px 40px 40px;
 }
 .button_wrappe {
-  display: grid;
-  justify-content: center;
-  margin: 20px;
+  display: flex;
+  justify-content: space-around;
+  width: 10%;
 }
 .button_wrappe button {
   height: 51px;
   font-size: 15px;
 }
-
-p {
+.fa-comments {
+  font-size: 16px;
+  color: black;
+}
+i {
+  cursor: pointer;
   font-size: 12px;
+}
+.text {
+  font-weight: normal;
 }
 </style>

@@ -78,8 +78,9 @@ exports.updateUserProfile = async (req, res, next) => {
 
 exports.deleteProfile = async (req, res) => {
   const token = req.headers.token;
-
+  console.log("i am here");
   console.log(req.params.id);
+  console.log(req.headers.id);
 
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
