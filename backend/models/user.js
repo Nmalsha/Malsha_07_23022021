@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.User.hasMany(models.Post, { foreignKey: "userId" });
+      models.User.belongsTo(models.Post, { foreignKey: "userId" });
+      //models.User.belongsTo(models.Post, { as: "post" });
       models.User.hasMany(models.Post, {
         onDelete: "cascade",
         foreignKey: "userId",

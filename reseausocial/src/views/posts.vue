@@ -11,13 +11,14 @@
         <div id="userinfo" class="postowner_details">
           <div class="userPicContainer">
             <img
+              v-if="(userAndPostDetail.User = !null)"
               class="userprofileimage"
               :src="userAndPostDetail.User.profileimage"
               @click="relatedProfilePage(userAndPostDetail.User.id)"
             />
           </div>
 
-          <div class="authorAndDate">
+          <div class="authorAndDate" v-if="(userAndPostDetail.User = !null)">
             <p>{{ userAndPostDetail.User.nom }}</p>
             <p>{{ userAndPostDetail.User.prenom }}</p>
             <p>{{ userAndPostDetail.User.id }}</p>
@@ -47,19 +48,19 @@
                 @click="editPost(userAndPostDetail.id)"
               ></i>
             </div>
-            <!-- <div>
+            <div>
               <i
                 class="fas fa-trash-alt"
                 v-if="userId === userAndPostDetail.User.id || isAdmin"
                 @click="deletePost(userAndPostDetail.id)"
               ></i>
-            </div> -->
+            </div>
             <div>
-              <button
+              <!-- <button
                 class="btn btn-primary btn-block w-25"
                 v-if="userId === userAndPostDetail.User.id || isAdmin"
                 @click="deletePost(userAndPostDetail.id)"
-              ></button>
+              ></button> -->
             </div>
           </div>
         </div>
@@ -92,6 +93,19 @@
         <!-------------------dicplay comment --------->
       </form>
     </div>
+    <!------------footer------------>
+    <footer class="navbar navbar-expand-md navbar_dark">
+      <div class="container height">
+        <div class="logo-wrappe col-md-3 ">
+          <span class="p2 title title__style h6 align-self-center">
+            <img
+              src="../assets/icon-left-font-monochrome-black.png"
+              width="400"
+            />
+          </span>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 <script>
@@ -305,6 +319,8 @@ export default {
   display: flex;
   justify-content: space-around;
   width: 40%;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .userprofileimage {
@@ -400,5 +416,12 @@ i {
 }
 .text {
   font-weight: normal;
+}
+.height {
+  height: 100px;
+}
+footer {
+  width: 100%;
+  margin-top: 70px;
 }
 </style>

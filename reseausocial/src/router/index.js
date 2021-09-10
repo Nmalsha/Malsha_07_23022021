@@ -7,8 +7,10 @@ import signup from "../views/signup.vue";
 import post from "../views/post.vue";
 import posts from "../views/posts.vue";
 import myprofile from "../views/myprofile.vue";
+import userprofile from "../views/userprofile.vue";
 import popupe from "../views/popup.vue";
 import comment from "../views/comment";
+
 //import { VueElement } from 'vue';
 
 //Vue.routes(VueRouter)
@@ -54,6 +56,11 @@ const routes = [
     name: "comment",
     path: "/comment/:id",
     component: comment,
+  },
+  {
+    name: "userprofile",
+    path: "/userprofile/:id",
+    component: userprofile,
   },
 ];
 

@@ -90,20 +90,49 @@ exports.deleteProfile = async (req, res) => {
       where: {
         id: req.params.id,
       },
+      // include: [
+      //   {
+      //     model: Post,
+
+      //     where: {
+      //       userId: req.params.id,
+      //       attributes: [
+      //         "userId",
+      //         "content",
+      //         "attachement",
+      //         "likes",
+      //         "createAt",
+      //         "updateAt",
+      //       ],
+      //     },
+      //   },
+      // ],
     }).then((user) => {
-      const filename = user.profileimage.split("/images")[1];
+      //    const filename = user.profileimage.split("/images")[1];
       console.log(user);
-      console.log(filename);
+      // console.log(filename);
 
       User.destroy({
         where: {
           id: req.params.id,
         },
-      });
-      Post.destroy({
-        where: {
-          id: req.params.id,
-        },
+        // include: [
+        //   {
+        //     model: Post,
+
+        //     where: {
+        //       userId: req.params.id,
+        //       attributes: [
+        //         "userId",
+        //         "content",
+        //         "attachement",
+        //         "likes",
+        //         "createAt",
+        //         "updateAt",
+        //       ],
+        //     },
+        //   },
+        // ],
       })
 
         .then(() => res.status(201).json({ message: "objet supprimé!" }))

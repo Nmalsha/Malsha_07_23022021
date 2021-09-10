@@ -7,6 +7,11 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        onDelete: "cascade",
+        reference: {
+          model: "posts",
+          key: "userId",
+        },
       },
       email: {
         allowNull: false,

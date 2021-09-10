@@ -49,6 +49,7 @@ const post = (db.Post = require("./post")(sequelize, Sequelize));
 const comment = (db.Comment = require("./comment")(sequelize, Sequelize));
 
 post.belongsTo(user);
+
 comment.belongsTo(post);
 comment.belongsTo(user);
 

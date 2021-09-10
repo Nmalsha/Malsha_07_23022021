@@ -44,25 +44,14 @@
             </div>
           </a>
 
-          <input
-            type="file"
-            ref="fileInput"
-            accept=".jpg,.jpeg,.png"
-            @change="UpdatePhoto"
-          />
-          <button @change="onpick">upload</button>
           <div class="text-center align-baseline my-2">
             <span v-if="selectedFile">{{ selectedFile.name }}</span>
           </div>
         </form>
         <label for="nom">Nom</label>
-        <input
-          v-model="nom"
-          type="text"
-          class="form-control"
-          required
-          placeholder=""
-        />
+        <p>
+          v-model="nom" type="text" class="form-control" required placeholder=""
+        </p>
         <label for="prenom">Prenom</label>
         <input
           v-model="prenom"

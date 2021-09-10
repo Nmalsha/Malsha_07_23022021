@@ -2,10 +2,11 @@
   <div>
     <Nav></Nav>
     <div class="home">
-      <h3>
+      <p>
         Bienvenue dans votre réseau groupomania. Veuillez vous connecter si vous
         avez déjà un compte
-      </h3>
+        <img src="../assets/home.png" />
+      </p>
     </div>
   </div>
 </template>
@@ -23,7 +24,13 @@ export default {
 };
 </script>
 <style scoped>
-h3 {
+p {
   margin-top: 50px;
+  font-weight: bold;
+}
+
+img {
+  width: 70%;
+  margin-top: 60px;
 }
 </style>

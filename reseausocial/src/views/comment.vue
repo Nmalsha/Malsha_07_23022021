@@ -2,7 +2,9 @@
   <main>
     <div class="comment_wrappe">
       <p class="p1">
-        <button class="btn_color">Postid: {{ postId }}</button>
+        <button style="display:none" class="btn_color">
+          Postid: {{ postId }}
+        </button>
       </p>
 
       <p class="p2">
@@ -91,6 +93,7 @@ export default {
   padding: 30px;
   box-shadow: 10px 5px 5px #3a1111;
   border-radius: 10px;
+  margin-top: 100px;
 }
 main {
   display: flex;

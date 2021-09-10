@@ -12,7 +12,7 @@
             /></a>
           </span>
         </div>
-        <div class="collapse navbar-collapse  col-md-9">
+        <div class="collapse navbar-collapse  col-md-9 nav_link">
           <ul class="navbar-nav ml-auto mb-2 mb-lg-0 col-md-9">
             <li class="nav-item col-md-12">
               <router-link to="/myprofile">Profile</router-link>
@@ -39,16 +39,10 @@
       <div class="addpost_wrappe col-md-4">
         <form class="image_form" enctype="multipart/form-data">
           <div class="roundContainer">
-            <img
-              class="post_image"
-              alt="post photo"
-              :src="image"
-              width="50px"
-              height="50px"
-            />
+            <img class="post_image" :src="image" width="50px" height="50px" />
           </div>
           <button
-            class="btn btn-outline-primary my-2 my-sm-0 color"
+            class="btn btn-outline-primary my-2 my-sm-0 color "
             @click="onPickFile"
           >
             Upload image
@@ -204,11 +198,11 @@ export default {
   width: 100%;
 }
 .post-wrapp {
-  margin-top: 100px;
+  margin-top: 50px;
   height: 100px;
   width: 40%;
   display: inline-block;
-  font-size: 26px;
+  font-size: 20px;
 }
 .span {
   box-sizing: border-box;
@@ -226,7 +220,7 @@ export default {
   display: grid;
 }
 .addpost_wrappe {
-  margin-top: 100px;
+  margin-top: 50px;
   align-items: center;
   justify-content: space-evenly;
   background-color: #ffb3b3;
@@ -282,5 +276,21 @@ button:hover {
 .post_image {
   width: 100px;
   height: 100px;
+}
+nav a {
+  color: black;
+  text-decoration: none;
+}
+.nav_link {
+  justify-content: end;
+}
+.nav_link:hover {
+  color: blanchedalmond;
+}
+.btn {
+  border: none;
+}
+i:hover {
+  scale: 1.5;
 }
 </style>
