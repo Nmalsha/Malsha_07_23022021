@@ -59,7 +59,7 @@ exports.getAllPost = (req, res) => {
   Post.findAll({
     order: [["createdAt", "DESC"]],
     include: User,
-    //include: Comment,
+    // include: Comment,
   }).then((Post) =>
     res.status(201).json({
       Post,
@@ -133,6 +133,7 @@ exports.editPost = async (req, res) => {
       .catch((error) => res.status(400).json({ error: error }));
   });
 };
+
 exports.deletePost = (req, res, next) => {
   console.log(req.params.id);
 
@@ -159,34 +160,14 @@ exports.deletePost = (req, res, next) => {
     .catch((error) => res.status(500).json({ message: error.message }));
 };
 
-/*
-exports.deletePost = (req, res) => {
-  console.log("here");
-
+exports.getOtherUserPost = async (req, res) => {
   console.log(req.params.id);
-
-  Post.findOne({
-    where: {
-      id: req.params.id,
-    },
+  const getOtherUserPosts = Post.findAll({
+    order: [["createdAt", "DESC"]],
+    where: { userId: req.params.id },
   })
-    .then((post) => {
-      const filename = post.attachement.split("/images")[1];
-      console.log(post);
-      console.log(filename);
-
-      fs.unlink(`images/${filename}`, () => {
-        Post.destroy({
-          where: {
-            id: req.params.id,
-          },
-        })
-
-          .then(() => res.status(201).json({ message: "objet supprimé!" }))
-          .catch((error) => res.status(500).json({ message: error.message }));
-      });
-    })
-
+    .then((gotUserPost) =>
+      res.status(201).json({ message: "posts trouvé!", gotUserPost })
+    )
     .catch((error) => res.status(500).json({ message: error.message }));
 };
-*/

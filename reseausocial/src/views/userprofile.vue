@@ -37,59 +37,18 @@
               <img
                 class="profile_image"
                 alt="profile photo"
-                :src="image"
+                :src="userInfors.profileimage"
                 width="50px"
                 height="50px"
               />
             </div>
           </a>
-
-          <div class="text-center align-baseline my-2">
-            <span v-if="selectedFile">{{ selectedFile.name }}</span>
-          </div>
         </form>
-        <label for="nom">Nom</label>
-        <p>
-          v-model="nom" type="text" class="form-control" required placeholder=""
-        </p>
-        <label for="prenom">Prenom</label>
-        <input
-          v-model="prenom"
-          type="text"
-          class="form-control"
-          required
-          placeholder=""
-        />
-        <label for="email">email</label>
-        <input
-          v-model="email"
-          type="email"
-          class="form-control"
-          required
-          placeholder=""
-        />
-        <div class="card-body">
-          <button
-            @click="updateUserProfile"
-            class="btn btn-outline-primary my-2 my-sm-0 color "
-            type="submit"
-          >
-            Update Profile
-          </button>
-          <router-link
-            class="btn btn-outline-primary my-2 my-sm-0 color"
-            to="/posts"
-          >
-            update later</router-link
-          >
+        <div class="text-center align-baseline my-2">
+          <p>Nom : {{ userInfors.nom }}</p>
+          <p>prenom : {{ userInfors.prenom }}</p>
+          <p>email : {{ userInfors.email }}</p>
         </div>
-        <button
-          @click="deleteProfile"
-          class="btn btn-outline-primary my-2 my-sm-0 color "
-          type="submit"
-        >
-          delete Profile
-        </button>
       </div>
     </div>
     <!----Display Posts---->
@@ -119,51 +78,32 @@ import axios from "axios";
 //import { defineComponent } from "vue";
 
 export default {
-  name: "myprofile",
+  name: "userprofile",
 
   data() {
     return {
-      id: "",
-      email: "",
-      nom: "",
-      prenom: "",
       profileimage: null,
-      password: "",
+      id: this.$route.params.id,
       image: "",
+      userInfors: [],
       postsforOneUsers: [],
     };
   },
-  created() {
-    let token = localStorage.getItem("userToken");
-    if (token === null) {
-      this.$router.push("/login");
-    }
-  },
+  created() {},
   mounted() {
-    axios
-      .get("http://localhost:3000/user", {
-        headers: { token: localStorage.getItem("userToken") },
-      })
-      .then((res) => {
-        this.nom = res.data.findUser.nom;
-        this.id = res.data.findUser.id;
-        this.prenom = res.data.findUser.prenom;
-        this.email = res.data.findUser.email;
-        this.password = res.data.findUser.password;
-        this.profileimage = res.data.findUser.profileimage;
-      });
+    axios.get("http://localhost:3000/user/" + this.id).then((res) => {
+      console.log(res.data.gotUser);
+      const userData = res.data.gotUser;
+      this.userInfors = userData;
+    });
 
-    axios
-      .get("http://localhost:3000/postsuser", {
-        headers: { token: localStorage.getItem("userToken") },
-      })
-      .then((postsforOneUser) => {
-        console.log("this colsole");
-        this.postsforOneUsers = postsforOneUser.data.postsforOneUser;
-        console.log(postsforOneUser.data.postsforOneUser);
-        console.log(postsforOneUser.data.postsforOneUser.attachement);
-        //this.post = Post.data;
-      });
+    axios.get("http://localhost:3000/userspost/" + this.id).then((res) => {
+      console.log(res.data.gotUserPost);
+      this.postsforOneUsers = res.data.gotUserPost;
+      //console.log(postsforOneUser.data.postsforOneUser);
+      //console.log(postsforOneUser.data.postsforOneUser.attachement);
+      //this.post = Post.data;
+    });
   },
   methods: {
     logout() {
@@ -187,56 +127,6 @@ export default {
       };
       //fileReader.readAsDataURL(file[0]);
       //this.image = file[0];
-    },
-
-    updateUserProfile() {
-      //const imageUrl = this.profileimage;
-      // fd.append("image", file);
-      //console.log(imageUrl);
-      // console.log(this.profileimage);
-
-      const dataUser = {
-        headers: { token: localStorage.getItem("userToken") },
-        email: this.email,
-        id: this.id,
-        nom: this.nom,
-        prenom: this.prenom,
-        profileimage: this.profileimage,
-        password: this.password,
-      };
-
-      const formData = new FormData();
-      formData.append("image", this.profileimage);
-      formData.append("user", JSON.stringify(dataUser));
-      axios
-        .put("http://localhost:3000/user", formData, {
-          headers: { token: localStorage.getItem("userToken") },
-        })
-        .then((res) => {
-          alert("profile is been updated");
-          this.$router.push("/posts");
-          //console.log(res.email);
-          console.log(res.data);
-        })
-        .catch(() => {});
-    },
-
-    deleteProfile(id) {
-      axios
-        .delete(`http://localhost:3000/user/${id}`, {
-          headers: {
-            token: localStorage.getItem("userToken"),
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-          },
-        })
-        .then((res) => {
-          alert("profile is been deleted");
-          this.$router.push("/posts");
-          //console.log(res.email);
-          console.log(res.data);
-        })
-        .catch(() => {});
     },
   },
 };

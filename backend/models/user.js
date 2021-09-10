@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       models.User.belongsTo(models.Post, { foreignKey: "userId" });
       //models.User.belongsTo(models.Post, { as: "post" });
       models.User.hasMany(models.Post, {
-        onDelete: "cascade",
+        onDelete: "CASCADE",
+        hooks: true,
         foreignKey: "userId",
       });
       //models.User.hasOne(models.AuthoriseDate, { foreignKey: 'userId' });

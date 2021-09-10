@@ -11,14 +11,13 @@
         <div id="userinfo" class="postowner_details">
           <div class="userPicContainer">
             <img
-              v-if="(userAndPostDetail.User = !null)"
               class="userprofileimage"
               :src="userAndPostDetail.User.profileimage"
               @click="relatedProfilePage(userAndPostDetail.User.id)"
             />
           </div>
 
-          <div class="authorAndDate" v-if="(userAndPostDetail.User = !null)">
+          <div class="authorAndDate">
             <p>{{ userAndPostDetail.User.nom }}</p>
             <p>{{ userAndPostDetail.User.prenom }}</p>
             <p>{{ userAndPostDetail.User.id }}</p>
@@ -83,7 +82,9 @@
           <div class="content_msg" v-if="item.postId == userAndPostDetail.id">
             <p style="display:none">postidcomment:{{ item.id }}</p>
             <p class="text">{{ item.User.nom }}à dit :</p>
-            <p class="text">{{ item.comment }}</p>
+            <p class="text">
+              {{ item.comment }}
+            </p>
           </div>
         </div>
         <!-- <p @click="sendcomment(userAndPostDetail.id)">
@@ -113,7 +114,7 @@ import axios from "axios";
 import Post from "./post.vue";
 import { ref } from "vue";
 import Popup from "./popup.vue";
-import moment from "moment";
+
 //import { defineComponent } from '@vue/composition-api'
 
 export default {
@@ -157,7 +158,7 @@ export default {
       show: true,
       postId: "",
       formattedTime: "",
-      createdAt: moment(),
+
       isAdmin: "",
     };
   },
@@ -173,6 +174,7 @@ export default {
         //console.log(this.userAndPostDetails.id);
         //console.log(dataarrays.User);
         this.userAndPostDetails = dataarrays;
+        this.$router.push("/posts");
       })
       .catch(() => {});
     //get current user id
@@ -219,37 +221,6 @@ export default {
   },
 
   methods: {
-    // getFormattedTime(date) {
-    //   let now = moment(); //todays date
-    //   let end = moment(date); // another date
-    //   let duration = moment.duration(now.diff(end));
-    //   let month = duration.asMonths();
-    //   let days = duration.asDays();
-    //   let hours = duration.asHours();
-    //   let minutes = duration.asMinutes();
-    //   let seconds = duration.asSeconds();
-    //   if (seconds > 0 && seconds < 60) {
-    //     return Math.round(seconds) + "s";
-    //   }
-    //   if (minutes > 0 && minutes < 60) {
-    //     return Math.round(minutes) + "m";
-    //   }
-    //   if (hours > 0 && hours < 24) {
-    //     return Math.round(hours) + "h";
-    //   }
-    //   if (days > 0) {
-    //     return end.format("D MMM");
-    //   }
-    //   if (month > 0 && month <= 12) {
-    //     return end.format("D MMM YYY");
-    //   }
-    // },
-    //redirecting to the appropiate user profiles
-
-    // relatedProfilePage(id){
-
-    // },
-
     relatedProfilePage(id) {
       this.$router.push({
         path: `/userprofile/${id}`,

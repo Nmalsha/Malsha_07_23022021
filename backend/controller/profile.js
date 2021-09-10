@@ -4,6 +4,7 @@ const models = require("../models");
 //const fs = require("fs");
 const User = models.User;
 const Post = models.Post;
+const Comment = models.Comment;
 // const multer = require("multer");
 // const upload = multer("../");
 
@@ -76,6 +77,78 @@ exports.updateUserProfile = async (req, res, next) => {
   });
 };
 
+/*
+exports.deleteProfile = (req, res) => {
+  const deletedUser = req.params.id;
+
+  User.findOne({
+    where: { id: deletedUser },
+  })
+    .then((user) => {
+    
+      Post.findAll({
+        where: { userId: deletedUser },
+      })
+        .then((post) => {
+          Comment.findAll({
+            where: { userId: deletedUser },
+          })
+            .then(() => {
+              User.destroy({
+                where: {
+                  id: deletedUser,
+                },
+              })
+                .then((destroyed) => {
+                  for (const posts of post) {
+                    if (posts.imageUrl != null) {
+                      const fileName = posts.attachement.split("/images/")[1];
+                      fs.unlink(`images/${fileName}`, () => {
+                        if (!destroyed) {
+                          throw error;
+                        } else {
+                          // Si il n'y a pas d'erreur alors, l'erreur unlink est réussi
+                          console.log("File deleted!");
+                        }
+                      });
+                    } else {
+                      if (!destroyed) {
+                        throw error;
+                      } else {
+                        // Si il n'y a pas d'erreur alors, l'erreur unlink est réussi
+                        console.log("File deleted!");
+                      }
+                    }
+                  }
+
+                  res.status(200).json({ message: "Utilisateur supprimée !" });
+                })
+                .catch((error) => {
+                  console.error(error.message);
+                  return res
+                    .status(500)
+                    .json({ error: "Ici, Internal error !" });
+                });
+            })
+            .catch((error) => {
+              console.error(error.message);
+              return res
+                .status(404)
+                .json({ error: "Commentaires introuvable" });
+            });
+        })
+        .catch((error) => {
+          console.error(error.message);
+          return res.status(404).json({ error: "Post introuvable" });
+        });
+    })
+    .catch((error) => {
+      console.error(error.message);
+      return res.status(403).json({ error: "Utilisateur n'existe pas !" });
+    });
+};
+*/
+
 exports.deleteProfile = async (req, res) => {
   const token = req.headers.token;
   console.log("i am here");
@@ -85,28 +158,77 @@ exports.deleteProfile = async (req, res) => {
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
     console.log(userId);
+    const comment = Comment.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
 
+    if (userId === req.params.id) {
+      Comment.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+    }
+    then((commentDestroy) =>
+      res.status(201).json({ message: "comment deleleted", comment })
+    );
+    const post = Post.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (userId === req.params.id) {
+      Post.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+    }
+    then((postDestroy) =>
+      res.status(201).json({ message: "post deleted", comment })
+    );
+    const user = User.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (userId === req.params.id) {
+      User.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+    }
+    then((userDestroy) =>
+      res.status(201).json({ message: "user deleted", comment })
+    )
+      .then((res) => res.status(201).json({ message: "objet supprimé!" }))
+      .catch((error) => res.status(500).json({ message: error.message }));
+  });
+};
+/*
     User.findOne({
       where: {
         id: req.params.id,
       },
-      // include: [
-      //   {
-      //     model: Post,
-
-      //     where: {
-      //       userId: req.params.id,
-      //       attributes: [
-      //         "userId",
-      //         "content",
-      //         "attachement",
-      //         "likes",
-      //         "createAt",
-      //         "updateAt",
-      //       ],
-      //     },
-      //   },
-      // ],
+      include: [
+        {
+          model: Post,
+          where: {
+            userId: req.params.id,
+          },
+        },
+        {
+          model: Comment,
+          where: {
+            userId: req.params.id,
+          },
+        },
+      ],
     }).then((user) => {
       //    const filename = user.profileimage.split("/images")[1];
       console.log(user);
@@ -116,27 +238,41 @@ exports.deleteProfile = async (req, res) => {
         where: {
           id: req.params.id,
         },
-        // include: [
-        //   {
-        //     model: Post,
-
-        //     where: {
-        //       userId: req.params.id,
-        //       attributes: [
-        //         "userId",
-        //         "content",
-        //         "attachement",
-        //         "likes",
-        //         "createAt",
-        //         "updateAt",
-        //       ],
-        //     },
-        //   },
-        // ],
+        include: [
+          {
+            model: Post,
+            where: {
+              userId: req.params.id,
+            },
+          },
+          {
+            model: Comment,
+            where: {
+              userId: req.params.id,
+            },
+          },
+        ],
       })
 
-        .then(() => res.status(201).json({ message: "objet supprimé!" }))
+        .then((user) => res.status(201).json({ message: "objet supprimé!" }))
         .catch((error) => res.status(500).json({ message: error.message }));
     });
+    
   });
+};
+*/
+
+exports.getappropiateUser = (req, res) => {
+  const appropiateUser = req.params.id;
+  console.log(appropiateUser);
+  const gotUser = User.findOne({
+    where: {
+      id: appropiateUser,
+    },
+  })
+    .then((gotUser) =>
+      res.status(201).json({ message: "objet trouvé!", gotUser })
+    )
+
+    .catch((error) => res.status(500).json({ message: error.message }));
 };

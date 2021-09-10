@@ -36,8 +36,7 @@
             <div class="roundContainer">
               <img
                 class="profile_image"
-                alt="profile photo"
-                :src="profileimage"
+                :src="image"
                 width="50px"
                 height="50px"
               />
@@ -161,7 +160,7 @@ export default {
         this.prenom = res.data.findUser.prenom;
         this.email = res.data.findUser.email;
         this.password = res.data.findUser.password;
-        this.profileimage = res.data.findUser.profileimage;
+        this.image = res.data.findUser.profileimage;
       });
 
     axios
@@ -243,7 +242,7 @@ export default {
         })
         .then((res) => {
           alert("profile is been deleted");
-          this.$router.push("/signup");
+          this.$router.push("/posts");
           //console.log(res.email);
           console.log(res.data);
         })

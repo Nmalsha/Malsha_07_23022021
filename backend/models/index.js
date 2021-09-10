@@ -53,6 +53,61 @@ post.belongsTo(user);
 comment.belongsTo(post);
 comment.belongsTo(user);
 
+post.belongsTo(user, {
+  foreignKey: {
+    name: "userId",
+    allowNull: false,
+  },
+  onDelete: "CASCADE",
+  onUpdate: "NO ACTION",
+});
+post.belongsToMany(user, {
+  through: comment,
+  foreignKey: "userId",
+  onDelete: "CASCADE",
+  onUpdate: "NO ACTION",
+  allowNull: false,
+});
+user.belongsToMany(post, {
+  through: comment,
+  foreignKey: "postId",
+  onDelete: "CASCADE",
+  onUpdate: "NO ACTION",
+  allowNull: false,
+});
+comment.belongsTo(user, {
+  foreignKey: {
+    name: "userId",
+    allowNull: false,
+  },
+  onDelete: "CASCADE",
+  onUpdate: "NO ACTION",
+});
+comment.belongsToMany(user, {
+  through: comment,
+  foreignKey: "userId",
+  onDelete: "CASCADE",
+  onUpdate: "NO ACTION",
+  allowNull: false,
+});
+user.belongsToMany(comment, {
+  through: comment,
+  onDelete: "CASCADE",
+  onUpdate: "NO ACTION",
+  allowNull: false,
+});
+
+// Posts et Comments
+post.hasMany(comment);
+comment.belongsTo(post, {
+  foreignKey: {
+    name: "postId",
+    allowNull: false,
+  },
+  onDelete: "CASCADE",
+  onUpdate: "NO ACTION",
+});
+
 //post.hasMany(comment, { foreignKey: "postId" });
 //comment.hasOne(user, { foreignKey: "userId" });
 
