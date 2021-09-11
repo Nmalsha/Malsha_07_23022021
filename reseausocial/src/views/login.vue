@@ -22,7 +22,7 @@
               <input
                 v-model="email"
                 type="email"
-                class="form-control"
+                class="form-control width"
                 required
                 placeholder="email"
               />
@@ -32,7 +32,7 @@
               <input
                 v-model="password"
                 type="password"
-                class="form-control"
+                class="form-control width"
                 required
                 placeholder="password"
               />
@@ -104,5 +104,17 @@ export default {
   background-color: #ffb3b3;
   display: grid;
   justify-content: center;
+}
+@media (min-width: 768px) and (max-width: 1028px) {
+}
+
+@media (max-width: 768px) {
+  .width {
+    width: 300px;
+    height: 60px;
+  }
+  .form-group {
+    margin-top: 10px;
+  }
 }
 </style>

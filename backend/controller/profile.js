@@ -153,63 +153,104 @@ exports.deleteProfile = async (req, res) => {
   const token = req.headers.token;
   console.log("i am here");
   console.log(req.params.id);
-  console.log(req.headers.id);
 
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
-    console.log(userId);
-    const comment = Comment.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
-
-    if (userId === req.params.id) {
-      Comment.destroy({
+    console.log(req.params.id);
+    if (userId == req.params.id) {
+      console.log("userId OK");
+      const allpost = Post.findAll({
         where: {
-          id: req.params.id,
+          userId: req.params.id,
         },
-      });
-    }
-    then((commentDestroy) =>
-      res.status(201).json({ message: "comment deleleted", comment })
-    );
-    const post = Post.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
+      }).then((allpostNew) => {
+        //console.log(allpostNew);
+        allpostNew.forEach((element) => {
+          console.log("Post to delete : " + element.id);
 
-    if (userId === req.params.id) {
-      Post.destroy({
-        where: {
-          id: req.params.id,
-        },
-      });
-    }
-    then((postDestroy) =>
-      res.status(201).json({ message: "post deleted", comment })
-    );
-    const user = User.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
+          // delete comments.
+          Comment.destroy({
+            where: {
+              postId: element.id,
+            },
+          });
 
-    if (userId === req.params.id) {
+          // delete post
+          element.destroy();
+        });
+      });
+
+      // delete user
       User.destroy({
         where: {
-          id: req.params.id,
+          id: userId,
         },
-      });
+      })
+
+        //res.redirect("/");
+        // TODO
+        .then((res) => res.status(201).json({ message: "objet supprimé!" }))
+        .catch((error) =>
+          res.status(200).json({
+            //message: error.message
+            message: "objet supprimé!",
+          })
+        );
     }
-    then((userDestroy) =>
-      res.status(201).json({ message: "user deleted", comment })
-    )
-      .then((res) => res.status(201).json({ message: "objet supprimé!" }))
-      .catch((error) => res.status(500).json({ message: error.message }));
   });
 };
+//   const comment = Comment.findOne({
+//     where: {
+//       id: req.params.id,
+//     },
+//   });
+
+//   if (userId === req.params.id) {
+//     Comment.destroy({
+//       where: {
+//         id: req.params.id,
+//       },
+//     });
+//   }
+//   then((commentDestroy) =>
+//     res.status(201).json({ message: "comment deleleted", comment })
+//   );
+//   const post = Post.findOne({
+//     where: {
+//       id: req.params.id,
+//     },
+//   });
+
+//   if (userId === req.params.id) {
+//     Post.destroy({
+//       where: {
+//         id: req.params.id,
+//       },
+//     });
+//   }
+//   then((postDestroy) =>
+//     res.status(201).json({ message: "post deleted", comment })
+//   );
+//   const user = User.findOne({
+//     where: {
+//       id: req.params.id,
+//     },
+//   });
+
+//   if (userId === req.params.id) {
+//     User.destroy({
+//       where: {
+//         id: req.params.id,
+//       },
+//     });
+//   }
+//   then((userDestroy) =>
+//     res.status(201).json({ message: "user deleted", comment })
+//   )
+//     .then((res) => res.status(201).json({ message: "objet supprimé!" }))
+//     .catch((error) => res.status(500).json({ message: error.message }));
+// });
+//};
 /*
     User.findOne({
       where: {

@@ -155,12 +155,19 @@ export default {
         headers: { token: localStorage.getItem("userToken") },
       })
       .then((res) => {
-        this.nom = res.data.findUser.nom;
-        this.id = res.data.findUser.id;
-        this.prenom = res.data.findUser.prenom;
-        this.email = res.data.findUser.email;
-        this.password = res.data.findUser.password;
-        this.image = res.data.findUser.profileimage;
+        if (!res.data.findUser) {
+          console.log("User not found");
+          this.$router.push("/signup");
+        }
+        if (res.data.findUser) {
+          console.log("User found");
+          this.nom = res.data.findUser.nom;
+          this.id = res.data.findUser.id;
+          this.prenom = res.data.findUser.prenom;
+          this.email = res.data.findUser.email;
+          this.password = res.data.findUser.password;
+          this.image = res.data.findUser.profileimage;
+        }
       });
 
     axios
@@ -242,11 +249,14 @@ export default {
         })
         .then((res) => {
           alert("profile is been deleted");
-          this.$router.push("/posts");
+          this.$router.push("/signup");
           //console.log(res.email);
           console.log(res.data);
         })
-        .catch(() => {});
+        .catch(() => {
+          alert("profile is been deleted ");
+          this.$router.push("/signup");
+        });
     },
   },
 };
