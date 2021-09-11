@@ -15,6 +15,7 @@
     "es6-promise": "^4.2.8",
     "moment": "^2.29.1",
     "vue": "^3.0.0",
+    "vue-component-media-queries": "^1.0.0",
     "vue-firestore": "^0.3.30",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.0-0"

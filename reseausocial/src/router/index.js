@@ -10,12 +10,18 @@ import myprofile from "../views/myprofile.vue";
 import userprofile from "../views/userprofile.vue";
 import popupe from "../views/popup.vue";
 import comment from "../views/comment";
+import nav from "../views/nav.vue";
 
 //import { VueElement } from 'vue';
 
 //Vue.routes(VueRouter)
 
 const routes = [
+  {
+    name: "nav",
+    path: "/nav",
+    component: nav,
+  },
   {
     name: "login",
     path: "/login",

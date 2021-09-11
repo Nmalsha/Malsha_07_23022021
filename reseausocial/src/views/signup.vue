@@ -77,6 +77,7 @@
 
 <script>
 import axios from "axios";
+
 //import apiservice from '../store/apiservice'
 import Nav from "./nav.vue";
 export default {
@@ -132,4 +133,36 @@ form{
   align-items: center;
 }
 */
+@media (min-width: 768px) and (max-width: 1028px) {
+  .show-on-mobile {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .show-on-desktop {
+    display: none !important;
+  }
+
+  img {
+    height: 100px;
+  }
+  .logo {
+    display: none;
+  }
+  form {
+    margin-top: 30px;
+  }
+  label {
+    display: none;
+  }
+  input {
+    width: 0;
+    height: 50px;
+    padding: 0;
+  }
+  button {
+    width: 150px;
+  }
+}
 </style>
