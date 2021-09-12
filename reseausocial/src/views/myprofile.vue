@@ -11,17 +11,20 @@
             />
           </span>
         </div>
-        <div class="collapse navbar-collapse  col-md-9">
+        <div class=" navbar-collapse  col-md-9">
           <ul class="navbar-nav ml-auto mb-2 mb-lg-0 col-md-9">
             <li class="nav-item col-md-12">
               <router-link
                 class="btn btn-outline-primary my-2 my-sm-0 color"
                 to="/posts"
               >
-                forum</router-link
+                Forum</router-link
               >
             </li>
-            <li class="nav-item" @click="logout">
+            <li
+              class="btn btn-outline-primary my-2 my-sm-0 color"
+              @click="logout"
+            >
               <a href="#">Deconnection</a>
             </li>
           </ul>
@@ -49,7 +52,7 @@
             accept=".jpg,.jpeg,.png"
             @change="UpdatePhoto"
           />
-          <button @change="onpick">upload</button>
+
           <div class="text-center align-baseline my-2">
             <span v-if="selectedFile">{{ selectedFile.name }}</span>
           </div>
@@ -58,7 +61,7 @@
         <input
           v-model="nom"
           type="text"
-          class="form-control"
+          class="profileform-control"
           required
           placeholder=""
         />
@@ -66,7 +69,7 @@
         <input
           v-model="prenom"
           type="text"
-          class="form-control"
+          class="profileform-control"
           required
           placeholder=""
         />
@@ -74,7 +77,7 @@
         <input
           v-model="email"
           type="email"
-          class="form-control"
+          class="profileform-control"
           required
           placeholder=""
         />
@@ -115,12 +118,25 @@
             <img class="postimage" :src="postsforOneUser.attachement" />
           </div>
           <div class="postContent">
-            <p class="postContent__text">{{ postsforOneUser.content }}</p>
-            <p class="postContent__text">{{ postsforOneUser.createdAt }}</p>
+            <p class="postContent__text text_position">
+              {{ postsforOneUser.content }}
+            </p>
           </div>
         </div>
       </div>
     </form>
+    <!------------------Footer------------------->
+    <footer class="navbar navbar-expand-md navbar_dark  margin_footer">
+      <div class="container height">
+        <span class="p2 title title__style h6 align-self-center">
+          <img
+            class="footer_logo"
+            src="../assets/icon-left-font-monochrome-black.png"
+            width="400"
+          />
+        </span>
+      </div>
+    </footer>
   </div>
 </template>
 <script>
@@ -177,9 +193,6 @@ export default {
       .then((postsforOneUser) => {
         console.log("this colsole");
         this.postsforOneUsers = postsforOneUser.data.postsforOneUser;
-        console.log(postsforOneUser.data.postsforOneUser);
-        console.log(postsforOneUser.data.postsforOneUser.attachement);
-        //this.post = Post.data;
       });
   },
   methods: {
@@ -187,9 +200,7 @@ export default {
       localStorage.clear();
       this.$router.push("/");
     },
-    onpick() {
-      this.$refs.fileInput.click();
-    },
+
     UpdatePhoto(e) {
       const file = e.target.files[0];
       this.profileimage = file;
@@ -202,16 +213,9 @@ export default {
         console.log(this.image);
         console.log(this.profileimage);
       };
-      //fileReader.readAsDataURL(file[0]);
-      //this.image = file[0];
     },
 
     updateUserProfile() {
-      //const imageUrl = this.profileimage;
-      // fd.append("image", file);
-      //console.log(imageUrl);
-      // console.log(this.profileimage);
-
       const dataUser = {
         headers: { token: localStorage.getItem("userToken") },
         email: this.email,
@@ -314,5 +318,36 @@ export default {
 .postimage {
   width: 70px;
   height: 75px;
+}
+.profileform-control {
+  width: 400px;
+  height: 80px;
+  margin-right: 20px;
+  display: block;
+}
+.margin_footer {
+  margin-top: 100px;
+}
+.text_position {
+  margin-top: 20px;
+}
+
+@media (min-width: 768px) and (max-width: 1028px) {
+}
+
+@media (max-width: 768px) {
+  .profileform-control {
+    width: 250px;
+    height: 60px;
+    margin-right: 20px;
+    margin-top: 10px;
+  }
+  .card {
+    width: 20rem;
+  }
+  .post_details {
+    width: 100%;
+    border-radius: 0px;
+  }
 }
 </style>

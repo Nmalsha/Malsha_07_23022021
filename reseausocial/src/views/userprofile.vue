@@ -11,7 +11,7 @@
             />
           </span>
         </div>
-        <div class="collapse navbar-collapse  col-md-9">
+        <div class=" navbar-collapse  col-md-9">
           <ul class="navbar-nav ml-auto mb-2 mb-lg-0 col-md-9">
             <li class="nav-item col-md-12">
               <router-link
@@ -56,7 +56,7 @@
       <div class="post_wrappe">
         <div
           id="postinfo"
-          class="post_details"
+          class="post_details post_width"
           v-for="postsforOneUser in postsforOneUsers"
           v-bind:key="postsforOneUser.id"
         >
@@ -65,17 +65,34 @@
           </div>
           <div class="postContent">
             <p class="postContent__text">{{ postsforOneUser.content }}</p>
-            <p class="postContent__text">{{ postsforOneUser.createdAt }}</p>
+            <p class="postContent__text text_size">
+              {{
+                moment(postsforOneUser.createdAt).format("YYYY-MM-DD h:mm A")
+              }}
+            </p>
           </div>
         </div>
       </div>
     </form>
+    <!------------------Footer------------------->
+    <footer class="navbar navbar-expand-md navbar_dark margin_footer">
+      <div class="container height">
+        <span class="p2 title title__style h6 align-self-center">
+          <img
+            class="footer_logo"
+            src="../assets/icon-left-font-monochrome-black.png"
+            width="400"
+          />
+        </span>
+      </div>
+    </footer>
   </div>
 </template>
 <script>
 import axios from "axios";
 //import imagefile from "...";
 //import { defineComponent } from "vue";
+import moment from "moment";
 
 export default {
   name: "userprofile",
@@ -87,6 +104,7 @@ export default {
       image: "",
       userInfors: [],
       postsforOneUsers: [],
+      moment: moment,
     };
   },
   created() {},
@@ -184,5 +202,25 @@ export default {
 .postimage {
   width: 70px;
   height: 75px;
+}
+@media (min-width: 768px) and (max-width: 1028px) {
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 25rem;
+  }
+
+  .text_size {
+    font-size: 11px;
+  }
+  .postimage {
+    width: 50px;
+    height: 55px;
+    margin-top: 15px;
+  }
+  .post_details {
+    width: 90%;
+  }
 }
 </style>

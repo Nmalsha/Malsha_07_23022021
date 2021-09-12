@@ -20,7 +20,7 @@
           <div class="authorAndDate">
             <p>{{ userAndPostDetail.User.nom }}</p>
             <p>{{ userAndPostDetail.User.prenom }}</p>
-            <p>{{ userAndPostDetail.User.id }}</p>
+            <p style="display:none">{{ userAndPostDetail.User.id }}</p>
           </div>
         </div>
 
@@ -31,13 +31,13 @@
           <div class="postContent_wrappe">
             <p class="postContent__text">{{ userAndPostDetail.content }}</p>
 
-            <p class="postContent__text text">
+            <p class="postContent__text text_date">
               Created on :
               {{
                 moment(userAndPostDetail.createdAt).format("YYYY-MM-DD h:mm A")
               }}
             </p>
-            <p class="postContent__text text">
+            <p class="postContent__text text " style="display:none">
               postid:{{ userAndPostDetail.id }}
             </p>
           </div>
@@ -331,6 +331,7 @@ export default {
 .postContent_wrappe {
   width: 50%;
   display: grid;
+  margin-top: 25px;
 }
 .postimage {
   width: 200px;
@@ -404,5 +405,47 @@ i {
 footer {
   width: 100%;
   margin-top: 70px;
+}
+.text_date {
+  font-size: 11px;
+  height: 5px;
+}
+@media (min-width: 768px) and (max-width: 1028px) {
+}
+
+@media (max-width: 768px) {
+  .nav_link {
+    justify-content: start;
+  }
+  .form_wrappe {
+    width: 90%;
+  }
+  .post_details {
+    display: grid;
+  }
+  .postinfo {
+    height: 250px;
+  }
+  .postContent__image {
+    margin-left: 40px;
+  }
+  .postContent_wrappe {
+    display: grid;
+    width: 100%;
+    margin-top: 40px;
+  }
+  .postimage {
+    width: 200px;
+    height: 90px;
+  }
+  .postContent_text {
+    margin-top: 20px;
+  }
+  .text {
+    font-size: 11px;
+  }
+  .comment_wrappe {
+    width: 90%;
+  }
 }
 </style>

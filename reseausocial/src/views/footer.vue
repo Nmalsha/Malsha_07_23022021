@@ -25,10 +25,10 @@ export default {
 .color {
   color: black;
 }
-.navbar_dark {
+/* .navbar_dark {
   margin-top: 0;
   height: 100px;
-  background-color: #ffb3b3;
+  background-color: #ffb3b3; */
 }
 .title _2 {
   height: 100px;

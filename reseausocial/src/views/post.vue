@@ -25,12 +25,12 @@
       </div>
     </nav>
     <div class="post-wrapp col-md-6">
-      <p>
+      <p class="welcome_text">
         Bonjour {{ prenom }} bienvenue dans le réseau
         <span class="span"> GROUPOMANIA</span>
       </p>
       <br />
-      <p>
+      <p class="welcome_text2">
         Ici, vous pouvez interagir avec vos collègues à tout moment et partager
         vos réflexions avec la communauté
       </p>
@@ -294,5 +294,36 @@ nav a {
 }
 i:hover {
   scale: 1.5;
+}
+@media (min-width: 768px) and (max-width: 1028px) {
+}
+
+@media (max-width: 768px) {
+  .post-wrapp {
+    font-size: 14px;
+    width: 90%;
+  }
+  .welcome_text {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+  .welcome_text2 {
+    display: flex;
+    width: 80%;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+  .addpost_wrappe {
+    display: grid;
+    width: 100%;
+    border-radius: 0%;
+  }
+  .form-control {
+    width: auto;
+  }
+  .form_wrappe {
+    width: auto;
+  }
 }
 </style>

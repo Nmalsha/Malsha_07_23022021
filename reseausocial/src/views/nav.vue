@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar_dark">
+  <nav class="navbar navbar-expand-md navbar_dark nev_height">
     <div class="container">
       <div class="logo-wrappe col-md-3">
         <span class="p2 title title__style h6 align-self-center">

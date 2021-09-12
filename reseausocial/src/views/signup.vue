@@ -23,7 +23,7 @@
                 v-model="nom"
                 required
                 type="text"
-                class="form-control signupform_control"
+                class="signupform-control"
                 placeholder="Nom"
               />
             </div>
@@ -33,7 +33,7 @@
                 v-model="prenom"
                 required
                 type="text"
-                class="form-control"
+                class="signupform-control"
                 placeholder="Prenom"
               />
             </div>
@@ -43,7 +43,7 @@
                 v-model="email"
                 required
                 type="email"
-                class="form-control"
+                class="signupform-control"
                 placeholder="email"
               />
             </div>
@@ -53,7 +53,7 @@
                 v-model="password"
                 type="password"
                 autocomplete="new-password"
-                class="form-control"
+                class="signupform-control"
                 required
                 placeholder="password"
               />
@@ -66,14 +66,14 @@
               <div v-html="error" />
               <br />
             </div>
-            <button class="btn btn-primary btn-block w-25">Sign Up</button>
+            <button class="btn btn-primary btn-block ">Sign Up</button>
           </form>
         </div>
         <div class="col-md-3"></div>
       </div>
     </div>
     <!------------------Footer------------------->
-    <footer class="navbar navbar-expand-md navbar_dark">
+    <footer class="navbar navbar-expand-md navbar_dark margin_footer">
       <div class="container height">
         <span class="p2 title title__style h6 align-self-center">
           <img
@@ -145,6 +145,15 @@ form{
   align-items: center;
 }
 */
+.signupform-control {
+  width: 400px;
+  height: 100px;
+  margin-right: 20px;
+  display: block;
+}
+.margin_footer {
+  margin-top: 100px;
+}
 @media (min-width: 768px) and (max-width: 1028px) {
   .show-on-mobile {
     display: none !important;
@@ -168,13 +177,14 @@ form{
   label {
     display: none;
   }
-  input {
-    width: 0;
-    height: 50px;
-    padding: 0;
+
+  .signupform-control {
+    width: 250px;
+    height: 60px;
+    margin-right: 20px;
   }
-  button {
-    width: 150px;
+  .margin_footer {
+    margin-top: 100px;
   }
 }
 </style>

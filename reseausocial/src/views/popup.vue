@@ -26,12 +26,6 @@
               aria-label="publication"
               id="publication"
             />
-            <p>this content:{{ postDetails.id }}</p>
-          </div>
-          <div class="write_post com-md-2">
-            <div>
-              <button class="btn_color">Post {{ id }}</button>
-            </div>
           </div>
         </div>
       </div>
@@ -195,5 +189,23 @@ export default {
 .roundContainer img {
   height: 120px;
   width: 150px;
+}
+
+@media (min-width: 768px) and (max-width: 1028px) {
+}
+
+@media (max-width: 768px) {
+  .eddit_post {
+    display: grid;
+  }
+  .image_form {
+    height: 130px;
+  }
+  .write_post {
+    height: 60px;
+  }
+  .write_post input {
+    height: 80px;
+  }
 }
 </style>

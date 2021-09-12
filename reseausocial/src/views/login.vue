@@ -51,7 +51,7 @@
     </div>
 
     <!------------------Footer------------------->
-    <footer class="navbar navbar-expand-md navbar_dark">
+    <footer class="navbar navbar-expand-md navbar_dark margin_footer">
       <div class="container height">
         <span class="p2 title title__style h6 align-self-center">
           <img
@@ -127,7 +127,7 @@ export default {
 .footer_logo {
   height: 100px;
 }
-.navbar_dark {
+.margin_footer {
   margin-top: 100px;
 }
 @media (min-width: 768px) and (max-width: 1028px) {
