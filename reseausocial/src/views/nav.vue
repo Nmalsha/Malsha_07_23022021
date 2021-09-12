@@ -3,11 +3,14 @@
     <div class="container">
       <div class="logo-wrappe col-md-3">
         <span class="p2 title title__style h6 align-self-center">
-          <img
-            src="../assets/icon-left-font-monochrome-black.png"
-            width="400"
-            height="300"
-          />
+          <router-link to="/">
+            <img
+              src="../assets/icon-left-font-monochrome-black.png"
+              width="400"
+              height="300"
+              @click="redirect"
+            />
+          </router-link>
         </span>
       </div>
       <div class="collapse navbar-collapse  col-md-9">
@@ -38,12 +41,20 @@
 
 export default {
   name: "nav",
+  method: {
+    redirect() {
+      this.$router.push("/home");
+    },
+  },
 };
 </script>
 
 <style>
 .color {
   color: black;
+}
+img {
+  cursor: pointer;
 }
 .navbar_dark {
   margin-top: 0;

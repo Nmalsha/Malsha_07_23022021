@@ -171,21 +171,23 @@ export default {
       //formData.append("user", JSON.stringify(dataUser));
       formData.append("post", JSON.stringify(dataPost));
       console.log(formData);
+
       axios
         .post("http://localhost:3000/post", formData, {
           headers: { token: localStorage.getItem("userToken") },
         })
-        .then((res) => {
+        .then(() => {
+          dataUser, dataPost;
           alert("your post is successfully sent ");
 
           this.$router.push("/posts");
+
           //this.$router.reload("/posts");
 
-          console.log(res);
+          //console.log(res);
           //console.log(dataUser);
-          console.log(dataPost);
+          //console.log(dataPost);
           //console.log(dataUser);
-          dataUser, dataPost;
         })
         .catch(() => {});
     },

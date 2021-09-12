@@ -29,10 +29,14 @@
             <img class="postimage" :src="userAndPostDetail.attachement" />
           </div>
           <div class="postContent_wrappe">
-            <p class="postContent__text text">
-              {{ userAndPostDetail.createdAt }}
-            </p>
             <p class="postContent__text">{{ userAndPostDetail.content }}</p>
+
+            <p class="postContent__text text">
+              Created on :
+              {{
+                moment(userAndPostDetail.createdAt).format("YYYY-MM-DD h:mm A")
+              }}
+            </p>
             <p class="postContent__text text">
               postid:{{ userAndPostDetail.id }}
             </p>
@@ -65,14 +69,12 @@
         </div>
         <div class="postactions_comment">
           <!-------------------section comment --------->
-
           <i
             class="fa fa-comments postactions_comment"
             @click="sendcomment(userAndPostDetail.id)"
             aria-hidden="true"
           ></i>
         </div>
-
         <div
           class=" comment_div "
           v-for="item in commentAndPostDetails"
@@ -114,6 +116,7 @@ import axios from "axios";
 import Post from "./post.vue";
 import { ref } from "vue";
 import Popup from "./popup.vue";
+import moment from "moment";
 
 //import { defineComponent } from '@vue/composition-api'
 
@@ -158,10 +161,12 @@ export default {
       show: true,
       postId: "",
       formattedTime: "",
-
+      moment: moment,
       isAdmin: "",
+      createdAt: "",
     };
   },
+
   mounted() {
     //get all post
     axios
@@ -172,8 +177,9 @@ export default {
         const dataarrays = Post.data.Post;
         console.log(dataarrays);
         //console.log(this.userAndPostDetails.id);
-        //console.log(dataarrays.User);
+
         this.userAndPostDetails = dataarrays;
+        console.log(dataarrays.createdAt);
         this.$router.push("/posts");
       })
       .catch(() => {});
@@ -219,7 +225,11 @@ export default {
     //   this.now = moment();
     // }, 3000);
   },
-
+  // computed: {
+  //   createdAtDisplay() {
+  //     return date(userAndPostDetail.createdAt).format("YYYY-MM-DD h:mm A");
+  //   },
+  // },
   methods: {
     relatedProfilePage(id) {
       this.$router.push({

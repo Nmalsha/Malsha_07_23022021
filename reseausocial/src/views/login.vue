@@ -22,7 +22,7 @@
               <input
                 v-model="email"
                 type="email"
-                class="form-control width"
+                class="loginform-control "
                 required
                 placeholder="email"
               />
@@ -32,7 +32,7 @@
               <input
                 v-model="password"
                 type="password"
-                class="form-control width"
+                class="loginform-control  "
                 required
                 placeholder="password"
               />
@@ -49,6 +49,19 @@
         <div class="col-md-3"></div>
       </div>
     </div>
+
+    <!------------------Footer------------------->
+    <footer class="navbar navbar-expand-md navbar_dark">
+      <div class="container height">
+        <span class="p2 title title__style h6 align-self-center">
+          <img
+            class="footer_logo"
+            src="../assets/icon-left-font-monochrome-black.png"
+            width="400"
+          />
+        </span>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -105,16 +118,36 @@ export default {
   display: grid;
   justify-content: center;
 }
+.loginform-control {
+  width: 400px;
+  height: 100px;
+  margin-right: 20px;
+  display: block;
+}
+.footer_logo {
+  height: 100px;
+}
+.navbar_dark {
+  margin-top: 100px;
+}
 @media (min-width: 768px) and (max-width: 1028px) {
 }
 
 @media (max-width: 768px) {
+  .footer_logo {
+    height: 100px;
+  }
   .width {
     width: 300px;
     height: 60px;
   }
   .form-group {
     margin-top: 10px;
+  }
+  .loginform-control {
+    width: 250px;
+    height: 60px;
+    margin-right: 20px;
   }
 }
 </style>

@@ -9,6 +9,18 @@
       </p>
       <img id="logo" src="../assets/home.png" />
     </div>
+    <!------------------Footer------------------->
+    <footer class="navbar navbar-expand-md navbar_dark">
+      <div class="container height">
+        <span class="p2 title title__style h6 align-self-center">
+          <img
+            class="footer_logo"
+            src="../assets/icon-left-font-monochrome-black.png"
+            width="400"
+          />
+        </span>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -42,7 +54,15 @@ p {
   height: 300px;
   width: 50%;
 }
-
+.title__style {
+  height: 100px;
+}
+.footer_logo {
+  height: 100px;
+}
+footer {
+  margin-top: 100px;
+}
 @media (min-width: 768px) and (max-width: 1028px) {
 }
 
@@ -58,10 +78,8 @@ p {
     cursor: pointer;
     color: red;
   }
-
-  img {
-    height: 150px;
-    width: 300px;
+  footer {
+    margin-top: 100px;
   }
 }
 </style>

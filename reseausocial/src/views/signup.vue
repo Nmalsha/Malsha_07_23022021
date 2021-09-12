@@ -23,7 +23,7 @@
                 v-model="nom"
                 required
                 type="text"
-                class="form-control"
+                class="form-control signupform_control"
                 placeholder="Nom"
               />
             </div>
@@ -72,6 +72,18 @@
         <div class="col-md-3"></div>
       </div>
     </div>
+    <!------------------Footer------------------->
+    <footer class="navbar navbar-expand-md navbar_dark">
+      <div class="container height">
+        <span class="p2 title title__style h6 align-self-center">
+          <img
+            class="footer_logo"
+            src="../assets/icon-left-font-monochrome-black.png"
+            width="400"
+          />
+        </span>
+      </div>
+    </footer>
   </div>
 </template>
 

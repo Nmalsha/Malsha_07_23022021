@@ -4,10 +4,10 @@ const models = require("../models");
 const User = models.User;
 
 exports.signup = async (req, res) => {
-  var email = JSON.stringify(req.body.email);
-  var nom = JSON.stringify(req.body.nom);
-  var prenom = JSON.stringify(req.body.prenom);
-  var password = JSON.stringify(req.body.password);
+  var email = req.body.email;
+  var nom = req.body.nom;
+  var prenom = req.body.prenom;
+  var password = req.body.password;
 
   if (email == null || nom == null || prenom == null || password == null) {
     return res.status(400).json({ error: "missing parameters" });
@@ -62,8 +62,8 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  var email = JSON.stringify(req.body.email);
-  var password = JSON.stringify(req.body.password);
+  var email = req.body.email;
+  var password = req.body.password;
 
   if (email == null || password == null) {
     return res.status(400).json({ error: "missing parameters" });
@@ -74,7 +74,7 @@ exports.login = async (req, res) => {
       email: email,
     },
   });
-  //console.log(findUser.email)
+  console.log(findUser);
   if (!findUser) {
     return res
       .status(400)

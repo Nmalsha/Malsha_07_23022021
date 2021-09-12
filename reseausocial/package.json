@@ -17,6 +17,7 @@
     "vue": "^3.0.0",
     "vue-component-media-queries": "^1.0.0",
     "vue-firestore": "^0.3.30",
+    "vue-moment": "^4.1.0",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.0-0"
   },
