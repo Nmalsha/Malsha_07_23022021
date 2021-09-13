@@ -12,12 +12,12 @@
             /></a>
           </span>
         </div>
-        <div class="collapse navbar-collapse  col-md-9 nav_link">
+        <div class=" navbar-collapse  col-md-9 nav_link">
           <ul class="navbar-nav ml-auto mb-2 mb-lg-0 col-md-9">
-            <li class="nav-item col-md-12">
+            <li class="nav-item col-md-12 item_style">
               <router-link to="/myprofile">Profile</router-link>
             </li>
-            <li class="nav-item" @click="logout">
+            <li class="nav-item item_style" @click="logout">
               <a href="#">Deconnection</a>
             </li>
           </ul>
@@ -143,8 +143,6 @@ export default {
       fileReader.onload = () => {
         this.image = fileReader.result;
       };
-      //fileReader.readAsDataURL(file[0]);
-      //this.image = file[0];
     },
 
     createPost() {
@@ -181,13 +179,6 @@ export default {
           alert("your post is successfully sent ");
 
           this.$router.push("/posts");
-
-          //this.$router.reload("/posts");
-
-          //console.log(res);
-          //console.log(dataUser);
-          //console.log(dataPost);
-          //console.log(dataUser);
         })
         .catch(() => {});
     },
@@ -322,8 +313,15 @@ i:hover {
   .form-control {
     width: auto;
   }
-  .form_wrappe {
-    width: auto;
+
+  nav a:hover {
+    color: black;
+    scale: 1.2;
+    color: royalblue;
+  }
+  .welcome_text {
+    margin-top: 25px;
+    font-size: 20px;
   }
 }
 </style>

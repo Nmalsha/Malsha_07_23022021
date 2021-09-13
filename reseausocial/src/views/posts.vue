@@ -102,6 +102,7 @@
         <div class="logo-wrappe col-md-3 ">
           <span class="p2 title title__style h6 align-self-center">
             <img
+              class="footer_img"
               src="../assets/icon-left-font-monochrome-black.png"
               width="400"
             />
@@ -117,8 +118,6 @@ import Post from "./post.vue";
 import { ref } from "vue";
 import Popup from "./popup.vue";
 import moment from "moment";
-
-//import { defineComponent } from '@vue/composition-api'
 
 export default {
   // props: ["TogglePopup"],
@@ -143,12 +142,7 @@ export default {
 
     // Popup,
   },
-  // new Vue({
-  //   el: '#editpost',
-  //   data: {
-  //     show: true
-  //   }
-  // }),
+
   data() {
     return {
       userAndPostDetails: [],
@@ -205,31 +199,12 @@ export default {
         const userPostCommentArray = res.data.Comment;
         //console.log(userPostAndCommentDetails.Post);
         this.commentAndPostDetails = userPostCommentArray;
-        //this.postId = userAndPostDetail.id ;
-        //console.log(dataarrays);
-        //const datafirstarrayObject = dataarrays[0];
-        //console.log(dataarrays[0].User);
       })
       .catch((error) => ({ message: error.message }));
   },
 
-  // watch: {
-  //   now() {
-  //     this.formattedTime = this.getFormattedTime(this.createdAt);
-  //   },
-  // },
-  created() {
-    // this.formattedTime = moment();
-    // this.formattedTime = this.getFormattedTime(this.createdAt);
-    // setInterval(() => {
-    //   this.now = moment();
-    // }, 3000);
-  },
-  // computed: {
-  //   createdAtDisplay() {
-  //     return date(userAndPostDetail.createdAt).format("YYYY-MM-DD h:mm A");
-  //   },
-  // },
+  created() {},
+
   methods: {
     relatedProfilePage(id) {
       this.$router.push({
@@ -281,6 +256,9 @@ export default {
   display: grid;
   align-content: center;
   justify-items: center;
+}
+.post-wrapp {
+  margin-top: 70px;
 }
 .form_wrappe {
   display: grid;
@@ -410,6 +388,9 @@ footer {
   font-size: 11px;
   height: 5px;
 }
+.footer_img {
+  height: 100px;
+}
 @media (min-width: 768px) and (max-width: 1028px) {
 }
 
@@ -444,8 +425,8 @@ footer {
   .text {
     font-size: 11px;
   }
-  .comment_wrappe {
-    width: 90%;
+  .welcome_text {
+    margin-top: 15px;
   }
 }
 </style>
