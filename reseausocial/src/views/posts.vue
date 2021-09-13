@@ -170,7 +170,6 @@ export default {
       .then((Post) => {
         const dataarrays = Post.data.Post;
         console.log(dataarrays);
-        //console.log(this.userAndPostDetails.id);
 
         this.userAndPostDetails = dataarrays;
         console.log(dataarrays.createdAt);
@@ -184,7 +183,6 @@ export default {
       })
       .then((res) => {
         this.userId = res.data.findUser.id;
-        //console.log(res.data.findUser.id);
       });
 
     //get all comments
@@ -194,10 +192,9 @@ export default {
         headers: { token: localStorage.getItem("userToken") },
       })
       .then((res) => {
-        //console.log(res.data);
         console.log(res.data.Comment);
         const userPostCommentArray = res.data.Comment;
-        //console.log(userPostAndCommentDetails.Post);
+
         this.commentAndPostDetails = userPostCommentArray;
       })
       .catch((error) => ({ message: error.message }));
@@ -424,9 +421,6 @@ footer {
   }
   .text {
     font-size: 11px;
-  }
-  .welcome_text {
-    margin-top: 15px;
   }
 }
 </style>

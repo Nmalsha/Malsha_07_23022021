@@ -118,7 +118,6 @@ export default {
         this.prenom = res.data.findUser.prenom;
         this.email = res.data.findUser.email;
         this.userId = res.data.findUser.id;
-        //console.log(res.data.findUser);
       });
   },
   methods: {
@@ -134,8 +133,6 @@ export default {
       this.attachement = file;
       this.filename = file.name;
 
-      //console.log(filename);
-
       //display image
 
       const fileReader = new FileReader();
@@ -148,16 +145,13 @@ export default {
     createPost() {
       console.log(this.attachement);
       const dataUser = {
-        // headers: { token: localStorage.getItem("userToken") },
         email: this.email,
         nom: this.nom,
         prenom: this.prenom,
         postImage: this.postImage,
       };
-      //console.log(dataUser);
-      const dataPost = {
-        //headers: { token: localStorage.getItem("userToken") },
 
+      const dataPost = {
         content: this.content,
         userId: this.userId,
       };
@@ -166,7 +160,7 @@ export default {
 
       const formData = new FormData();
       formData.append("image", this.attachement);
-      //formData.append("user", JSON.stringify(dataUser));
+
       formData.append("post", JSON.stringify(dataPost));
       console.log(formData);
 
