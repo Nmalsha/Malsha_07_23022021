@@ -159,9 +159,12 @@ export default {
       console.log(dataPost);
 
       const formData = new FormData();
-      formData.append("image", this.attachement);
+      if (this.attachement) {
+        formData.append("image", this.attachement);
+      }
 
       formData.append("post", JSON.stringify(dataPost));
+
       console.log(formData);
 
       axios
@@ -171,8 +174,8 @@ export default {
         .then(() => {
           dataUser, dataPost;
           alert("your post is successfully sent ");
-
-          this.$router.push("/posts");
+          window.location.reload();
+          // this.$router.push("/posts");
         })
         .catch(() => {});
     },

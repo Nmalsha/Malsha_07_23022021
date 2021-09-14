@@ -20,6 +20,7 @@
           <div class="authorAndDate">
             <p>{{ userAndPostDetail.User.nom }}</p>
             <p>{{ userAndPostDetail.User.prenom }}</p>
+
             <p style="display:none">{{ userAndPostDetail.User.id }}</p>
           </div>
         </div>
@@ -45,6 +46,7 @@
           <div class="button_wrappe">
             <div>
               <!--------edit and delete post----------->
+
               <i
                 class="fas fa-edit"
                 v-if="userId === userAndPostDetail.User.id || isAdmin"
@@ -58,13 +60,7 @@
                 @click="deletePost(userAndPostDetail.id)"
               ></i>
             </div>
-            <div>
-              <!-- <button
-                class="btn btn-primary btn-block w-25"
-                v-if="userId === userAndPostDetail.User.id || isAdmin"
-                @click="deletePost(userAndPostDetail.id)"
-              ></button> -->
-            </div>
+            <div></div>
           </div>
         </div>
         <div class="postactions_comment">
@@ -83,15 +79,12 @@
         >
           <div class="content_msg" v-if="item.postId == userAndPostDetail.id">
             <p style="display:none">postidcomment:{{ item.id }}</p>
-            <p class="text">{{ item.User.nom }}à dit :</p>
+            <p class="text">{{ item.User.nom }} à dit :</p>
             <p class="text">
               {{ item.comment }}
             </p>
           </div>
         </div>
-        <!-- <p @click="sendcomment(userAndPostDetail.id)">
-            {{ tuiyt }}
-          </p> -->
 
         <!-------------------dicplay comment --------->
       </form>
@@ -156,7 +149,7 @@ export default {
       postId: "",
       formattedTime: "",
       moment: moment,
-      isAdmin: "",
+      isAdmin: false,
       createdAt: "",
     };
   },
@@ -172,7 +165,7 @@ export default {
         console.log(dataarrays);
 
         this.userAndPostDetails = dataarrays;
-        console.log(dataarrays.createdAt);
+
         this.$router.push("/posts");
       })
       .catch(() => {});
@@ -183,6 +176,7 @@ export default {
       })
       .then((res) => {
         this.userId = res.data.findUser.id;
+        this.isAdmin = res.data.findUser.isAdmin;
       });
 
     //get all comments
@@ -192,7 +186,6 @@ export default {
         headers: { token: localStorage.getItem("userToken") },
       })
       .then((res) => {
-        console.log(res.data.Comment);
         const userPostCommentArray = res.data.Comment;
 
         this.commentAndPostDetails = userPostCommentArray;
@@ -233,7 +226,7 @@ export default {
         .then((res) => {
           console.log(res);
           alert("post is been deleted");
-          this.$router.push("/posts");
+          window.location.reload();
           res;
         })
         .catch(function(error) {

@@ -6,12 +6,7 @@
         <div class="eddit_post col-md-4">
           <form class="image_form" enctype="multipart/form-data">
             <div class="roundContainer">
-              <img
-                :src="postDetails.attachement"
-                alt=""
-                width="50px"
-                height="50px"
-              />
+              <img :src="image" alt="" width="50px" height="50px" />
             </div>
 
             <input type="file" @change="updateImage" />
@@ -42,13 +37,11 @@
       >
         update later</router-link
       >
-      <!-- <button class="popup-close" @click="TogglePopup">close popup</button>-->
     </div>
   </div>
 </template>
 
 <script>
-//import { defineComponent } from "@vue/composition-api";
 import axios from "axios";
 
 export default {
@@ -63,27 +56,15 @@ export default {
     return {
       postDetails: [],
       postImage: "",
-      attachement: "",
+      attachement: this.attachement,
       content: "",
       postId: "",
       createdOn: "",
       id: this.$route.params.id,
+      image: "",
     };
   },
   mounted() {
-    /*
-    //displaing apropiate data in the post
-    axios
-      .get("http://localhost:3000/post", {
-        headers: { token: localStorage.getItem("userToken") },
-      })
-      .then((Post) => {
-        console.log(Post);
-
-      })
-      .catch(() => {});
-      */
-    //pasing selected post id to the back end
     axios
       .get("http://localhost:3000/postid/" + this.id, {
         headers: { token: localStorage.getItem("userToken") },
@@ -92,6 +73,7 @@ export default {
         const postData = response.data.findPost;
         console.log(postData);
         this.postDetails = postData;
+        this.image = response.data.findPost.attachement;
       })
       .catch(() => {});
   },
@@ -109,8 +91,6 @@ export default {
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
         this.image = fileReader.result;
-
-        console.log(this.attachement);
       };
       //fileReader.readAsDataURL(file[0]);
       //this.image = file[0];
@@ -122,10 +102,13 @@ export default {
         attachement: this.attachement,
         id: this.id,
       };
-      console.log(dataPost);
-      console.log(this.attachement);
+      // console.log(dataPost);
+
       const formData = new FormData();
-      formData.append("image", this.attachement);
+
+      if (this.attachement) {
+        formData.append("image", this.attachement);
+      }
       formData.append("post", JSON.stringify(dataPost));
       axios
         .put("http://localhost:3000/post", formData, {
@@ -135,11 +118,9 @@ export default {
           },
         })
 
-        .then((editPost) => {
+        .then(() => {
           alert("post is been updated");
           this.$router.push("/posts");
-          //console.log(res.email);
-          console.log(editPost);
         })
         .catch(() => {});
     },

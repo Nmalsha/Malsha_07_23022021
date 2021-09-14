@@ -209,7 +209,6 @@ export default {
       fileReader.onload = () => {
         this.image = fileReader.result;
 
-        // this.avatar = e.target.result;
         console.log(this.image);
         console.log(this.profileimage);
       };
@@ -227,7 +226,10 @@ export default {
       };
 
       const formData = new FormData();
-      formData.append("image", this.profileimage);
+      if (this.profileimage) {
+        formData.append("image", this.profileimage);
+      }
+
       formData.append("user", JSON.stringify(dataUser));
       axios
         .put("http://localhost:3000/user", formData, {
@@ -236,7 +238,7 @@ export default {
         .then((res) => {
           alert("profile is been updated");
           this.$router.push("/posts");
-          //console.log(res.email);
+
           console.log(res.data);
         })
         .catch(() => {});
@@ -254,7 +256,7 @@ export default {
         .then((res) => {
           alert("profile is been deleted");
           this.$router.push("/signup");
-          //console.log(res.email);
+
           console.log(res.data);
         })
         .catch(() => {

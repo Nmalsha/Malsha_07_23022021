@@ -5,9 +5,8 @@ const User = models.User;
 const Comment = models.Comment;
 
 exports.createComment = async (req, res) => {
-  console.log("i am here");
   const token = req.headers.token;
-  console.log(token);
+
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
 
@@ -25,20 +24,10 @@ exports.createComment = async (req, res) => {
   });
 };
 exports.getAllComment = (req, res) => {
-  Comment.findAll(
-    {
-      order: [["createdAt", "DESC"]],
-      include: [Post, User],
-    }
-
-    /*
-    {
-      order: [["createdAt", "DESC"]],
-      include: [User, Post],
-    }
-    */
-    //console.log("toto")
-  ).then((Comment) =>
+  Comment.findAll({
+    order: [["createdAt", "DESC"]],
+    include: [Post, User],
+  }).then((Comment) =>
     res.status(200).json({
       Comment,
       message: "got all comments",

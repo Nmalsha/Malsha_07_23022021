@@ -13,15 +13,12 @@ exports.signup = async (req, res) => {
     return res.status(400).json({ error: "missing parameters" });
   }
 
-  //console.log(email,nom,prenom,password)
-
   const userRes = await User.findOne({
     attributes: ["email"],
     where: { email: email },
   });
 
   if (userRes) {
-    //TODO has to redirect to the signup page
     console.log("This email is already exist !!! please user different email");
   } else {
     //password hash
@@ -29,7 +26,6 @@ exports.signup = async (req, res) => {
     bcrypt
       .hash(password, salt)
       .then((hash) => {
-        // console.log(hash);
         const user = new User({
           email: email,
           nom: nom,
@@ -39,13 +35,11 @@ exports.signup = async (req, res) => {
         });
         user
           .save()
-          //console.log('user created')
-          //  console.log(user)
+
           .then(function (user) {
             return res.status(201).json({
               userid: user.id,
             });
-            //console.log(user.id)
           })
           .catch((error) =>
             res.status(500).send({
@@ -81,7 +75,6 @@ exports.login = async (req, res) => {
       .json({ error: "Email or mot de passe incorrect ! " });
   }
   if (await bcrypt.compare(password, findUser.password)) {
-    //console.log(findUser.id)
     const user = {
       userId: findUser.id,
       nom: findUser.nom,
@@ -95,15 +88,10 @@ exports.login = async (req, res) => {
       "RANDOM_TOKEN_SECRET",
       { expiresIn: "24h" }
     );
-    //this.$router.replace('/post');
-    //console.log('user login success')
-    //console.log(user)
-    //console.log(token)
-    return (
-      res
-        .status(200)
-        //.headers('Location: http://www.example.com/nouvelle-page.htm')
-        .json({ status: "ok", token: token, userId: findUser.id })
-    );
+
+    return res
+      .status(200)
+
+      .json({ status: "ok", token: token, userId: findUser.id });
   }
 };

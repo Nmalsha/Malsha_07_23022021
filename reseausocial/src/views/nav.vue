@@ -14,8 +14,8 @@
         </span>
       </div>
       <div class=" navbar-collapse  col-md-9">
-        <ul class="navbar-nav ml-auto mb-2 mb-lg-0 col-md-9">
-          <li class="nav-item col-md-12">
+        <ul class="navbar-nav ml-auto mb-2 mb-lg-0 col-md-11 list_item">
+          <li class="nav-item col-md-8">
             <router-link
               class="btn btn-outline-primary my-2 my-sm-0 color"
               to="/login"
@@ -64,6 +64,9 @@ img {
 }
 
 @media (min-width: 768px) and (max-width: 1028px) {
+  .list_item {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 768px) {

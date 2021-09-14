@@ -44,11 +44,7 @@ export default {
         postId: this.postId,
         comment: this.comment,
       };
-      console.log(commentData);
 
-      //   const formData = new FormData();
-      //   formData.append("commentData", JSON.stringify(commentData));
-      //   console.log(formData);
       axios
         .post("http://localhost:3000/comment", commentData, {
           headers: { token: localStorage.getItem("userToken") },
@@ -64,21 +60,6 @@ export default {
             console.log(error);
           }
         );
-      /*
-
-
-      var comment = { name: this.name, text: this.text };
-
-      // POST /someUrl
-      this.$http.post("/api/comments", comment).then(
-        () => {
-          this.$parent.comments.push(comment);
-        },
-        (response) => {
-          console.log(response);
-        }
-      );
-      */
     },
   },
 };

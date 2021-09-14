@@ -6,6 +6,31 @@ const User = models.User;
 const Comment = models.Comment;
 
 exports.createPost = async (req, res) => {
+  /*
+  console.log(req.body.post);
+  const postObject = JSON.parse(req.body.post);
+
+  const post = {
+    content: postObject.content,
+    attachement: "",
+    userId: postObject.userid,
+  };
+  //console.log(req.file);
+  if (req.file) {
+    post.attachement = `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`;
+  }
+
+  //create new post
+  post
+    .save()
+    .then((data) => {
+      res.status(201).json({ message: "Post créé !" });
+    })
+    .catch((error) => res.status(500).json({ error }));
+*/
+
   const postObject = req.file
     ? {
         ...JSON.parse(req.body.post),
@@ -18,13 +43,11 @@ exports.createPost = async (req, res) => {
       };
 
   const token = req.headers.token;
-  //console.log(token);
+
   console.log(postObject);
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
-    //console.log(userId);
-    //const content = req.body.post;
-    //console.log(content);
+
     if (postObject.content == null) {
       return res.status(400).json({ error: "your post is empty" });
     }
@@ -38,13 +61,16 @@ exports.createPost = async (req, res) => {
         .status(400)
         .json({ error: "Email or mot de passe incorrect ! " });
     } else {
-      //console.log(getUserFromDb.data)
-
       const post = new Post({
         attachement: postObject.attachement,
         content: postObject.content,
         userId: postObject.userId,
       });
+      if (req.file) {
+        postObject.attachement = `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`;
+      }
       post.save().then(function (post) {
         console.log(post);
         return res
@@ -61,7 +87,6 @@ exports.getAllPost = (req, res) => {
   Post.findAll({
     order: [["createdAt", "DESC"]],
     include: User,
-    // include: Comment,
   }).then((Post) =>
     res.status(201).json({
       Post,
@@ -72,18 +97,11 @@ exports.getAllPost = (req, res) => {
 
 exports.getOnePost = async (req, res, next) => {
   console.log("toto");
-  //console.log(req.params.id);
-  // const getOnPost = Post.findOne({
-  //   _id: req.params.id,
-  // })
-  //   .then((getOnPost) => res.status(200).json(getOnPost))
-  //   .catch((error) => res.status(400).json({ error }));
 };
 
 exports.getAllPostsForOneUser = async (req, res, next) => {
   const token = req.headers.token;
 
-  //console.log(req.params.id);
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
     console.log(userId);
@@ -100,9 +118,6 @@ exports.getAllPostsForOneUser = async (req, res, next) => {
 };
 
 exports.editPost = async (req, res) => {
-  console.table(req.file);
-  console.log(req.body.post);
-
   const editPost = req.file
     ? {
         content: JSON.parse(req.body.post).content,
@@ -112,17 +127,17 @@ exports.editPost = async (req, res) => {
         }`,
       }
     : {
-        ...req.body.post,
+        content: JSON.parse(req.body.post).content,
+        id: JSON.parse(req.body.post).id,
       };
 
   const token = req.headers.token;
-
-  console.log(editPost.id);
 
   jwt.verify(token, "RANDOM_TOKEN_SECRET", (err, decoded) => {
     const userId = decoded.userId;
     console.log(userId);
     console.log({ ...editPost });
+
     Post.update(
       {
         ...editPost,
